@@ -2,5 +2,5 @@ package test;
 
 public class test {
 
-	asdasd
+	//바보바보
 }
