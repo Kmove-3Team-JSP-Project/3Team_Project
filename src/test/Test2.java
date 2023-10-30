@@ -7,4 +7,5 @@ public class Test2 {
 	// hjhj
 	
 	//ghghgj
+	// ghfghf
 }
