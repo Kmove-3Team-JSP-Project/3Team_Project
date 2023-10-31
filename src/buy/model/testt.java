@@ -1,4 +1,4 @@
-package buy;
+package buy.model;
 
 public class testt {
 //asdasd
