@@ -13,7 +13,7 @@ import mvc.command.CommandHandler;
 
 public class JoinHandler implements CommandHandler { // CommandHandler 인터페이스 구현
 
-	private static final String FORM_VIEW = "/WEB-INF/view/joinForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/member/joinForm.jsp";
 	private JoinService joinService = new JoinService();
 
 	@Override
@@ -58,9 +58,9 @@ public class JoinHandler implements CommandHandler { // CommandHandler 인터페
 		}
 
 		try {
-			// join() 메서드를 실행해 가입 처리 성공시 "/WEB-INF/view/joinSuccess.jsp" 경로 리턴
+			// join() 메서드를 실행해 가입 처리 성공시 "/WEB-INF/view/member/loginForm.jsp" 경로 리턴
 			joinService.join(joinReq);
-			return "/WEB-INF/view/joinSuccess.jsp";
+			return "/WEB-INF/view/member/loginForm.jsp";
 		// 동일 아이디 존재시 DuplicateIdException 발생
 		} catch (DuplicateIdException e) {
 			// TODO: handle exception

@@ -2,16 +2,16 @@ package auth.service;
 
 public class User {
 
-	private String id; 
+	private String memberId; 
 	private String name; 
 
-	public User(String id, String name) {
-		this.id = id;
+	public User(String memberId, String name) {
+		this.memberId = memberId;
 		this.name = name;
 	}
 
-	public String getId() {
-		return id;
+	public String getmemberId() {
+		return memberId;
 	}
 
 	public String getName() {
