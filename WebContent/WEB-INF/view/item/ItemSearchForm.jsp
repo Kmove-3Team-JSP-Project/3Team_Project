@@ -28,7 +28,7 @@ table {
 				<th>単価</th>
 				<th>品目区分</th>
 			</tr>
-			<c:forEach items="${itemPage.content}" var="item">
+			<c:forEach items="${searchResult.content}" var="item">
 				<tr>
 					<td>${item.item_Id}</td>
 					<td>${item.item_Name}</td>
@@ -36,18 +36,10 @@ table {
 					<td>${item.item_Class}</td>
 				</tr>
 			</c:forEach>
-
 		</table>
 	</div>
-	<div align='right'>
-		<form action="itemSearch.do" method="post" target="_blank">
-			<label for="検索条件">検索条件:</label> <select name="searchType" id="検索条件">
-				<option value="選択">選択</option>
-				<option value="品目名">品目名</option>
-				<option value="品目区分">品目区分</option>
-			</select> <input type="text" name="searchTerm" placeholder="入力"> <input
-				type="submit" value="検索">
-		</form>
+	<div align='center'>
+		<a href="ItemListForm.jsp">品目リストに戻る</a>
 	</div>
 </body>
 </html>
