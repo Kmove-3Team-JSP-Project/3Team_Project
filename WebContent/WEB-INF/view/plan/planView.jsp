@@ -116,10 +116,10 @@ td {
 			</table>
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('<%=request.getContextPath()%>/planSearch.jsp', '発注計画検索', 'width=1200, height=700')" />
+				onclick="window.open('<%=request.getContextPath()%>/view/plan/planSearch.jsp', '発注計画検索', 'width=1200, height=700')" />
 			<input type="button" value="登録"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
-				onclick="window.open('<%=request.getContextPath()%>/planForm.jsp', '発注計画登録', 'width=1000, height=700')" />
+				onclick="window.open('<%=request.getContextPath()%>/view/plan/planForm.jsp', '発注計画登録', 'width=1000, height=700')" />
 		</form>
 	</div>
 
