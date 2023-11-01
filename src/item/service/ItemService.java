@@ -9,7 +9,6 @@ import item.model.Item;
 import jdbc.connection.ConnectionProvider;
 
 public class ItemService {
-
 	private ItemDao itemDao = new ItemDao();
 	private int size = 30;
 
@@ -19,9 +18,7 @@ public class ItemService {
 			List<Item> content = itemDao.select(conn, (pageNum - 1) * size, size);
 			return new ItemPage(total, pageNum, content);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Failed to get ItemPage", e);
 		}
-
 	}
-
 }
