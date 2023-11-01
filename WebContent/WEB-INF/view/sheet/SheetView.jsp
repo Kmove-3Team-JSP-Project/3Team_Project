@@ -116,7 +116,7 @@ td {
 			</table>
 			<input type="button" value="検索" style="font-size: 20px; width: 70px; height: 40px;
 			margin-top:30px; margin-left:925px;"
-			onclick="window.open('<%=request.getContextPath()%>/SheetSearch.jsp', '発注書検索', 'width=1200, height=700')" />
+			onclick="window.open('<%=request.getContextPath()%>/view/sheet/SheetSearch.jsp', '発注書検索', 'width=1200, height=700')" />
 			</form>
 	</div>
 
