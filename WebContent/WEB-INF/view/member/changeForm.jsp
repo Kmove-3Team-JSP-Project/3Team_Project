@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>会員登録</title>
+<title>会員情報の修正</title>
 <style>
 body {
 	display: flex;
@@ -65,7 +65,7 @@ body {
 </head>
 <body>
 	<div class="login-form">
-		<h1>会員登録</h1>
+		<h1>会員情報の修正</h1>
 		<form action="로그인처리페이지URL" method="post">
 			<div class="input-group">
 				<label for="name">氏名</label> <input type="text" id="name"
