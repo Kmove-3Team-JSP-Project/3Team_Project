@@ -128,10 +128,10 @@ td {
 			</table>
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('<%=request.getContextPath()%>/orderSearch.jsp', '発注要請検索', 'width=1200, height=700')" />
+				onclick="window.open('<%=request.getContextPath()%>/view/order/orderSearch.jsp', '発注要請検索', 'width=1200, height=700')" />
 			<input type="button" value="登録"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
-				onclick="window.open('<%=request.getContextPath()%>/orderFormView.jsp', '発注要請登録', 'width=700, height=700')" />
+				onclick="window.open('<%=request.getContextPath()%>/view/order/orderFormView.jsp', '発注要請登録', 'width=700, height=700')" />
 		</form>
 	</div>
 
