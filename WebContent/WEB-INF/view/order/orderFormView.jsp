@@ -34,8 +34,7 @@ td {
 		<table>
 			<tr>
 				<td style="text-align: center;">要請No(自動発行)</td>
-				<td><input type="text" value="${30001}"
-					readonly size="13"></td>
+				<td><input type="text" value="${30001}" readonly size="13"></td>
 			</tr>
 
 			<tr>
