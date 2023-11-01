@@ -25,45 +25,16 @@ table {
 				<th>単価</th>
 				<th>品目区分</th>
 			</tr>
-			<tr>
-				<th></th>
-				<th>ピアノ</th>
-				<th>50000</th>
-				<th>楽器</th>
-			</tr>
-			<tr>
-				<th></th>
-				<th>バナナ</th>
-				<th>1000</th>
-				<th>果物</th>
-			</tr>
-			<tr>
-				<th></th>
-				<th>リンゴ</th>
-				<th>500</th>
-				<th>果物</th>
-			</tr>
-			<tr>
-				<th></th>
-				<th>ニンテンド</th>
-				<th>35000</th>
-				<th>ゲーム機</th>
-			</tr>
-			<tr>
-				<th></th>
-				<th>筆筒</th>
-				<th>350</th>
-				<th>学用品</th>
-			</tr>
-			<tr>
-				<th></th>
-				<th>パソコン</th>
-				<th>100000</th>
-				<th>電子機器</th>
-			</tr>
+			<c:forEach items="${itemPage.content}" var="item">
+				<tr>
+					<td>${item.item_Id}</td>
+					<td>${item.item_Name}</td>
+					<td>${item.unit_Price}</td>
+					<td>${item.item_Class}</td>
+				</tr>
+			</c:forEach>
 		</table>
 	</div>
-	&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 	<div align='right'>
 		<form action="ItemSearch.jsp" method="post">
 			<label for="検索条件">検索条件:</label> <select name="検索条件" id="検索条件">
