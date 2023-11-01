@@ -1,20 +1,16 @@
 package storage.dao;
 
-
-import java.beans.Statement;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import jdbc.JdbcUtil;
 
 import storage.model.Storage;
-import ticket.model.Ticket;
 
 public class StorageDao {
 
@@ -39,7 +35,6 @@ public class StorageDao {
 		}
 	}
 
-	
 	public void insert(Connection conn, Storage storage) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("insert into member values (?,?,?,?)")) {
 			pstmt.setInt(1, storage.getStorageCode());
@@ -49,22 +44,23 @@ public class StorageDao {
 			pstmt.executeUpdate();
 		}
 	}
-	
-	public List<Storage> readStorage(Connection conn) throws SQLException{
+
+	public List<Storage> readStorage(Connection conn) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select storage_id, storage_name, storage_address, use from Storage order by storage_id asc");
+			pstmt = conn.prepareStatement(
+					"select storage_id, storage_name, storage_address, use from Storage order by storage_id asc");
 			List<Storage> result = new ArrayList<Storage>();
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Storage storage = new Storage();
-				
+
 				int storageCode = rs.getInt(1);
 				String storageName = rs.getString(2);
 				String storageAddress = rs.getString(3);
 				String storageUse = rs.getString(4);
-				
+
 				storage.setStorageCode(storageCode);
 				storage.setStorageName(storageName);
 				storage.setStorageAddress(storageAddress);
@@ -76,4 +72,5 @@ public class StorageDao {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
 		}
+	}
 }
