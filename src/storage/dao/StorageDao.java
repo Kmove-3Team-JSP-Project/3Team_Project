@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import java.util.List;
+
 
 import jdbc.JdbcUtil;
 
@@ -71,6 +73,47 @@ public class StorageDao {
 		} finally {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
+		}
+	}
+	public List<Storage> select(Connection conn, int startRow, int size) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(
+					"select * from (select rownum as rnum, a.* "
+				               + "from (select * from storage order by storage_id desc) a "
+				               + "where rownum <=?) where rnum >=?");
+			pstmt.setInt(1, startRow + size);
+	         pstmt.setInt(2, startRow + 1);
+			rs = pstmt.executeQuery();
+			List<Storage> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertStorage(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+
+	private Storage convertStorage(ResultSet rs) throws SQLException {
+		return new Storage(rs.getInt("storageCode"), rs.getString("storageName"), rs.getString("storageAddress"), rs.getString("storageUse"));
+	}
+	
+	public int selectCount(Connection conn) throws SQLException {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select count(*) from storage");
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			return 0;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
 		}
 	}
 }
