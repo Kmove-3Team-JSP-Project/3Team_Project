@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>会員登録</title>
+<title>ログイン</title>
 <style>
 body {
 	display: flex;
@@ -65,40 +65,21 @@ body {
 </head>
 <body>
 	<div class="login-form">
-		<h1>会員登録</h1>
-		<form action="join.do" method="post">
+		<h1>ログイン</h1>
+		<form action="로그인처리페이지URL" method="post">
 			<div class="input-group">
-				<label for="name">氏名</label> <input type="text" id="name"
-					name="name">
+				<label for="memberId">ID</label> <input type="text" id="memberId"
+					name="memberId" placeholder="社員番号(ID)を入力してください" required>
 			</div>
 
 			<div class="input-group">
-				<label for="memberId">社員番号(ID)</label> <input type="text" id="id"
-					name="id">
-			</div>
-
-			<div class="input-group">
-				<label for="password">パスワード</label> <input type="password"
-					id="password" name="password">
-			</div>
-
-			<div class="input-group">
-				<label for="confirmPassword">パスワード確認</label> <input type="text"
-					id="confirmPassword" name="confirmPassword">
-			</div>
-
-			<div class="input-group">
-				<label for="mail">メール</label> <input type="text" id="mail"
-					name="mail">
-			</div>
-
-			<div class="input-group">
-				<label for="position">役職</label> <input type="text" id="position"
-					name="position">
+				<label for="password">PASSWORD</label> <input type="password" id="password"
+					name="password" placeholder="パスワードを入力してください" required>
 			</div>
 
 			<div class="button-group">
-				<button type="submit">会員登録</button>
+				<button type="submit">ログイン</button>
+				<a href="회원가입페이지URL">会員登録</a>
 			</div>
 		</form>
 	</div>

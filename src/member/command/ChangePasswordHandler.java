@@ -64,7 +64,7 @@ public class ChangePasswordHandler implements CommandHandler {
 		}
 
 		try {
-			changePwdSvc.changePassword(user.getId(), curPwd, newPwd);
+			changePwdSvc.changePassword(user.getmemberId(), curPwd, newPwd);
 			return "/WEB-INF/view/changePwdSuccess.jsp";
 		} catch (InvalidPasswordException e) {
 			// TODO: handle exception
