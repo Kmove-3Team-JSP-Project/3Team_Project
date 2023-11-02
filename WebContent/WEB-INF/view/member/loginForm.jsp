@@ -64,17 +64,18 @@ body {
 </style>
 </head>
 <body>
+	<%@ include file="/header.jsp"%>
 	<div class="login-form">
 		<h1>ログイン</h1>
-		<form action="로그인처리페이지URL" method="post">
+		<form action="login.do" method="post">
 			<div class="input-group">
 				<label for="memberId">ID</label> <input type="text" id="memberId"
 					name="memberId" placeholder="社員番号(ID)を入力してください" required>
 			</div>
 
 			<div class="input-group">
-				<label for="password">PASSWORD</label> <input type="password" id="password"
-					name="password" placeholder="パスワードを入力してください" required>
+				<label for="password">PASSWORD</label> <input type="password"
+					id="password" name="password" placeholder="パスワードを入力してください" required>
 			</div>
 
 			<div class="button-group">
