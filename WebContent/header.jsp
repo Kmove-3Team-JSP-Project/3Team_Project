@@ -10,7 +10,8 @@
 	<div class="header">
 		<ul class="header-menu">
 			<li><a href="change.do">회원정보 수정</a></li>
-			<li><a href="#">로그아웃</a></li>
+			<li><a href="login.do">로그인</a></li>
+			<li><a href="join.do">회원가입</a></li>
 			<li><a href="#">구매</a></li>
 		</ul>
 	</div>
