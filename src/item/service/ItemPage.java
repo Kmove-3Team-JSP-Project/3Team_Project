@@ -11,10 +11,10 @@ public class ItemPage {
 	private List<Item> content;
 
 	public ItemPage(int total, int currentPage, List<Item> content) {
-		this.total = total;
-		this.currentPage = currentPage;
-		Collections.sort(content, (item1, item2) -> Integer.compare(item1.getItem_Id(), item2.getItem_Id()));
-		this.content = content;
+	    this.total = total;
+	    this.currentPage = currentPage;
+	    Collections.sort(content, (item1, item2) -> Integer.compare(item1.getItem_Id(), item2.getItem_Id()));
+	    this.content = content;
 	}
 
 	public int getTotal() {

@@ -51,7 +51,6 @@ table {
 			<input type="submit" value="検索">
 		</form>
 	</div>
-
 	<script>
 		function validateForm() {
 			var searchType = document.getElementById("searchType").value;

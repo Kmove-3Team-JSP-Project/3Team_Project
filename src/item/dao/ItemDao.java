@@ -41,28 +41,34 @@ public class ItemDao {
 		}
 	}
 
-	public List<Item> selectByName(Connection conn, String item_name) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM item WHERE item_name = ?")) {
-			pstmt.setString(1, item_name);
+	public List<Item> selectByClass(Connection conn, String item_class, int startRow, int size) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_class = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, item_class);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
 			try (ResultSet rs = pstmt.executeQuery()) {
-				List<Item> items = new ArrayList<>();
+				List<Item> result = new ArrayList<>();
 				while (rs.next()) {
-					items.add(convertItem(rs));
+					result.add(convertItem(rs));
 				}
-				return items;
+				return result;
 			}
 		}
 	}
 
-	public List<Item> selectByClass(Connection conn, String item_class) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM item WHERE item_class = ?")) {
-			pstmt.setString(1, item_class);
+	public List<Item> selectByName(Connection conn, String item_name, int startRow, int size) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, item_name);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
 			try (ResultSet rs = pstmt.executeQuery()) {
-				List<Item> items = new ArrayList<>();
+				List<Item> result = new ArrayList<>();
 				while (rs.next()) {
-					items.add(convertItem(rs));
+					result.add(convertItem(rs));
 				}
-				return items;
+				return result;
 			}
 		}
 	}
@@ -85,4 +91,29 @@ public class ItemDao {
 		String item_class = rs.getString("item_class");
 		return new Item(item_id, item_name, unit_price, item_class);
 	}
+
+	public int getCountByName(Connection conn, String item_name) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_name = ?")) {
+			pstmt.setString(1, item_name);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
+	public int getCountByClass(Connection conn, String item_class) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_class = ?")) {
+			pstmt.setString(1, item_class);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
 }
