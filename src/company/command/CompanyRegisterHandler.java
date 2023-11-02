@@ -1,39 +1,39 @@
 package company.command;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import company.service.CompanyRegisterService;
-import company.service.CompanyService;
 import mvc.command.CommandHandler;
 
 public class CompanyRegisterHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/company/CompanyRegisterForm.jsp";
-	private CompanyRegisterService companyRegisterService = new CompanyRegisterService();
 
 	@Override
-	public String process(HttpServletRequest req, HttpServletResponse res) {
+	public String process(HttpServletRequest req, HttpServletResponse res) throws SQLException {
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			return processForm(req, res);
+			return processForm(req, res); // HTTP GET 요청 처리
 		} else if (req.getMethod().equalsIgnoreCase("POST")) {
-			return processSubmit(req, res);
+			return processSubmit(req, res); // HTTP POST 요청 처리
 		} else {
 			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return null;
 		}
 	}
 
-	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+	private String processForm(HttpServletRequest req, HttpServletResponse res) throws SQLException {
 		return FORM_VIEW;
 	}
 
-	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
+	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws SQLException {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
-		return FORM_VIEW;
-
+		if (!errors.isEmpty()) {
+			return FORM_VIEW;
+		}
+		return "/WEB-INF/view/company/CompanySearchform.jsp";
 	}
 }
