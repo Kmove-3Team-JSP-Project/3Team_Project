@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+/* 헤더 컨테이너 스타일 */
+.header {
+  background-color: #333; /* 헤더 배경색 */
+  color: #fff; /* 헤더 텍스트 색상 */
+  padding: 10px; /* 헤더 패딩 */
+  text-align: center; /* 헤더 텍스트 가운데 정렬 */
+}
+
+/* 헤더 메뉴 스타일 (예시) */
+.header-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-menu li {
+  display: inline;
+  margin-right: 20px; /* 메뉴 간격 */
+}
+
+.header-menu a {
+  text-decoration: none;
+  color: #fff; /* 메뉴 텍스트 색상 */
+  font-weight: bold;
+}
+
+.header-menu a:hover {
+  color: #ff6600; /* 메뉴에 호버 시 텍스트 색상 변경 예시 */
+}
