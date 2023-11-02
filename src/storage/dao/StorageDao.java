@@ -16,13 +16,13 @@ import storage.model.Storage;
 
 public class StorageDao {
 
-	public Storage selectById(Connection conn, String storageName) throws SQLException {
+	public Storage selectById(Connection conn, int storageCode) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			pstmt = conn.prepareStatement("select * from storage where storageName = ?");
-			pstmt.setString(1, storageName);
+			pstmt = conn.prepareStatement("select * from storage where storage_id = ?");
+			pstmt.setInt(1, storageCode);
 			rs = pstmt.executeQuery();
 			Storage storage = null;
 

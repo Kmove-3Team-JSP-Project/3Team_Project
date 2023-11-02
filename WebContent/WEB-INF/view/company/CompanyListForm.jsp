@@ -22,54 +22,22 @@
 				<th>住所</th>
 				<th>所有倉庫</th>
 			</tr>
-			<tr>
-				<td></td>
-				<td>DAUM</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>SEOUL</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>APPLE</td>
-				<td>KIM</td>
-				<td>01098765432</td>
-				<td>SUWON</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>YAHOO</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>OSAKA</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>GOOGLE</td>
-				<td>LEE</td>
-				<td>01044444444</td>
-				<td>TOKYO</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>NAVER</td>
-				<td>SOO</td>
-				<td>01082826464</td>
-				<td>BUSAN</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>LINE</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>JEJU</td>
-				<td></td>
-			</tr>
+			<c:if test="${companyPage.hasNoCompany()}">
+				<tr>
+					<td colspan="4">거래처 코드가 없습니다</td>
+				</tr>
+			</c:if>
+			<c:forEach var="company" items="${companyPage.content}">
+				<tr>
+					<td>${company.name}</td>
+					<td><a
+						href="Listdo?no=${company.name }&pageNo=${companyPage.currentPage}">
+					</a></td>
+					<td>${company.name}</td>
+					<td>${company.readCount }</td>
+				</tr>
+			</c:forEach>
+
 		</table>
 
 
@@ -83,11 +51,11 @@
 					<option value="電話番号">電話番号</option>
 					<option value="所有倉庫">所有倉庫</option>
 				</select> <input type="text" name="keyword" placeholder="入力"> <input
-					type="submit" value="検索"> 
-					<input type="button" value="登録" onclick="window.location.href='CompanyRegisterForm.jsp'" />
+					type="submit" value="検索"> <input type="button" value="登録"
+					onclick="window.location.href='CompanyRegisterForm.jsp'" />
 
 
-					
+
 
 
 			</form>
