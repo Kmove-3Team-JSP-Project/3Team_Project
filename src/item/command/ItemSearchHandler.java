@@ -8,18 +8,17 @@ import item.service.ItemSearchService;
 import mvc.command.CommandHandler;
 
 public class ItemSearchHandler implements CommandHandler {
-	private ItemSearchService itemSearchService = new ItemSearchService();
+	private ItemSearchService searchService = new ItemSearchService();
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		String searchType = req.getParameter("searchType");
 		String searchTerm = req.getParameter("searchTerm");
-		int pageNumber = 1;
 
-		ItemPage searchResult = itemSearchService.searchItems(searchType, searchTerm, pageNumber);
+		ItemSearchRequest searchRequest = new ItemSearchRequest(searchType, searchTerm);
+		ItemPage itemPage = searchService.searchItems(searchRequest, 1);
 
-		req.setAttribute("searchResult", searchResult);
-
+		req.setAttribute("itemPage", itemPage);
 		return "/WEB-INF/view/item/ItemSearchForm.jsp";
 	}
 }

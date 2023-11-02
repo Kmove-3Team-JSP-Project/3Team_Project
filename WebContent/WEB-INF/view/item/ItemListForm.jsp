@@ -36,18 +36,39 @@ table {
 					<td>${item.item_Class}</td>
 				</tr>
 			</c:forEach>
-
 		</table>
 	</div>
 	<div align='right'>
-		<form action="itemSearch.do" method="post" target="_blank">
-			<label for="検索条件">検索条件:</label> <select name="searchType" id="検索条件">
+		<form action="itemSearch.do" method="post" target="_blank"
+			onsubmit="return validateForm();">
+			<label for="searchType">検索条件:</label> <select name="searchType"
+				id="searchType">
 				<option value="選択">選択</option>
-				<option value="品目名">品目名</option>
-				<option value="品目区分">品目区分</option>
-			</select> <input type="text" name="searchTerm" placeholder="入力"> <input
-				type="submit" value="検索">
+				<option value="item_name">品目名</option>
+				<option value="item_class">品目区分</option>
+			</select> <label for="searchTerm">検索ワード:</label> <input type="text"
+				name="searchTerm" id="searchTerm" placeholder="入力" required>
+			<input type="submit" value="検索">
 		</form>
 	</div>
+
+	<script>
+		function validateForm() {
+			var searchType = document.getElementById("searchType").value;
+			var searchTerm = document.getElementById("searchTerm").value;
+
+			if (searchType === "選択") {
+				alert("検索条件を選択してください。");
+				return false;
+			}
+
+			if (searchTerm.trim() === "") {
+				alert("検索ワードを入力してください。");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
