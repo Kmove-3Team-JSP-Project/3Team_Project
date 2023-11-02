@@ -89,7 +89,7 @@
 		document.getElementById("cancelButton").addEventListener("click",
 				function() {
 					// 여기에 다음 폼으로 이동하는 코드를 추가하세요.
-					window.location.href = "CompanyForm.jsp";
+					window.location.href = "CompanyListForm.jsp";
 				});
 	</script>
 	</div>

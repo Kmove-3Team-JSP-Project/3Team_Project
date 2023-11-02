@@ -12,8 +12,10 @@ import jdbc.connection.ConnectionProvider;
 public class ItemSearchService {
 	private ItemDao itemDao = new ItemDao();
 
-	public ItemPage searchItems(String searchType, String searchTerm, int pageNumber) {
+	public ItemPage searchItems(ItemSearchRequest searchRequest, int pageNumber) {
 		List<Item> searchResult = null;
+		String searchType = searchRequest.getSearchType();
+		String searchTerm = searchRequest.getSearchTerm();
 
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			if ("item_name".equals(searchType)) {
@@ -29,7 +31,6 @@ public class ItemSearchService {
 			searchResult = new ArrayList<>();
 		}
 
-		
 		int totalItems = searchResult.size();
 		ItemPage itemPage = new ItemPage(totalItems, pageNumber, searchResult);
 

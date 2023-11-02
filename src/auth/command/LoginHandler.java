@@ -13,7 +13,7 @@ import mvc.command.CommandHandler;
 
 public class LoginHandler implements CommandHandler {
 
-	private static final String FORM_VIEW = "/WEB-INF/loginForm.jsp"; // 로그인 폼의 뷰 페이지 경로를 정의
+	private static final String FORM_VIEW = "/WEB-INF/view/member/loginForm.jsp"; // 로그인 폼의 뷰 페이지 경로를 정의
 	private LoginService loginService = new LoginService(); // 로그인 서비스를 처리하는 LoginService 객체를 생성
 
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception { // HTTP 요청을 처리하는 메서드
