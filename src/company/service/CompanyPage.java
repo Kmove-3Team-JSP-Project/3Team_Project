@@ -9,41 +9,63 @@ public class CompanyPage {
 	private int total;
 	private int currentPage;
 	private List<Company> content;
+	private int totalPages;
+	private int startPage;
+	private int endPage;
 
-	public CompanyPage() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public CompanyPage(int total, int currentPage, List<Company> content) {
-		super();
+	public CompanyPage(int total, int currentPage, int size, List<Company> content) {
 		this.total = total;
 		this.currentPage = currentPage;
 		this.content = content;
+		if (total == 0) {
+			totalPages = 0;
+			startPage = 0;
+			endPage = 0;
+		} else {
+			totalPages = total / size;
+			if (total % size > 0) {
+				totalPages++;
+			}
+			int modVal = currentPage % 5;
+			startPage = currentPage / 5 * 5 + 1;
+			if (modVal == 0)
+				startPage -= 5;
+
+			endPage = startPage + 4;
+			if (endPage > totalPages)
+				endPage = totalPages;
+		}
 	}
 
-	public int getTotal() {
+	public int getToal() {
 		return total;
 	}
 
-	public void setTotal(int total) {
-		this.total = total;
+	public boolean hasNoCompanies() {
+		return total == 0;
+	}
+
+	public boolean hasCompanies() {
+		return total > 0;
 	}
 
 	public int getCurrentPage() {
 		return currentPage;
 	}
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
+	public int getTotalPages() {
+		return totalPages;
 	}
 
 	public List<Company> getContent() {
 		return content;
 	}
 
-	public void setContent(List<Company> content) {
-		this.content = content;
+	public int getStartPage() {
+		return startPage;
 	}
 
+	public int getEndPage() {
+		return endPage;
+	}
 }

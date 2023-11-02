@@ -55,7 +55,7 @@
 	</div>
 	<h2>
 		<div align="center">
-			<a href="CompanyForm.jsp">[前ページに戻る。]</a>
+			<a href="CompanyListForm.jsp">[前ページに戻る。]</a>
 		</div>
 	</h2>
 </body>

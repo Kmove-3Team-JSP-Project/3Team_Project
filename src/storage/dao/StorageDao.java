@@ -16,13 +16,13 @@ import storage.model.Storage;
 
 public class StorageDao {
 
-	public Storage selectById(Connection conn, String storageName) throws SQLException {
+	public Storage selectById(Connection conn, int storageCode) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			pstmt = conn.prepareStatement("select * from storage where storageName = ?");
-			pstmt.setString(1, storageName);
+			pstmt = conn.prepareStatement("select * from storage where storage_id = ?");
+			pstmt.setInt(1, storageCode);
 			rs = pstmt.executeQuery();
 			Storage storage = null;
 
@@ -114,6 +114,17 @@ public class StorageDao {
 		} finally {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(stmt);
+		}
+	}
+	
+	public int autoCode(Connection conn) throws SQLException {
+		ResultSet rs = null;
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("select storage_id from Storage where ROWNUM =1 ORDER BY storage_id desc")) {
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+			return 0;
 		}
 	}
 }

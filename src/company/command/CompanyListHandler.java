@@ -1,40 +1,26 @@
 package company.command;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import company.service.CompanyPage;
 import company.service.CompanyService;
 import mvc.command.CommandHandler;
 
 public class CompanyListHandler implements CommandHandler {
-
-	private static final String FORM_VIEW = "/WEB-INF/view/company/CompanyForm.jsp";
 	private CompanyService companyService = new CompanyService();
 
 	@Override
-	public String process(HttpServletRequest req, HttpServletResponse res) {
-		if (req.getMethod().equalsIgnoreCase("GET")) {
-			return processForm(req, res);
-		} else if (req.getMethod().equalsIgnoreCase("POST")) {
-			return processSubmit(req, res);
-		} else {
-			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return null;
+	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String pageNoVal = req.getParameter("pageNo");
+		int pageNo = 1;
+		if (pageNoVal != null) {
+			pageNo = Integer.parseInt(pageNoVal);
 		}
-	}
+		CompanyPage companyPage = companyService.getCompanyPage(pageNo);
+		req.setAttribute("companyPage", companyPage);
 
-	private String processForm(HttpServletRequest req, HttpServletResponse res) {
-		return FORM_VIEW;
-	}
-
-	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
-		Map<String, Boolean> errors = new HashMap<>();
-		req.setAttribute("errors", errors);
-		return FORM_VIEW;
-
+		return "/WEB-INF/view/company/CompanyListForm.jsp";
 	}
 
 }
