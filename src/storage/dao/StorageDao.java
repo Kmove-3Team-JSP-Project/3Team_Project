@@ -116,4 +116,15 @@ public class StorageDao {
 			JdbcUtil.close(stmt);
 		}
 	}
+	
+	public int autoCode(Connection conn) throws SQLException {
+		ResultSet rs = null;
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("select storage_id from Storage where ROWNUM =1 ORDER BY storage_id desc")) {
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+			return 0;
+		}
+	}
 }
