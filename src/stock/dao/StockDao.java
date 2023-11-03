@@ -98,7 +98,7 @@ public class StockDao {
 
 	private Stock convertStock(ResultSet rs) throws SQLException {
 		int stock_cord = rs.getInt("stock_cord");
-		int stock_amount = rs.getInt("stock_amount");
+		int stock_amount = rs.getInt("amount");
 		String storage_name = rs.getString("storage_name");
 		String stock_name = rs.getString("stock_name");
 		int unit_price = rs.getInt("unit_price");

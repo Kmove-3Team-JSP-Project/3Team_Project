@@ -15,8 +15,30 @@ table {
 	margin-right: auto;
 }
 </style>
+<script>
+	function validateForm() {
+		var searchType = document.getElementById("検索条件").value;
+
+		if (searchType === "選択") {
+			alert("検索条件を選択してください。");
+			return false;
+		}
+		return true;
+	}
+	function validateForm() {
+		var searchTerm = document.getElementById("searchTerm").value;
+
+		if (searchTerm.trim() === "") {
+			alert("検索ワードを入力してください。");
+			return false;
+		}
+		return true; 
+	}
+</script>
 </head>
 <body>
+	<%@ include file="/header.jsp"%>
+
 	<h1>
 		<div align='center'>[品目リスト]</div>
 	</h1>
@@ -38,6 +60,9 @@ table {
 			</c:forEach>
 		</table>
 	</div>
+	<br />
+	<br />
+	<br />
 	<div align='right'>
 		<form action="itemSearch.do" method="post" target="_blank"
 			onsubmit="return validateForm();">

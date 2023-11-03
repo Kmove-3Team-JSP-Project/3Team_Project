@@ -73,4 +73,4 @@ public class StorageRequest {
 		if(value == null || value.isEmpty())
 			errors.put(fieldName, Boolean.TRUE);
 	}
-}
+
