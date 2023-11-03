@@ -44,7 +44,7 @@ public class CompanyDao {
 		try {
 
 			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
-					+ "from (select * from company order by carno desc) a " + "where rownum <=?) where rnum >=?");
+					+ "from (select * from company order by rownum desc) a " + "where rownum <=?) where rnum >=?");
 			pstmt.setInt(1, startRow + size); // 첫 번째 바인딩 변수 설정
 			pstmt.setInt(2, startRow + 1); // 두 번째 바인딩 변수 설정
 
@@ -62,7 +62,7 @@ public class CompanyDao {
 	}
 
 	private Company convertCompany(ResultSet rs) throws SQLException {
-		return new Company(rs.getInt("company_No"), rs.getString("Company_Name"), rs.getString("master"),
+		return new Company(rs.getInt("company_No"), rs.getString("company_Name"), rs.getString("master"),
 				rs.getString("phone"), rs.getString("address"), rs.getString("myStorage"));
 	}
 

@@ -39,7 +39,7 @@ public class CompanySearchHandler implements CommandHandler {
 		String searchKeyword = req.getParameter("searchKeyword");
 
 		// CompanyService를 사용하여 데이터베이스에서 검색 결과를 가져옴
-		List<Company> searchResults = companyService.searchCompanies(searchKeyword);
+		List<Company> searchResults = companyService.(searchKeyword);
 
 		// 검색 결과를 request에 저장
 		req.setAttribute("searchResults", searchResults);
