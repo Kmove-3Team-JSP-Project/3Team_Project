@@ -22,8 +22,7 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 			Member member = null;
 			if (rs.next()) { // 같은 데이터가 존재하면 member객체 생성
-				member = new Member(rs.getString("memberid"), rs.getString("name"), rs.getString("password"),
-						toDate(rs.getTimestamp("regdate")));
+				member = new Member(0, rs.getString("name"), rs.getString("password"), rs.getString("mail"), rs.getString("position"));
 				// JDBC 날짜,시간 타입은 Timestamp, member에서는 Date이기 때문에 Timestamp를 Date로 변환
 			}
 			return member; // 같은 데이터가 없으면 null 반환

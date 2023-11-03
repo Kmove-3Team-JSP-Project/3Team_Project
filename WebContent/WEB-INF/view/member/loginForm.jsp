@@ -79,7 +79,7 @@ body {
 
 			<div class="button-group">
 				<button type="submit">ログイン</button>
-				<a href="회원가입페이지URL">会員登録</a>
+				<a href="join.do">会員登録</a>
 			</div>
 		</form>
 	</div>
