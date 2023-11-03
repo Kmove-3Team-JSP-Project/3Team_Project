@@ -17,6 +17,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/header.jsp"%>
 	<script>
 		function redirectToNewPage() {
 			// 다른 페이지의 URL을 여기에 지정
