@@ -52,4 +52,3 @@ table {
 	</div>
 </body>
 </html>
-
