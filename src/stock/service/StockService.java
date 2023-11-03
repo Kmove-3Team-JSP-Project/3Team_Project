@@ -20,7 +20,7 @@ public class StockService {
 			content.sort((stock1, stock2) -> Integer.compare(stock1.getStock_Cord(), stock2.getStock_Cord()));
 			return new StockPage(total, pageNum, content);
 		} catch (SQLException e) {
-			throw new RuntimeException("Failed to get StockPage", e);
+			throw new RuntimeException("Failed to get StockPage. Cause: " + e.getMessage(), e);
 		}
 	}
 }

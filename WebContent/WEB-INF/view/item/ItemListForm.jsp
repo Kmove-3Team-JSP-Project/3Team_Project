@@ -17,6 +17,8 @@ table {
 </style>
 </head>
 <body>
+	<%@ include file="/header.jsp"%>
+
 	<h1>
 		<div align='center'>[品目リスト]</div>
 	</h1>
@@ -38,6 +40,9 @@ table {
 			</c:forEach>
 		</table>
 	</div>
+	<br />
+	<br />
+	<br />
 	<div align='right'>
 		<form action="itemSearch.do" method="post" target="_blank"
 			onsubmit="return validateForm();">
