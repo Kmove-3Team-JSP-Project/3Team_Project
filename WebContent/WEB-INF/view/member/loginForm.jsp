@@ -64,7 +64,6 @@ body {
 </style>
 </head>
 <body>
-	<%@ include file="/header.jsp"%>
 	<div class="login-form">
 		<h1>ログイン</h1>
 		<form action="login.do" method="post">

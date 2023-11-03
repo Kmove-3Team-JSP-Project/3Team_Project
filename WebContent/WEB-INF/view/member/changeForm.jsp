@@ -67,7 +67,7 @@ body {
 	<%@ include file="/header.jsp"%>
 	<div class="login-form">
 		<h1>会員情報の修正</h1>
-		<form action="로그인처리페이지URL" method="post">
+		<form action="change.do" method="post">
 			<div class="input-group">
 				<label for="name">氏名</label> <input type="text" id="name"
 					name="name">
