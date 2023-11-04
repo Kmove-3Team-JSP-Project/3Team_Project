@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>会員登録</title>
+
 <style>
 body {
 	display: flex;
@@ -62,6 +64,22 @@ body {
 	margin-left: 10px;
 }
 </style>
+
+<script type="text/javascript">
+	function checkData() {
+		var inputData1 = document.getElementById("name").value;
+		var inputData3 = document.getElementById("password").value;
+		var inputData4 = document.getElementById("confirmPassword").value;
+		var inputData5 = document.getElementById("mail").value;
+		var inputData6 = document.getElementById("position").value;
+
+		if (inputData1 === "" || inputData3 === "" || inputData4 === ""
+				|| inputData5 === "" || inputData6 === "") {
+			alert("데이터가 입력되지 않았습니다.");
+		}
+	}
+</script>
+
 </head>
 <body>
 
@@ -84,7 +102,7 @@ body {
 			</div>
 
 			<div class="input-group">
-				<label for="confirmPassword">パスワード確認</label> <input type="text"
+				<label for="confirmPassword">パスワード確認</label> <input type="password"
 					id="confirmPassword" name="confirmPassword">
 			</div>
 
@@ -99,7 +117,7 @@ body {
 			</div>
 
 			<div class="button-group">
-				<button type="submit">会員登録</button>
+				<button type="submit" onclick="checkData()">会員登録</button>
 			</div>
 		</form>
 	</div>

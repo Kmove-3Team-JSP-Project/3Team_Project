@@ -1,25 +1,22 @@
-package company.service;
+package buy.service;
 
-import java.util.Collections;
 import java.util.List;
 
-import company.model.Company;
+import buy.model.Buy;
 
-public class CompanyPage {
-
+public class BuyPage {
+	
 	private int total;
 	private int currentPage;
-	private List<Company> content;
+	private List<Buy> content;
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 
-	public CompanyPage(int total, int currentPage, int size, List<Company> content) {
+	public BuyPage(int total, int currentPage, int size, List<Buy> content) {
 		this.total = total;
 		this.currentPage = currentPage;
-		Collections.sort(content, (company1, company2) -> Integer.compare(company1.getCompany_No(), company2.getCompany_No()));
 		this.content = content;
-
 		if (total == 0) {
 			totalPages = 0;
 			startPage = 0;
@@ -40,20 +37,15 @@ public class CompanyPage {
 		}
 	}
 
-	public CompanyPage() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public int getTotal() {
+	public int getToal() {
 		return total;
 	}
 
-	public boolean hasNoCompany() {
+	public boolean hasNoCompanies() {
 		return total == 0;
 	}
 
-	public boolean hasCompany() {
+	public boolean hasCompanies() {
 		return total > 0;
 	}
 
@@ -65,7 +57,7 @@ public class CompanyPage {
 		return totalPages;
 	}
 
-	public List<Company> getContent() {
+	public List<Buy> getContent() {
 		return content;
 	}
 
@@ -76,4 +68,4 @@ public class CompanyPage {
 	public int getEndPage() {
 		return endPage;
 	}
-}	
+}

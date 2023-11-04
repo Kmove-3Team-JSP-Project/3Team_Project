@@ -7,10 +7,10 @@
 <title>取引先登録</title>
 </head>
 <body>
+	<%@ include file="/header.jsp"%>
 	<h1>
 		<div align="center">[取引先登録]</div>
 	</h1>
-	<
 	<div align="center">
 		<table border="1" width="50%">
 			<tr>

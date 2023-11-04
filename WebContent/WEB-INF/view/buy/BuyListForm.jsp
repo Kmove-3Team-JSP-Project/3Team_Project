@@ -9,6 +9,7 @@
 </head>
 <body>
 	<h1>
+		<%@ include file="/header.jsp"%>
 		<div align="center">[購買リスト]</div>
 	</h1>
 

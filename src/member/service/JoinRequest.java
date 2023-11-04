@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class JoinRequest {
 
-	private String memberid;
+	private int memberId;
 	private String name;
 	private String password;
 	private String confirmPassword;
@@ -12,12 +12,12 @@ public class JoinRequest {
 	private String position;
 
 	// 게터세터
-	public String getMemberid() {
-		return memberid;
+	public int getMemberId() {
+		return memberId;
 	}
 
-	public void setMemberid(String memberid) {
-		this.memberid = memberid;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getName() {
@@ -67,10 +67,13 @@ public class JoinRequest {
 
 	// 각 필드의 데이터가 유효한지 검사
 	public void validate(Map<String, Boolean> errors) {
-		checkEmpty(errors, memberid, "memberid");
+		checkEmpty(errors, Integer.toString(memberId), "memberId");
 		checkEmpty(errors, name, "name");
 		checkEmpty(errors, password, "password");
 		checkEmpty(errors, confirmPassword, "confirmPassword");
+		checkEmpty(errors, mail, "mail");
+		checkEmpty(errors, position, "position");
+
 		if (!errors.containsKey("confirmPassword")) {
 			// isPasswordEqualToConfirm 메서드를 이용해 암호와
 			// 확인값이 일치하지 않으면 notMatch 에러 키 추가
