@@ -1,19 +1,17 @@
 package member.model;
 
-import java.util.Date;
-
 public class Member {
 
-	private int memberid;
+	private int memberCount;
 	private String name;
 	private String password;
 	private String mail;
 	private String position;
 
 	// 매개변수가 있는 생정사
-	public Member(int memberid, String name, String password, String mail, String position) {
+	public Member(int memberCount, String name, String password, String mail, String position) {
 		super();
-		this.memberid = memberid;
+		this.memberCount = memberCount;
 		this.name = name;
 		this.password = password;
 		this.mail = mail;
@@ -27,8 +25,8 @@ public class Member {
 	}
 
 	// 게터
-	public int getMemberid() {
-		return memberid;
+	public int getMemberCount() {
+		return memberCount;
 	}
 
 	public String getName() {
@@ -47,6 +45,8 @@ public class Member {
 		return position;
 	}
 
+	
+	
 	// 암호 확인
 	public boolean matchPassword(String pwd) {
 		return password.equals(pwd);
