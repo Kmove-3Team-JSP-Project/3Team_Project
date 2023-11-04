@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h1>
+		<%@ include file="/header.jsp"%>
 		<div align="center">[購買要請]</div>
 	</h1>
 	<div align="center">

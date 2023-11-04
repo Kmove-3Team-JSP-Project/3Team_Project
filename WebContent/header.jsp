@@ -10,7 +10,7 @@
 	<div class="header">
 		<ul class="header-menu">
 			<li><a href="change.do">회원정보 수정</a></li>
-			<li><a href="company.do">取引先</a></li>
+			<li><a href="companyList.do">取引先</a></li>
 			<li><a href="order.do">発注要請</a></li>
 			<li><a href="plan.do">発注計画</a></li>
 			<li><a href="sheet.do">発注書</a></li>

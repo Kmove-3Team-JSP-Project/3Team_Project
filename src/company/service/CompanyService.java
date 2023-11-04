@@ -22,4 +22,10 @@ public class CompanyService {
 		}
 	}
 
+	public static void registerCompany(String company_No, String company_Name, String master, String phone,
+			String myStorage) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

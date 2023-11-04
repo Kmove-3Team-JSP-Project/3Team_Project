@@ -8,6 +8,7 @@
 <title>取引先検索</title>
 </head>
 <body>
+	<%@ include file="/header.jsp"%>
 	<h1>
 		<div align="center">[検索結果]</div>
 	</h1>
