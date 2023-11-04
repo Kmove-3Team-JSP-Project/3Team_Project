@@ -2,16 +2,16 @@ package member.model;
 
 public class Member {
 
-	private int memberCount;
+	private int memberId;
 	private String name;
 	private String password;
 	private String mail;
 	private String position;
 
 	// 매개변수가 있는 생정사
-	public Member(int memberCount, String name, String password, String mail, String position) {
+	public Member(int memberId, String name, String password, String mail, String position) {
 		super();
-		this.memberCount = memberCount;
+		this.memberId = memberId;
 		this.name = name;
 		this.password = password;
 		this.mail = mail;
@@ -25,8 +25,8 @@ public class Member {
 	}
 
 	// 게터
-	public int getMemberCount() {
-		return memberCount;
+	public int getMemberId() {
+		return memberId;
 	}
 
 	public String getName() {

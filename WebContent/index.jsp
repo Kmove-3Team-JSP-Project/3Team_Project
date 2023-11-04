@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,7 @@
 
 	<%@ include file="/header.jsp"%>
 
-	ÀÚÀç °ü¸® ÇÁ·Î±×·¥
+	ìžìž¬ ê´€ë¦¬ í”„ë¡œê·¸ëž¨
 
 </body>
 </html>

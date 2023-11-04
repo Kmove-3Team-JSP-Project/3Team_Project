@@ -16,6 +16,7 @@ public class LoginHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/member/loginForm.jsp"; // 로그인 폼의 뷰 페이지 경로를 정의
 	private LoginService loginService = new LoginService(); // 로그인 서비스를 처리하는 LoginService 객체를 생성
 
+	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception { // HTTP 요청을 처리하는 메서드
 		if (req.getMethod().equalsIgnoreCase("GET")) { // HTTP 요청 메소드가 GET인 경우 폼을 보여주는 메서드를 호출
 			return processForm(req, res);
@@ -32,17 +33,15 @@ public class LoginHandler implements CommandHandler {
 		return FORM_VIEW;
 	}
 
-	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {// 로그인을 시도하는 메서드
+	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception { // 로그인을 시도하는 메서드
 		// HTTP 요청에서 id와 password 파라미터 추출
-		String id = trim(req.getParameter("id"));
+		int id = Integer.parseInt(req.getParameter("memberId"));
 		String password = trim(req.getParameter("password"));
 
 		Map<String, Boolean> errors = new HashMap<>(); // 에러 메시지를 관리하는 맵을 생성하고 요청 속성으로 설정
 		req.setAttribute("errors", errors);
 
-		if (id == null || id.isEmpty()) // id나 password가 비어있으면 에러 메시지 맵에 표시
-			errors.put("id", Boolean.TRUE);
-		if (password == null || password.isEmpty())
+		if (password == null || password.isEmpty()) // id나 password가 비어있으면 에러 메시지 맵에 표시
 			errors.put("password", Boolean.TRUE);
 
 		if (!errors.isEmpty()) { // 에러 메시지 맵이 비어있지 않으면 로그인 폼을 다시 보여줌

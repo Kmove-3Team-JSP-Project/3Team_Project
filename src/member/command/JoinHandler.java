@@ -1,19 +1,11 @@
 package member.command;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jdbc.JdbcUtil;
-import member.dao.MemberDao;
 import member.service.DuplicateIdException;
 import member.service.JoinRequest;
 import member.service.JoinService;
@@ -56,7 +48,7 @@ public class JoinHandler implements CommandHandler { // CommandHandler 인터페
 	// 폼 전송 처리
 	private String processSubmit(HttpServletRequest req, HttpServletResponse resp) {
 		JoinRequest joinReq = new JoinRequest(); // JoinRequest 객체 생성
-		joinReq.setMemberid(req.getParameter("memberId"));
+		joinReq.setMemberId(Integer.parseInt(req.getParameter("memberId")));
 		joinReq.setName(req.getParameter("name"));
 		joinReq.setPassword(req.getParameter("password"));
 		joinReq.setConfirmPassword(req.getParameter("confirmPassword"));
