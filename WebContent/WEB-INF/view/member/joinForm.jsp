@@ -74,8 +74,8 @@ body {
 			</div>
 
 			<div class="input-group">
-				<label for="memberId">社員番号(ID)</label> <input type="text" id="id"
-					name="id">
+				<label for="memberId">社員番号(ID)</label> <input type="text"
+					id="memberId" name="memberId" value="${newMemberCount}" readonly>
 			</div>
 
 			<div class="input-group">

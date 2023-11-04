@@ -20,21 +20,16 @@ public class JoinService {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 
-			Member member = memberDao.selectById(conn, joinReq.getId());
+			Member member = memberDao.selectById(conn, joinReq.getMemberid());
 			// 가입하려는 ID와 같은 데이터가 존재하면 트랜잭션 롤백, DuplicateIdException 발생
 			if (member != null) {
 				JdbcUtil.rollback(conn);
 				throw new DuplicateIdException();
 			}
 
-			// joinReq를 이용해 Member 객체 생셩, memberDao.insert()로 회원 데이터를 테이블에 삽입
-			memberDao.insert(conn, 
-					new Member(
-							joinReq.getId(), 
-							joinReq.getName(), 
-							joinReq.getPassword(), 
-							new Date())
-					);
+			// joinReq를 이용해 Member 객체 생성, memberDao.insert()로 회원 데이터를 테이블에 삽입
+			memberDao.insert(conn, new Member(Integer.parseInt(joinReq.getMemberid()), joinReq.getName(),
+					joinReq.getPassword(), joinReq.getMail(), joinReq.getPosition()));
 			conn.commit(); // 트랜잭션 커밋
 		} catch (SQLException e) { // SQLException 발생시 트랜잭션 롤백, RuntimeException 발생
 			// TODO: handle exception
@@ -42,6 +37,17 @@ public class JoinService {
 			throw new RuntimeException(e);
 		} finally {
 			JdbcUtil.close(conn); // 커넥션 종료
+		}
+	}
+
+	public int getAutonum() {
+		try (Connection conn = ConnectionProvider.getConnection()) {
+			int memberCount = memberDao.autoNo(conn);
+			memberCount = memberCount + 1;
+			return memberCount;
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
 		}
 	}
 }
