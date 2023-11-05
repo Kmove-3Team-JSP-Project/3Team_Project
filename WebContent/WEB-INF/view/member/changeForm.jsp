@@ -64,7 +64,9 @@ body {
 </style>
 </head>
 <body>
+
 	<%@ include file="/header.jsp"%>
+	
 	<div class="login-form">
 		<h1>会員情報の修正</h1>
 		<form action="change.do" method="post">

@@ -13,7 +13,6 @@ import jdbc.JdbcUtil;
 
 public class CompanyDao {
 
-	// 주차권 정보를 데이터베이스에 삽입하는 메서드
 	public Company insert(Connection conn, Company company) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -44,7 +43,7 @@ public class CompanyDao {
 		try {
 
 			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
-					+ "from (select * from company order by carno desc) a " + "where rownum <=?) where rnum >=?");
+					+ "from (select * from company order by rownum desc) a " + "where rownum <=?) where rnum >=?");
 			pstmt.setInt(1, startRow + size); // 첫 번째 바인딩 변수 설정
 			pstmt.setInt(2, startRow + 1); // 두 번째 바인딩 변수 설정
 
@@ -61,8 +60,25 @@ public class CompanyDao {
 		}
 	}
 
+	public List<Company> selectByName(Connection conn, String company_name, int startRow, int size)
+			throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM company WHERE item_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, company_name);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<Company> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertCompany(rs));
+				}
+				return result;
+			}
+		}
+	}
+
 	private Company convertCompany(ResultSet rs) throws SQLException {
-		return new Company(rs.getInt("company_No"), rs.getString("Company_Name"), rs.getString("master"),
+		return new Company(rs.getInt("company_No"), rs.getString("company_Name"), rs.getString("master"),
 				rs.getString("phone"), rs.getString("address"), rs.getString("myStorage"));
 	}
 
@@ -83,4 +99,43 @@ public class CompanyDao {
 
 	}
 
+	public int getCountByName(Connection conn, String item_name) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_name = ?")) {
+			pstmt.setString(1, item_name);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
+	public int getCountByClass(Connection conn, String item_class) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_class = ?")) {
+			pstmt.setString(1, item_class);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
+	public List<Company> selectByClass(Connection conn, String Company_class, int startRow, int size) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_class = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, Company_class);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<Company> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertCompany(rs));
+				}
+				return result;
+			}
+		}
+	}
 }

@@ -4,18 +4,20 @@ import java.util.Map;
 
 public class JoinRequest {
 
-	private String id;
+	private int memberId;
 	private String name;
 	private String password;
 	private String confirmPassword;
+	private String mail;
+	private String position;
 
 	// 게터세터
-	public String getId() {
-		return id;
+	public int getMemberId() {
+		return memberId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getName() {
@@ -42,6 +44,22 @@ public class JoinRequest {
 		this.confirmPassword = confirmPassword;
 	}
 
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	// password(암호)와 confirmPassword(확인)이 같은지 검사
 	public boolean isPasswordEqualToConfirm() {
 		return password != null && password.equals(confirmPassword);
@@ -49,12 +67,15 @@ public class JoinRequest {
 
 	// 각 필드의 데이터가 유효한지 검사
 	public void validate(Map<String, Boolean> errors) {
-		checkEmpty(errors, id, "id");
+		checkEmpty(errors, Integer.toString(memberId), "memberId");
 		checkEmpty(errors, name, "name");
 		checkEmpty(errors, password, "password");
 		checkEmpty(errors, confirmPassword, "confirmPassword");
+		checkEmpty(errors, mail, "mail");
+		checkEmpty(errors, position, "position");
+
 		if (!errors.containsKey("confirmPassword")) {
-			// isPasswordEqualToConfirm 메서드를 이용해 암호와 
+			// isPasswordEqualToConfirm 메서드를 이용해 암호와
 			// 확인값이 일치하지 않으면 notMatch 에러 키 추가
 			if (!isPasswordEqualToConfirm()) {
 				errors.put("notMatch", Boolean.TRUE);

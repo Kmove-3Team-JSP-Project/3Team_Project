@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,6 +68,9 @@ body {
 	<div class="login-form">
 		<h1>ログイン</h1>
 		<form action="login.do" method="post">
+		<c:if test="${errors.idOrPwNotMatch}">
+		아이디와 암호가 일치하지 않습니다.
+		</c:if>
 			<div class="input-group">
 				<label for="memberId">ID</label> <input type="text" id="memberId"
 					name="memberId" placeholder="社員番号(ID)を入力してください" required>
@@ -79,7 +83,7 @@ body {
 
 			<div class="button-group">
 				<button type="submit">ログイン</button>
-				<a href="회원가입페이지URL">会員登録</a>
+				<a href="join.do">会員登録</a>
 			</div>
 		</form>
 	</div>

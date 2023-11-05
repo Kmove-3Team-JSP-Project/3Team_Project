@@ -1,83 +1,29 @@
 package company.service;
 
-import java.util.Map;
-
 public class CompanySearchRequest {
+	private String searchType;
+	private String searchTerm;
 
-	private int company_No;
-	private String company_Name;
-	private String master;
-	private String phone;
-	private String address;
-	private String myStorage;
-
-	public CompanySearchRequest() {
+	public CompanySearchRequest(String searchType, String searchTerm) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.searchType = searchType;
+		this.searchTerm = searchTerm;
 	}
 
-	public CompanySearchRequest(int company_No, String company_Name, String master, String phone, String address,
-			String myStorage) {
-		super();
-		this.company_No = company_No;
-		this.company_Name = company_Name;
-		this.master = master;
-		this.phone = phone;
-		this.address = address;
-		this.myStorage = myStorage;
+	public String getSearchType() {
+		return searchType;
 	}
 
-	public int getCompany_No() {
-		return company_No;
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
 	}
 
-	public void setCompany_No(int company_No) {
-		this.company_No = company_No;
+	public String getSearchTerm() {
+		return searchTerm;
 	}
 
-	public String getCompany_Name() {
-		return company_Name;
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 
-	public void setCompany_Name(String company_Name) {
-		this.company_Name = company_Name;
-	}
-
-	public String getMaster() {
-		return master;
-	}
-
-	public void setMaster(String master) {
-		this.master = master;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getMyStorage() {
-		return myStorage;
-	}
-
-	public void setMyStorage(String myStorage) {
-		this.myStorage = myStorage;
-	}
-
-	public void validate(Map<String, Boolean> errors) {
-		if (company_Name == null || company_Name.trim().isEmpty()) {
-			errors.put("companyName", Boolean.TRUE);
-		}
-	}
 }

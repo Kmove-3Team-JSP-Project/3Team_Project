@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h1>
+		<%@ include file="/header.jsp"%>
 		<div align="center">[検索結果]</div>
 	</h1>
 	&nbsp &nbsp &nbsp
