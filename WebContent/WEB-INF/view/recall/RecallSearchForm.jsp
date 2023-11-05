@@ -28,11 +28,12 @@ table {
 				<th>倉庫名</th>
 				<th>在庫名</th>
 				<th>単価</th>
+				<th>修整</th>
 			</tr>
 			<c:choose>
 				<c:when test="${empty stockPage.content}">
 					<tr>
-						<td colspan="5">検索結果がありません。</td>
+						<td colspan="6">検索結果がありません。</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
@@ -46,8 +47,9 @@ table {
 							<td>
 								<form action="recallRegister.do" method="post">
 									<input type="hidden" name="stockCord"
-										value="${stock.stock_Cord}"> <input type="submit"
-										value="修整">
+										value="${stock.stock_Cord}"> <input type="text"
+										name="newAmount" placeholder="New Amount"> <input
+										type="submit" name="modify" value="修整">
 								</form>
 							</td>
 						</tr>
