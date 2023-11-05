@@ -8,12 +8,11 @@ import jdbc.connection.ConnectionProvider;
 import member.service.DuplicateIdException;
 import storage.dao.StorageDao;
 import storage.model.Storage;
-import sun.security.krb5.internal.Ticket;
 
 public class StorageRegisterService {
 
 	private StorageDao storageDao = new StorageDao();
-	
+
 	public void storageRegister(StorageRequest storageReq) {
 		Connection conn = null;
 		try {
@@ -21,14 +20,13 @@ public class StorageRegisterService {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 			// 아이디 중복확인
-			Storage storage = StorageDao.selectById(conn, storageReq.getStorageCode());
+			Storage storage = storageDao.selectById(conn, storageReq.getStorageCode());
 			if (storage != null) { // member에 들어간 값이 있다 => 같은 아이디 값이 있다.
 				JdbcUtil.rollback(conn); // 롤백
 				throw new DuplicateIdException(); // 오류 발생.
 			}
 			// 중복된 값이 없다면 값을 DB에 저장.
-			ticketDao.insert(conn, new Ticket(ticketReq.getTicketNo(), ticketReq.getCarNo(), ticketReq.getPhone(),
-					ticketReq.getGrade(), ticketReq.getTicketStat(), ticketReq.getStartDate(), ticketReq.getEndDate()));
+			storageDao.insert(conn, new Storage(storageReq.getStorageCode(), storageReq.getStorageName(),storageReq.getStorageAddress(), storageReq.getStorageUse()));
 			conn.commit(); // 커밋함.
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
@@ -41,13 +39,13 @@ public class StorageRegisterService {
 
 	public int getAutonum() {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			int ticketNo = ticketDao.autoNo(conn);
-			ticketNo = ticketNo + 1;
-			return ticketNo;
+			int storageCode = storageDao.autoCode(conn);
+			storageCode = storageCode + 1;
+			return storageCode;
 		} catch (SQLException e) {
 			// TODO: handle exception
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }
