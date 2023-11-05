@@ -1,30 +1,33 @@
 package recall.service;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import recall.command.RecallRegisterHandler;
+
 public class RecallRegisterRequest {
+	private RecallRegisterHandler recallRegisterHandler;
 
-	private int Stock_Cord;
-	private int Amount;
-
-	public RecallRegisterRequest(int stock_Cord, int amount) {
-		super();
-		Stock_Cord = stock_Cord;
-		Amount = amount;
+	public RecallRegisterRequest(Connection connection) {
+		this.recallRegisterHandler = new RecallRegisterHandler(connection);
 	}
 
-	public int getStock_Cord() {
-		return Stock_Cord;
-	}
+	public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String storageName = request.getParameter("storageName");
+		String stockName = request.getParameter("stockName");
+		int newAmount = Integer.parseInt(request.getParameter("newAmount"));
 
-	public void setStock_Cord(int stock_Cord) {
-		Stock_Cord = stock_Cord;
-	}
+		try {
+			recallRegisterHandler.modifyOrRemoveStockAmount(storageName, stockName, newAmount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
 
-	public int getAmount() {
-		return Amount;
+		response.sendRedirect("RecallRegisterSuccess.jsp");
 	}
-
-	public void setAmount(int amount) {
-		Amount = amount;
-	}
-
 }

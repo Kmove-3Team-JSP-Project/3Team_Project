@@ -1,36 +1,59 @@
 package recall.command;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class RecallRegisterHandler {
+	private Connection connection;
 
-import mvc.command.CommandHandler;
-import recall.service.RecallRegisterRequest;
+	public RecallRegisterHandler(Connection connection) {
+		this.connection = connection;
+	}
 
-public class RecallRegisterHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/recall/RecallRegister.jsp";
-	
-	private RecallRegisterService recallRegisterservice = new RecallRegisterService();
-	
-	@Override
-	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		// TODO Auto-generated method stub
-		if(req.getMethod().equalsIgnoreCase("GET")) {
-			return processForm(req, res); s
-		} else if (req.getMethod().equalsIgnoreCase("POST")) {
-			return processSumbit(req, res);
+	public void modifyOrRemoveStockAmount(String storageName, String stockName, int newAmount) throws SQLException {
+		int currentAmount = getCurrentAmount(storageName, stockName);
+
+		if (newAmount == currentAmount) {
+			removeStockAmount(storageName, stockName);
+		} else if (newAmount > currentAmount) {
+			modifyStockAmount(storageName, stockName, newAmount);
 		} else {
-			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return null;
+			modifyStockAmount(storageName, stockName, newAmount);
 		}
 	}
-	private String processForm(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		try {
-			String am = req.getParameter("amount");
-		
-			RecallReigsterRequest recallReq = new RecallRegisterRequest(); 
-			
+
+	private int getCurrentAmount(String storageName, String stockName) throws SQLException {
+		String sql = "SELECT AMOUNT FROM STOCK WHERE STORAGE_NAME = ? AND STOCK_NAME = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, storageName);
+			pstmt.setString(2, stockName);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt("AMOUNT");
+				}
+			}
+		}
+		return 0;
+	}
+
+	private void modifyStockAmount(String storageName, String stockName, int newAmount) throws SQLException {
+		String sql = "UPDATE STOCK SET AMOUNT = ? WHERE STORAGE_NAME = ? AND STOCK_NAME = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, newAmount);
+			pstmt.setString(2, storageName);
+			pstmt.setString(3, stockName);
+			pstmt.executeUpdate();
+		}
+	}
+
+	private void removeStockAmount(String storageName, String stockName) throws SQLException {
+		String sql = "DELETE FROM STOCK WHERE STORAGE_NAME = ? AND STOCK_NAME = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, storageName);
+			pstmt.setString(2, stockName);
+			pstmt.executeUpdate();
 		}
 	}
 }
