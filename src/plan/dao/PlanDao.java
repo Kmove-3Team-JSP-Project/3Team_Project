@@ -139,7 +139,7 @@ public class PlanDao {
 			if (rs.next()) {
 	            planNo = rs.getInt(1);
 	            if (rs.wasNull()) { // 만약 최대값이 NULL이면 기본값으로 3000001 사용
-	                planNo = 3000001;
+	                planNo = 4000001;
 	            } else {
 	                planNo += 1; // 다음 주문번호 생성
 	            }

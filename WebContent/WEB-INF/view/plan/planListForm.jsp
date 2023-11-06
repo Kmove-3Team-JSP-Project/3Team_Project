@@ -46,26 +46,25 @@ td {
 </head>
 <%@ include file="/header.jsp"%>
 <body>
-	<h1>Header</h1>
 	<div id="wrap">
 		<form action="planList.do" method="post">
 			
-			<div id="my-div">[発注要請]</div>
+			<div id="my-div">[発注計画]</div>
 			<table>
 				<tr>
-					<td>要請No</td>
+					<td>計画No</td>
 					<td>担当者</td>
-					<td>品目名</td>
+					<td>在庫名</td>
 					<td>単価</td>
 					<td>数量</td>
 					<td>金額</td>
 					<td>取引先名</td>
 					<td>倉庫名</td>
-					<td>納期日</td>
-					<td>進行状態</td>
+					<td>発注出庫日付</td>
+					<td>終結可否</td>
 				</tr>
 
-				<c:if test="${orderPage.hasNoPlans()}">
+				<c:if test="${planPage.hasNoPlans()}">
 					<tr>
 						<td colspan="10">登録された発注要請が存在しません。</td>
 					</tr>
@@ -93,7 +92,7 @@ td {
 
 					</tr>
 				</c:forEach>
-				<c:if test="${planPage.hasplans()}">
+				<c:if test="${planPage.hasPlans()}">
 					<tr>
 						<td colspan="10"><c:if test="${planPage.startPage > 5}">
 								<a href="planList.do?pageNo=${planPage.startPage - 5}">[前のページ]</a>
@@ -111,10 +110,10 @@ td {
 			<input type="hidden" id="progressInput" name="progress" value="">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('orderSearch.do', '発注要請検索', 'width=1200, height=700')" />
+				onclick="window.open('orderSearch.do', '発注計画検索', 'width=1200, height=700')" />
 			<input type="button" value="登録"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
-				onclick="window.open('orderRegister.do', '発注要請登録', 'width=700, height=700')" />
+				onclick="window.open('orderRegister.do', '発注計画登録', 'width=700, height=700')" />
 		</form>
 	</div>
 

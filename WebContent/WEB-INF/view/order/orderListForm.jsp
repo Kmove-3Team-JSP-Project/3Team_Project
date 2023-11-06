@@ -46,7 +46,6 @@ td {
 </head>
 <%@ include file="/header.jsp"%>
 <body>
-	<h1>Header</h1>
 	<div id="wrap">
 		<form action="orderList.do" method="post">
 			
