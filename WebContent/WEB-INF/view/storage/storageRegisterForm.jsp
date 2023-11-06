@@ -33,7 +33,7 @@
 		<table border="1" width="60%">
 			<tr>
 				<th class="centered-cell">倉庫コード</th>
-				<th class="centered-cell"><input type="text"></th>
+				<th class="centered-cell"><input type="text" name=""></th>
 			</tr>
 			<tr>
 				<th class="centered-cell">倉庫名</th>

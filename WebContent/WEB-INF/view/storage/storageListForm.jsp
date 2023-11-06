@@ -41,7 +41,7 @@
 				<th class="centered-cell">倉庫住所</th>
 				<th class="centered-cell">使用有無</th>
 			</tr>
-			<c:if test="${storagePage.hasnoStorage }">
+			<c:if test="${storagePage.hasNoStorage() }">
 			<tr>
 			<td colspspan="4">창고가 없습니다.</td>
 			</tr>
@@ -54,7 +54,7 @@
 				<td class="centered-cell">${storage.storageUse}</td>
 			</tr>
 			</c:forEach>
-				<c:if test="${storagePage.hasstorage()}">
+				<c:if test="${storagePage.hasStorage()}">
 			<tr>
 				<td colspan="4"><c:if test="${storagePage.startPage > 5}">
 						<a href="storageList.do?pageNo=${storagePage.startPage-5}">[이전]</a>
