@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import erp.dao.OrderDao;
-import erp.model.Order;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
+import order.dao.OrderDao;
+import order.model.Order;
 
 public class OrderRegisterService {
 

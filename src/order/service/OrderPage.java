@@ -2,7 +2,7 @@ package order.service;
 
 import java.util.List;
 
-import erp.model.Order;
+import order.model.Order;
 
 public class OrderPage {
 	private int total; // 전체 개시글 수

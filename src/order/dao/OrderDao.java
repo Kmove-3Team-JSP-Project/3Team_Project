@@ -9,8 +9,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import erp.model.Order;
 import jdbc.JdbcUtil;
+import order.model.Order;
 
 public class OrderDao {
 
