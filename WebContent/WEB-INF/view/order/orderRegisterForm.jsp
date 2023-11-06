@@ -175,7 +175,6 @@ td {
 			return false;
 		}
 		form.submit();
-		window.close();
 	}
 </script>
 </html>
