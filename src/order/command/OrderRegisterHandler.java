@@ -15,6 +15,7 @@ import auth.service.User;
 import mvc.command.CommandHandler;
 import order.service.OrderRegisterService;
 import order.service.OrderRequest;
+import sheet.service.SheetRequest;
 
 public class OrderRegisterHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/order/orderRegisterForm.jsp";
@@ -61,14 +62,18 @@ public class OrderRegisterHandler implements CommandHandler {
 		req.setAttribute("errors", errors);
 		
 		OrderRequest orderReq = createOrderRequest(req);
+		SheetRequest sheetReq = createSheetRequest(req);
 		orderReq.validate(errors);
 		if(!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
 		
 		int newOrderNo = regiService.register(orderReq);
+		int newSheetNo = regiService.registerSheet(sheetReq);
+		
 		
 		req.setAttribute("newOrderNo", newOrderNo);
+		req.setAttribute("newSheetNo", newSheetNo);
 		return "/WEB-INF/view/order/orderRegisterSucess.jsp";
 	}
 
@@ -91,6 +96,15 @@ public class OrderRegisterHandler implements CommandHandler {
 				Integer.parseInt(req.getParameter("price")), req.getParameter("companyName"),
 				req.getParameter("storageName"), transformDate(req.getParameter("orderDate")), req.getParameter("progress"));
 	}
+	
+	private SheetRequest createSheetRequest(HttpServletRequest req) {
+		return new SheetRequest(Integer.parseInt(req.getParameter("orderNo")), req.getParameter("name"), req.getParameter("itemName"),
+				Integer.parseInt(req.getParameter("unitPrice")), Integer.parseInt(req.getParameter("amount")),
+				Integer.parseInt(req.getParameter("price")), req.getParameter("companyName"),
+				req.getParameter("storageName"), transformDate(req.getParameter("orderDate")), req.getParameter("progress"));
+	}
+	
+	
 	
 	public String getItemDetailsJson(Map<String, Integer> itemDetails) {
 	    StringBuilder jsonBuilder = new StringBuilder("{");

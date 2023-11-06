@@ -1,4 +1,4 @@
-package order.service;
+package plan.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -7,26 +7,26 @@ import java.util.Map;
 
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
-import order.dao.OrderDao;
-import order.model.Order;
+import plan.dao.PlanDao;
+import plan.model.Plan;
 import sheet.dao.SheetDao;
 import sheet.model.Sheet;
 import sheet.service.SheetRequest;
 
-public class OrderRegisterService {
+public class PlanRegisterService {
 
-	private OrderDao orderDao = new OrderDao();
+	private PlanDao planDao = new PlanDao();
 	private SheetDao sheetDao = new SheetDao();
 		
 
-	public int getOrderNo() {
+	public int getPlanNo() {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			int orderNo = orderDao.getOrderNo(conn);
+			int planNo = planDao.getPlanNo(conn);
 			conn.commit();
-			return orderNo;
+			return planNo;
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			return -1;
@@ -35,20 +35,20 @@ public class OrderRegisterService {
 		}
 	}
 
-	public Integer register(OrderRequest req) {
+	public Integer register(PlanRequest req) {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 
-			Order order = toOrder(req);
-			Order savedOrder = orderDao.insert(conn, order);
+			Plan plan = toPlan(req);
+			Plan savedPlan = planDao.insert(conn, plan);
 			
-			if (savedOrder == null) {
-				throw new RuntimeException("fail to insert order");
+			if (savedPlan == null) {
+				throw new RuntimeException("fail to insert plan");
 			}
 			conn.commit();
-			return savedOrder.getOrderNo();
+			return savedPlan.getPlanNo();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);
@@ -91,17 +91,17 @@ public class OrderRegisterService {
 	}
 
 
-	private Order toOrder(OrderRequest req) {
-		return new Order(req.getOrderNo(), req.getMemberName(), req.getItemName(), req.getUnitPrice(), req.getAmount(),
-				req.getPrice(), req.getCompanyName(), req.getStorageName(), req.getOrderDate(), req.getProgress());
+	private Plan toPlan(PlanRequest req) {
+		return new Plan(req.getPlanNo(), req.getMemberName(), req.getStockName(), req.getUnitPrice(), req.getAmount(),
+				req.getPrice(), req.getCompanyName(), req.getStorageName(), req.getPlanDate(), req.getEnding());
 	}
 
-	public Map<String, Integer> getItemNamesWithUnitPrice() {
+	public Map<String, Integer> getStockNamesWithUnitPrice() {
         Connection conn = null;
         try {
             conn = ConnectionProvider.getConnection();
             conn.setAutoCommit(false);
-            Map<String, Integer> itemDetails = orderDao.getItemNamesWithUnitPrice(conn);
+            Map<String, Integer> itemDetails = planDao.getStockNamesWithUnitPrice(conn);
             conn.commit();
             return itemDetails;
         } catch (SQLException e) {
@@ -118,7 +118,7 @@ public class OrderRegisterService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			List<String> companyList = orderDao.getCompanyList(conn);
+			List<String> companyList = planDao.getCompanyList(conn);
 			conn.commit();
 			return companyList;
 		} catch (SQLException e) {
@@ -134,7 +134,7 @@ public class OrderRegisterService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			List<String> storageList = orderDao.getStorageList(conn);
+			List<String> storageList = planDao.getStorageList(conn);
 			conn.commit();
 			return storageList;
 		} catch (SQLException e) {
@@ -145,14 +145,14 @@ public class OrderRegisterService {
 		}
 	}
 
-	public List<String> getAllItemNames() {
+	public List<String> getAllStockNames() {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			List<String> itemNames = orderDao.getAllItemNames(conn);
+			List<String> StockNames = planDao.getAllStockNames(conn);
 			conn.commit();
-			return itemNames;
+			return StockNames;
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);
@@ -163,3 +163,4 @@ public class OrderRegisterService {
 	
 
 }
+

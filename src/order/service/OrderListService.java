@@ -22,17 +22,4 @@ public class OrderListService {
 		}
 	}
 
-	public boolean updateOrderProgress(int orderNo, String progress) throws Exception {
-		// TODO Auto-generated method stub
-		Connection conn = ConnectionProvider.getConnection();
-		
-		if(orderDao.updateSheetTrigger(conn)>0) {
-			orderDao.update(conn, orderNo, progress);
-			orderDao.dropTrigger(conn);
-			
-		}
-		
-		return false;
-	}
-
 }
