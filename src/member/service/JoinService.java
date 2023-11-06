@@ -2,7 +2,6 @@ package member.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
@@ -20,7 +19,7 @@ public class JoinService {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 
-			Member member = memberDao.selectById(conn, joinReq.getMemberid());
+			Member member = memberDao.selectById(conn, joinReq.getMemberId());
 			// 가입하려는 ID와 같은 데이터가 존재하면 트랜잭션 롤백, DuplicateIdException 발생
 			if (member != null) {
 				JdbcUtil.rollback(conn);
@@ -28,8 +27,8 @@ public class JoinService {
 			}
 
 			// joinReq를 이용해 Member 객체 생성, memberDao.insert()로 회원 데이터를 테이블에 삽입
-			memberDao.insert(conn, new Member(Integer.parseInt(joinReq.getMemberid()), joinReq.getName(),
-					joinReq.getPassword(), joinReq.getMail(), joinReq.getPosition()));
+			memberDao.insert(conn, new Member(joinReq.getMemberId(), joinReq.getName(), joinReq.getPassword(),
+					joinReq.getMail(), joinReq.getPosition()));
 			conn.commit(); // 트랜잭션 커밋
 		} catch (SQLException e) { // SQLException 발생시 트랜잭션 롤백, RuntimeException 발생
 			// TODO: handle exception

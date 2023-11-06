@@ -128,4 +128,27 @@ public class StockDao {
 			}
 		}
 	}
+
+	public void updateStockAmount(Connection conn, String storageName, String stockName, int newAmount)
+			throws SQLException {
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("UPDATE stock SET AMOUNT = ? WHERE STORAGE_NAME = ? AND STOCK_NAME = ?")) {
+			pstmt.setInt(1, newAmount);
+			pstmt.setString(2, storageName);
+			pstmt.setString(3, stockName);
+			pstmt.executeUpdate();
+		}
+	}
+
+	public void deleteStockByAmount(Connection conn, String storageName, String stockName, int amount)
+			throws SQLException {
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("DELETE FROM stock WHERE STORAGE_NAME = ? AND STOCK_NAME = ? AND AMOUNT = ?")) {
+			pstmt.setString(1, storageName);
+			pstmt.setString(2, stockName);
+			pstmt.setInt(3, amount);
+			pstmt.executeUpdate();
+		}
+	}
+
 }

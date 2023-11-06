@@ -86,11 +86,6 @@ body {
 			</div>
 
 			<div class="input-group">
-				<label for="confirmPassword">パスワード確認</label> <input type="text"
-					id="confirmPassword" name="confirmPassword">
-			</div>
-
-			<div class="input-group">
 				<label for="mail">メール</label> <input type="text" id="mail"
 					name="mail">
 			</div>
@@ -101,7 +96,7 @@ body {
 			</div>
 
 			<div class="button-group">
-				<button type="submit">会員登録</button>
+				<button type="submit">修正</button>
 			</div>
 		</form>
 	</div>
