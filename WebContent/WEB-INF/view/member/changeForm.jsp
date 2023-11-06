@@ -66,33 +66,33 @@ body {
 <body>
 
 	<%@ include file="/header.jsp"%>
-	
-	<div class="login-form">
+
+	<div class="change-form">
 		<h1>会員情報の修正</h1>
 		<form action="change.do" method="post">
 			<div class="input-group">
-				<label for="name">氏名</label> <input type="text" id="name"
-					name="name">
+				<label for="memberId">社員番号(ID)</label> <input type="text"
+					id="memberId" name="memberId" value="${authUser.getmemberId()}" readonly>
 			</div>
 
 			<div class="input-group">
-				<label for="memberId">社員番号(ID)</label> <input type="text" id="id"
-					name="id">
+				<label for="name">氏名</label> <input type="text" id="name"
+					name="name" value="${changeReq.name}">
 			</div>
 
 			<div class="input-group">
 				<label for="password">パスワード</label> <input type="password"
-					id="password" name="password">
+					id="password" name="password" value="${changeReq.password}">
 			</div>
 
 			<div class="input-group">
 				<label for="mail">メール</label> <input type="text" id="mail"
-					name="mail">
+					name="mail" value="${changeReq.mail}">
 			</div>
 
 			<div class="input-group">
 				<label for="position">役職</label> <input type="text" id="position"
-					name="position">
+					name="position" value="${changeReq.position}">
 			</div>
 
 			<div class="button-group">

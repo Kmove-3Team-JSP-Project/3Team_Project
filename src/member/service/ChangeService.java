@@ -25,8 +25,8 @@ public class ChangeService {
 				throw new MemberNotFoundException();
 			}
 			//
-			memberDao.update(conn, changeReq.getName());
-			memberDao.update(conn, member);
+			memberDao.update(conn, new Member(changeReq.getMemberId(), changeReq.getName(), changeReq.getPassword(),
+					changeReq.getMail(), changeReq.getPosition()));
 			conn.commit(); // 트랜잭션 커밋
 		} catch (SQLException e) { // SQLException 발생시 트랜잭션 롤백, RuntimeException 발생
 			// TODO: handle exception

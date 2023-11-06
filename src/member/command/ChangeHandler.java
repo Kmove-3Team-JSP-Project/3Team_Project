@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import auth.service.User;
+import member.model.Member;
 import member.service.ChangeService;
-import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import mvc.command.CommandHandler;
 
@@ -46,33 +46,15 @@ public class ChangeHandler implements CommandHandler {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
-		String curPwd = req.getParameter("curPwd");
-		String newPwd = req.getParameter("newPwd");
-		String newName = req.getParameter("newName");
-		String newMail = req.getParameter("newMail");
-		String newPos = req.getParameter("newPos");
-
-		if (curPwd == null || curPwd.isEmpty()) {
-			errors.put("curPwd", Boolean.TRUE);
-		}
-		if (curPwd == null || curPwd.isEmpty()) {
-			errors.put("newPwd", Boolean.TRUE);
-		}
-
+		Member changeReq = new Member(user.getmemberId(), req.getParameter("name"), req.getParameter("password"),
+				req.getParameter("mail"), req.getParameter("position"));
 		// errors 맵 객체에 데이터가 존재시 폼 뷰 경로를 리턴
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-
 		try {
-			changeSvc.changeInfo(user.getmemberId(), curPwd, newName, newPwd, newMail, newPos);
-			return "/WEB-INF/view/changeSuccess.jsp";
-		} catch (InvalidPasswordException e) {
-			// TODO: handle exception
-			// errors에 "badCurPwd" 키 값 추가
-			errors.put("badCurPwd", Boolean.TRUE);
-			// 폼 뷰 경로 리턴
-			return FORM_VIEW;
+			changeSvc.change(changeReq);
+			return "/index.jsp";
 		} catch (MemberNotFoundException e) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
