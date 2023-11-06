@@ -1,15 +1,47 @@
 package recall.command;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import mvc.command.CommandHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RecallRegisterHandler {
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
+
+public class RecallRegisterHandler implements CommandHandler {
 	private Connection connection;
 
 	public RecallRegisterHandler(Connection connection) {
 		this.connection = connection;
+	}
+
+	@Override
+	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		String storageName = req.getParameter("storageName");
+		String stockName = req.getParameter("stockName");
+		int newAmount = Integer.parseInt(req.getParameter("newAmount"));
+
+		try {
+			modifyOrRemoveStockAmount(storageName, stockName, newAmount);
+			return "/WEB-INF/view/recall/RecallRegisterSuccess.jsp";
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void modifyOrRemoveStockAmount(String storageName, String stockName, int newAmount) throws SQLException {
