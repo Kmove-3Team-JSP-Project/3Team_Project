@@ -37,7 +37,8 @@
 		</table>
 
 		<div align="center">
-			<form action="CompanySearchForm.jsp" method="post">
+			<form action="companySearch.do" method="post" target="_blank"
+				onsubmit="return vaildateForm();">
 				<label for="検索条件">検索条件:</label> <select name="検索条件" id="検索条件">
 					<option value="company_no">取引先コード</option>
 					<option value="company_name">取引先名</option>

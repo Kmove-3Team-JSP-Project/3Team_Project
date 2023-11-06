@@ -22,7 +22,6 @@ public class CompanyPage {
 
 	public CompanyPage() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getTotal() {

@@ -1,6 +1,6 @@
 package company.service;
 
-public class CompanyRegister {
+public class CompanyRequest {
 
 	private int company_No;
 	private String company_Name;
@@ -9,12 +9,12 @@ public class CompanyRegister {
 	private String address;
 	private String myStorage;
 
-	public CompanyRegister() {
+	public CompanyRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CompanyRegister(int company_No, String company_Name, String name, String phone, String address,
+	public CompanyRequest(int company_No, String company_Name, String name, String phone, String address,
 			String myStorage) {
 		super();
 		this.company_No = company_No;
