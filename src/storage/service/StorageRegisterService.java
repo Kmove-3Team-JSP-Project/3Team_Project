@@ -14,6 +14,8 @@ public class StorageRegisterService {
 	private StorageDao storageDao = new StorageDao();
 
 	public void storageRegister(StorageRequest storageReq) {
+		
+		
 		Connection conn = null;
 		try {
 			// 트랜젝션을 위해 오토커밋을 false로 둠.
