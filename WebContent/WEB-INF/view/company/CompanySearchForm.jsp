@@ -2,6 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
+<%@ page import="java.util.List"%>
+<%@ page import="company.model.Company"%>
+<%@ page import="company.service.CompanyPage"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -27,37 +30,26 @@
 				<th>住所</th>
 				<th>所有倉庫</th>
 			</tr>
-			<tr>
-				<td></td>
-				<td>DAUM</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>SEOUL</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>YAHOO</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>OSAKA</td>
-				<td></td>
-			</tr>
-			<tr>
-			<tr>
-				<td></td>
-				<td>LINE</td>
-				<td>JOON</td>
-				<td>01012345678</td>
-				<td>JEJU</td>
-				<td></td>
-			</tr>
+			<c:choose>
+				<c:when test="${empty CompanyPage.content}">
+					<tr>
+						<td colspan="4">検索結果がありません。</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${CompanyPage.content}" var="item">
+						<tr>
+							<td>${company.company_Name}</td>
+							<td>${company.company_master}</td>
+
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 		</table>
 	</div>
-	<h2>
-		<div align="center">
-			<a href="CompanyListForm.jsp">[前ページに戻る。]</a>
-		</div>
-	</h2>
+	<div align="center">
+		<a href="CompanyListForm.jsp">[取引先に戻る。]</a>
+	</div>
 </body>
 </html>
