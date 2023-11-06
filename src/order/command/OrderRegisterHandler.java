@@ -1,8 +1,9 @@
 package order.command;
 
-import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,15 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import auth.service.User;
-import company.model.Company;
-import item.model.Item;
 import mvc.command.CommandHandler;
 import order.service.OrderRegisterService;
 import order.service.OrderRequest;
-import storage.model.Storage;
 
 public class OrderRegisterHandler implements CommandHandler {
-	private static final String FORM_VIEW = "WEB-INF/view/orderRegisterForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/order/orderRegisterForm.jsp";
 	private OrderRegisterService regiService = new OrderRegisterService();
 	
 	@Override
@@ -36,42 +34,41 @@ public class OrderRegisterHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		User user = (User)req.getSession().getAttribute("authUser");
+		req.setAttribute("authUser", user);
+		
 		int orderNo = regiService.getOrderNo();
         req.setAttribute("orderNo", orderNo);
-        List<Item> itemList = regiService.getItemList(); // Item 클래스에는 itemName과 unitPrice가 있어야 함
-
-     // itemList를 JSON 형식의 문자열로 변환
-     String itemListJson = "["; // JSON 배열의 시작
-     for (Item item : itemList) {
-         itemListJson += "{\"itemName\":\"" + item.getItemName() + "\",\"unitPrice\":" + item.getUnitPrice() + "},";
-     }
-     itemListJson = itemListJson.substring(0, itemListJson.length() - 1); // 마지막 쉼표 제거
-     itemListJson += "]"; // JSON 배열의 끝
-
-     req.setAttribute("itemListJson", itemListJson); // itemListJson을 JSP로 전달
         
-     List<Company> companyList = regiService.getCompanyList();
-     req.setAttribute("companyList", companyList);
-     List<Storage> storageList = regiService.getStorageList();
-     req.setAttribute("storageList", storageList);
-     
+        Map<String, Integer> itemDetails = regiService.getItemNamesWithUnitPrice();
+        String itemDetailsJson = getItemDetailsJson(itemDetails);
+        req.setAttribute("itemDetailsJson", itemDetailsJson);
+        
+        List<String> itemNames = regiService.getAllItemNames();
+        req.setAttribute("itemNames", itemNames);
+        
+        List<String> companyLists = regiService.getCompanyList();
+        req.setAttribute("companyLists", companyLists);
+        
+        List<String> storageLists = regiService.getStorageList();
+        req.setAttribute("storageLists", storageLists);
+
         return FORM_VIEW;
 	}
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
-	
-		User user = (User) req.getSession(false).getAttribute("authUser");
-		OrderRequest orderReq = createOrderRequest(user, req);
+		
+		OrderRequest orderReq = createOrderRequest(req);
 		orderReq.validate(errors);
-
-		if (!errors.isEmpty()) {
+		if(!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
 		
-		return "/WEB-INF/view/orderListForm.jsp";
+		int newOrderNo = regiService.register(orderReq);
+		req.setAttribute("newOrderNo", newOrderNo);
+		return "/WEB-INF/view/order/orderListForm.jsp";
 	}
 
 	public Date transformDate(String d) {
@@ -87,10 +84,28 @@ public class OrderRegisterHandler implements CommandHandler {
 
 	}
 
-	private OrderRequest createOrderRequest(User user, HttpServletRequest req) {
-		return new OrderRequest(Integer.parseInt(req.getParameter("orderNo")), user.getName(), req.getParameter("itemName"),
+	private OrderRequest createOrderRequest(HttpServletRequest req) {
+		return new OrderRequest(Integer.parseInt(req.getParameter("orderNo")), req.getParameter("name"), req.getParameter("itemName"),
 				Integer.parseInt(req.getParameter("unitPrice")), Integer.parseInt(req.getParameter("amount")),
 				Integer.parseInt(req.getParameter("price")), req.getParameter("companyName"),
 				req.getParameter("storageName"), transformDate(req.getParameter("orderDate")), req.getParameter("progress"));
 	}
+	
+	public String getItemDetailsJson(Map<String, Integer> itemDetails) {
+	    StringBuilder jsonBuilder = new StringBuilder("{");
+	    
+	    for (Map.Entry<String, Integer> entry : itemDetails.entrySet()) {
+	        jsonBuilder.append("\"").append(entry.getKey()).append("\":").append(entry.getValue()).append(",");
+	    }
+	    
+	    if (!itemDetails.isEmpty()) {
+	        jsonBuilder.deleteCharAt(jsonBuilder.length() - 1); // 마지막 쉼표 제거
+	    }
+	    
+	    jsonBuilder.append("}");
+	    
+	    return jsonBuilder.toString();
+	}
+
+
 }

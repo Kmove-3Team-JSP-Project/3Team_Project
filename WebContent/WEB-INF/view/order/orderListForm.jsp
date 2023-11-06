@@ -88,10 +88,9 @@ td {
 								<option value="Cancelled">キャンセル</option>
 						</select></td>
 
-
-
 					</tr>
 				</c:forEach>
+				
 				<c:if test="${orderPage.hasOrders()}">
 					<tr>
 						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
@@ -118,22 +117,6 @@ td {
 	</div>
 
 </body>
-
-</html>
-<!-- <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
-
-    selectElement.disabled = true; // 선택 후 비활성화
-
-
-</script> -->
 <script type="text/javascript">
 function updateProgress(orderNo) {
     var selectElement = document.getElementById(`progressSelect_${orderNo}`);
@@ -149,10 +132,9 @@ function updateProgress(orderNo) {
     // Hidden input에 데이터 설정
     document.getElementById("orderNoInput").value = orderNo;
     document.getElementById("progressInput").value = selectedValue;
+    
+    document.forms.submit();
 }
-
-function submitForm() {
-    document.forms[0].submit();
-}
-
 </script>
+</html>
+
