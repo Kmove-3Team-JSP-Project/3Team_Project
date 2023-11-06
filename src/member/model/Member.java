@@ -52,9 +52,9 @@ public class Member {
 		return password.equals(pwd);
 	}
 
-	// 암호 변경 기능 구현시 사용
-	public void changePassword(String newPwd) {
-		this.password = newPwd;
-	}
-
+	/*
+	 * // 암호 변경 기능 구현시 사용 public void changeInfo(String newName, String newPwd,
+	 * String newMail, String newPos) { this.name = newName; this.password = newPwd;
+	 * this.mail = newMail; this.position = newPos; }
+	 */
 }

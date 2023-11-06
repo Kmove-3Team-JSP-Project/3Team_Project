@@ -24,7 +24,7 @@ public class CompanySearchHandler implements CommandHandler {
 
 		if ("company_Name".equals(searchType)) {
 			companyPage = searchService.searchItemsByName(searchRequest, 1);
-		} else if ("company_class".equals(searchType)) {
+		} else if ("master".equals(searchType)) {
 			companyPage = searchService.searchCompaniesByClass(searchRequest, 1);
 		} else {
 			companyPage = new CompanyPage(0, 1, Collections.emptyList());

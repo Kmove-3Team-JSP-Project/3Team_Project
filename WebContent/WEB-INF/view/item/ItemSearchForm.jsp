@@ -31,7 +31,7 @@ table {
 			<c:choose>
 				<c:when test="${empty itemPage.content}">
 					<tr>
-						<td colspan="4">検索結果がありません。</td>
+						<td colspan="4">品目がありません。</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
@@ -48,7 +48,7 @@ table {
 		</table>
 	</div>
 	<div align='center'>
-		<a href="ItemListForm.jsp">品目リストに戻る</a>
+		<a href="itemList.do">品目リストに戻る</a>
 	</div>
 </body>
 </html>
