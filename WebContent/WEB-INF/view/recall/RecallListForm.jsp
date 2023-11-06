@@ -34,12 +34,12 @@ table {
 			</tr>
 			<c:forEach items="${recallPage.content}" var="recall">
 				<tr>
-					<td>${recall.recall_no}</td>
-					<td>${recall.member_namet}</td>
+					<td>${recall.recall_No}</td>
+					<td>${recall.member_Name}</td>
 					<td>${recall.storage_Name}</td>
 					<td>${recall.stock_Name}</td>
 					<td>${recall.amount}</td>
-					<td>${recall.process_date}</td>
+					<td>${recall.process_Date}</td>
 					<td>${recall.process}</td>
 				</tr>
 			</c:forEach>
