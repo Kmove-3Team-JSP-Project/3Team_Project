@@ -48,7 +48,7 @@ td {
 <body>
 	<h1>Header</h1>
 	<div id="wrap">
-		<form action="orderList.do" method="post">
+		<form action="planList.do" method="post">
 			
 			<div id="my-div">[発注要請]</div>
 			<table>
@@ -65,25 +65,25 @@ td {
 					<td>進行状態</td>
 				</tr>
 
-				<c:if test="${orderPage.hasNoOrders()}">
+				<c:if test="${orderPage.hasNoPlans()}">
 					<tr>
 						<td colspan="10">登録された発注要請が存在しません。</td>
 					</tr>
 				</c:if>
-				<c:forEach var="order" items="${orderPage.content}">
+				<c:forEach var="plan" items="${planPage.content}">
 					<tr>
-						<td>${order.orderNo}</td>
-						<td>${order.memberName}</td>
-						<td>${order.itemName}</td>
-						<td>${order.unitPrice}</td>
-						<td>${order.amount}</td>
-						<td>${order.price}</td>
-						<td>${order.companyName}</td>
-						<td>${order.storageName}</td>
-						<td><fmt:formatDate value="${order.orderDate}"
+						<td>${plan.planNo}</td>
+						<td>${plan.memberName}</td>
+						<td>${plan.stockName}</td>
+						<td>${plan.unitPrice}</td>
+						<td>${plan.amount}</td>
+						<td>${plan.price}</td>
+						<td>${plan.companyName}</td>
+						<td>${plan.storageName}</td>
+						<td><fmt:formatDate value="${plan.planDate}"
 								pattern="yyyy-MM-dd" /></td>
-						<td><select id="progressSelect_${order.orderNo}"
-							onchange="updateProgress(${order.orderNo})">
+						<td><select id="progressSelect_${plan.planNo}"
+							onchange="updateProgress(${plan.planNo})">
 								<option value="InProgress">進行中</option>
 								<option value="Completed">完了</option>
 								<option value="Cancelled">キャンセル</option>
@@ -93,15 +93,15 @@ td {
 
 					</tr>
 				</c:forEach>
-				<c:if test="${orderPage.hasOrders()}">
+				<c:if test="${planPage.hasplans()}">
 					<tr>
-						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
-								<a href="orderList.do?pageNo=${orderPage.startPage - 5}">[前のページ]</a>
-							</c:if> <c:forEach var="pNo" begin="${orderPage.startPage}"
-								end="${orderPage.endPage}">
-								<a href="orderList.do?pageNo=${pNo}">[${pNO}]</a>
-							</c:forEach> <c:if test="${orderPage.endPage < orderPage.totalPages}">
-								<a href="orderList.do?pageNo=${orderPage.startPage + 5}">[次のページ]</a>
+						<td colspan="10"><c:if test="${planPage.startPage > 5}">
+								<a href="planList.do?pageNo=${planPage.startPage - 5}">[前のページ]</a>
+							</c:if> <c:forEach var="pNo" begin="${planPage.startPage}"
+								end="${planPage.endPage}">
+								<a href="planList.do?pageNo=${pNo}">[${pNO}]</a>
+							</c:forEach> <c:if test="${planPage.endPage < planPage.totalPages}">
+								<a href="planList.do?pageNo=${planPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>

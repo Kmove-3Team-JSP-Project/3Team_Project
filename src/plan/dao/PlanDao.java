@@ -19,7 +19,7 @@ public class PlanDao {
 		ResultSet rs = null;
 
 		try { // article 테이블에 데이터 삽입
-			pstmt = conn.prepareStatement("insert into plans values (?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into plan values (?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setInt(1, plan.getPlanNo());
 			pstmt.setString(2, plan.getMemberName());
 			pstmt.setString(3, plan.getStockName());
@@ -89,14 +89,14 @@ public class PlanDao {
 	}
 
 	private Plan convertPlan(ResultSet rs) throws SQLException {
-		return new Plan(rs.getInt("plan_no"), rs.getString("member_name"), rs.getString("item_name"),
+		return new Plan(rs.getInt("plan_no"), rs.getString("member_name"), rs.getString("Stock_name"),
 				rs.getInt("unit_price"), rs.getInt("amount"), rs.getInt("price"), rs.getString("company_name"),
-				rs.getString("storage_name"), rs.getTimestamp("plan_date"), rs.getString("progress"));
+				rs.getString("storage_name"), rs.getTimestamp("plan_date"), rs.getString("ending"));
 	}
 
 	public int update(Connection conn, int planNo, String progress) throws SQLException {
 		try (PreparedStatement pstmt = conn
-					.prepareStatement("update plan set progress = ?" + " where plan_no = ?")) {
+					.prepareStatement("update plan set ending = ?" + " where plan_no = ?")) {
 				pstmt.setString(1, progress);
 				pstmt.setInt(2, planNo);
 				int result = pstmt.executeUpdate();
