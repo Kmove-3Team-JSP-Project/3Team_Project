@@ -59,7 +59,7 @@ table {
 		</table>
 	</div>
 	<div align='center'>
-		<a href="RecallListForm.jsp">後ろに戻る</a>
+		<a href="recallList.do">後ろに戻る</a>
 	</div>
 </body>
 </html>
