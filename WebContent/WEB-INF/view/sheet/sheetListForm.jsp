@@ -46,62 +46,53 @@ td {
 </head>
 <%@ include file="/header.jsp"%>
 <body>
-	<h1>Header</h1>
 	<div id="wrap">
 		<form action="orderList.do" method="post">
 			
-			<div id="my-div">[発注要請]</div>
+			<div id="my-div">[発注書]</div>
 			<table>
 				<tr>
-					<td>要請No</td>
+					<td>発注書No</td>
 					<td>担当者</td>
-					<td>品目名</td>
+					<td>物品名</td>
 					<td>単価</td>
 					<td>数量</td>
 					<td>金額</td>
 					<td>取引先名</td>
 					<td>倉庫名</td>
-					<td>納期日</td>
-					<td>進行状態</td>
+					<td>日付</td>
+					<td>状態</td>
 				</tr>
 
-				<c:if test="${orderPage.hasNoOrders()}">
+				<c:if test="${sheetPage.hasNoSheets()}">
 					<tr>
 						<td colspan="10">登録された発注要請が存在しません。</td>
 					</tr>
 				</c:if>
-				<c:forEach var="order" items="${orderPage.content}">
+				<c:forEach var="sheet" items="${sheetPage.content}">
 					<tr>
-						<td>${order.orderNo}</td>
-						<td>${order.memberName}</td>
-						<td>${order.itemName}</td>
-						<td>${order.unitPrice}</td>
-						<td>${order.amount}</td>
-						<td>${order.price}</td>
-						<td>${order.companyName}</td>
-						<td>${order.storageName}</td>
-						<td><fmt:formatDate value="${order.orderDate}"
+						<td>${sheet.listNo}</td>
+						<td>${sheet.memberName}</td>
+						<td>${sheet.productName}</td>
+						<td>${sheet.unitPrice}</td>
+						<td>${sheet.amount}</td>
+						<td>${sheet.price}</td>
+						<td>${sheet.companyName}</td>
+						<td>${sheet.storageName}</td>
+						<td><fmt:formatDate value="${sheet.listDate}"
 								pattern="yyyy-MM-dd" /></td>
-						<td><select id="progressSelect_${order.orderNo}"
-							onchange="updateProgress(${order.orderNo})">
-								<option value="InProgress">進行中</option>
-								<option value="Completed">完了</option>
-								<option value="Cancelled">キャンセル</option>
-						</select></td>
-
-
-
-					</tr>
+						<td>${sheet.sheetNo}</td>
+			</tr>
 				</c:forEach>
-				<c:if test="${orderPage.hasOrders()}">
+				<c:if test="${sheetPage.hasSheets()}">
 					<tr>
 						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
-								<a href="orderList.do?pageNo=${orderPage.startPage - 5}">[前のページ]</a>
-							</c:if> <c:forEach var="pNo" begin="${orderPage.startPage}"
-								end="${orderPage.endPage}">
-								<a href="orderList.do?pageNo=${pNo}">[${pNO}]</a>
-							</c:forEach> <c:if test="${orderPage.endPage < orderPage.totalPages}">
-								<a href="orderList.do?pageNo=${orderPage.startPage + 5}">[次のページ]</a>
+								<a href="sheetList.do?pageNo=${sheetPage.startPage - 5}">[前のページ]</a>
+							</c:if> <c:forEach var="pNo" begin="${sheetPage.startPage}"
+								end="${sheetPage.endPage}">
+								<a href="sheetList.do?pageNo=${pNo}">[${pNO}]</a>
+							</c:forEach> <c:if test="${sheetPage.endPage < sheetPage.totalPages}">
+								<a href="sheetList.do?pageNo=${sheetPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>
@@ -111,49 +102,13 @@ td {
 			<input type="hidden" id="progressInput" name="progress" value="">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('orderSearch.do', '発注要請検索', 'width=1200, height=700')" />
-			<input type="button" value="登録"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
-				onclick="window.open('orderRegister.do', '発注要請登録', 'width=700, height=700')" />
+				onclick="window.open('orderSearch.do', '発注書検索', 'width=1200, height=700')" />
+			
 		</form>
 	</div>
 
 </body>
 
 </html>
-<!-- <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
-
-    selectElement.disabled = true; // 선택 후 비활성화
-
-
-</script> -->
-<script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
-
-    selectElement.disabled = true; // 선택 후 비활성화
-    
-    // Hidden input에 데이터 설정
-    document.getElementById("orderNoInput").value = orderNo;
-    document.getElementById("progressInput").value = selectedValue;
-}
-
-function submitForm() {
-    document.forms[0].submit();
-}
 
 </script>

@@ -32,7 +32,7 @@ public class PlanListHandler implements CommandHandler {
 		}
 		PlanPage planPage = listService.getPlanPage(pageNo); // 게시글 데이터 저장
 
-		req.setAttribute("orderPage", planPage); // JSP에서 사용하도록 속성 저장
+		req.setAttribute("planPage", planPage); // JSP에서 사용하도록 속성 저장
 		return FORM_VIEW;
 	}
 

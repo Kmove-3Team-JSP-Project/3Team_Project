@@ -4,10 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
-import order.service.OrderListService;
+import sheet.service.SheetListService;
+import sheet.service.SheetPage;
 
 public class SheetListHandler implements CommandHandler {
-	private OrderListService listService = new OrderListService();
+	private SheetListService listService = new SheetListService();
 	private static final String FORM_VIEW = "/WEB-INF/view/sheet/sheetListForm.jsp";
 	
 
@@ -32,32 +33,13 @@ public class SheetListHandler implements CommandHandler {
 		}
 		SheetPage sheetPage = listService.getSheetPage(pageNo); // 게시글 데이터 저장
 		
-		req.setAttribute("orderPage", SheetPage); // JSP에서 사용하도록 속성 저장
+		req.setAttribute("sheetPage", sheetPage); // JSP에서 사용하도록 속성 저장
 		return FORM_VIEW;
 	}
 	
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
-	    String orderNoVal = req.getParameter("orderNo");
-	    String progress = req.getParameter("progress");
-
-	    if (orderNoVal == null || progress == null) {
-	        // 파라미터가 유효하지 않을 경우 처리 (예: 오류 메시지 출력)
-	        return FORM_VIEW;
-	    }
-
-	    int orderNo = Integer.parseInt(orderNoVal);
-
-	    // DAO에 업데이트 요청 보내기
-	    boolean updateSuccess = listService.updateOrderProgress(orderNo, progress);
-
-	    if (updateSuccess) {
-	        // 업데이트가 성공적으로 처리되었을 때의 처리
-	        return FORM_VIEW; // 성공 화면으로 리다이렉트 또는 포워딩
-	    } else {
-	        // 업데이트에 실패했을 때의 처리
-	        req.setAttribute("updateFailed", true);
-	        return FORM_VIEW;
-	    }
+	      return FORM_VIEW;
+	    
 	}
 
 }
