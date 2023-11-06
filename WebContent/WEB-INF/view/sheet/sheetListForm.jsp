@@ -47,7 +47,7 @@ td {
 <%@ include file="/header.jsp"%>
 <body>
 	<div id="wrap">
-		<form action="orderList.do" method="post">
+		<form action="sheetList.do" method="post">
 			
 			<div id="my-div">[発注書]</div>
 			<table>
@@ -81,7 +81,7 @@ td {
 						<td>${sheet.storageName}</td>
 						<td><fmt:formatDate value="${sheet.listDate}"
 								pattern="yyyy-MM-dd" /></td>
-						<td>${sheet.sheetNo}</td>
+						<td>${sheet.process}</td>
 			</tr>
 				</c:forEach>
 				<c:if test="${sheetPage.hasSheets()}">
@@ -98,8 +98,6 @@ td {
 				</c:if>
 			</table>
 			
-			<input type="hidden" id="orderNoInput" name="orderNo" value="">
-			<input type="hidden" id="progressInput" name="progress" value="">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
 				onclick="window.open('orderSearch.do', '発注書検索', 'width=1200, height=700')" />

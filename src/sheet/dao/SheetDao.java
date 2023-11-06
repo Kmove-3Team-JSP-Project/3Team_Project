@@ -28,7 +28,7 @@ public class SheetDao {
 			pstmt.setInt(6, sheet.getPrice());
 			pstmt.setString(7, sheet.getCompanyName());
 			pstmt.setString(8, sheet.getStorageName());
-			pstmt.setTimestamp(9, (Timestamp) sheet.getListDate());
+			pstmt.setTimestamp(9, new Timestamp(sheet.getListDate().getTime()));
 			pstmt.setString(10, sheet.getProcess());
 
 			int insertedCount = pstmt.executeUpdate(); // executeUpdate : select 이외의 구문 수향, int 반환

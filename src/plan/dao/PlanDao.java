@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jdbc.JdbcUtil;
 import plan.model.Plan;
@@ -99,32 +101,8 @@ public class PlanDao {
 					.prepareStatement("update plan set ending = ?" + " where plan_no = ?")) {
 				pstmt.setString(1, progress);
 				pstmt.setInt(2, planNo);
-				int result = pstmt.executeUpdate();
-
-				if (result > 0) {
-					dropTrigger(conn);
-
-				}
-				return result;
-			}
-	
-	}
-
-	public int updateSheetTrigger(Connection conn) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement(
-				"CREATE OR REPLACE TRIGGER UPDATE_SHEET_PROCESS " + "AFTER UPDATE OF progress ON planS FOR EACH ROW "
-						+ "BEGIN " + "UPDATE SHEET " + "SET process = :NEW.progress " + "WHERE list_no IN ("
-						+ "SELECT list_no FROM sheet WHERE list_no = :NEW.plan_no" + "); " + "END;")) {
-
 			return pstmt.executeUpdate();
-		}
-
-	}
-
-	public void dropTrigger(Connection conn) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("DROP TRIGGER UPDATE_SHEET_PROCESS")) {
-			pstmt.executeUpdate();
-		}
+			}
 	}
 
 	public int getPlanNo(Connection conn) {
@@ -154,5 +132,53 @@ public class PlanDao {
 
 		return planNo;
 	}
+	 public List<String> getAllStockNames(Connection conn) throws SQLException {
+	        try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT stock_name FROM stock")) {
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                List<String> stockNames = new ArrayList<>();
+	                while (rs.next()) {
+	                	stockNames.add(rs.getString("stock_name"));
+	                }
+	                return stockNames;
+	            }
+	        }
+	    }
 
+	    public List<String> getCompanyList(Connection conn) throws SQLException {
+	    	 try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Company_name FROM Company")) {
+		            try (ResultSet rs = pstmt.executeQuery()) {
+		                List<String> CompanyNames = new ArrayList<>();
+		                while (rs.next()) {
+		                	CompanyNames.add(rs.getString("Company_name"));
+		                }
+		                return CompanyNames;
+		            }
+		        }
+	    }
+
+		public List<String> getStorageList(Connection conn) throws SQLException {
+			try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                List<String> storageNames = new ArrayList<>();
+	                while (rs.next()) {
+	                	storageNames.add(rs.getString("Storage_name"));
+	                }
+	                return storageNames;
+	            }
+	        }
+	    }
+
+		 public Map<String, Integer> getStockNamesWithUnitPrice(Connection conn) throws SQLException {
+		        try (PreparedStatement pstmt = conn.prepareStatement("SELECT stock_name, unit_price FROM stock")) {
+		            try (ResultSet rs = pstmt.executeQuery()) {
+		                Map<String, Integer> itemDetails = new HashMap<>();
+		                while (rs.next()) {
+		                    String itemName = rs.getString("stock_name");
+		                    int unitPrice = rs.getInt("unit_price");
+		           	         itemDetails.put(itemName, unitPrice);
+		                }
+		                return itemDetails;
+		            }
+		        }
+		    }
 }
