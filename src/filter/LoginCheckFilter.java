@@ -31,13 +31,13 @@ public class LoginCheckFilter implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		Filter.super.destroy();
+	
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		Filter.super.init(filterConfig);
+		
 	}
 
 }

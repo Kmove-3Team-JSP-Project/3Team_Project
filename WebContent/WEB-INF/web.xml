@@ -68,13 +68,9 @@
 	</filter-mapping>
 
 	<!-- 로그인 페이지 -->
-	<welcome-file-list>
-		<welcome-file>login.do</welcome-file>
-	</welcome-file-list>
-
-
-
-
+<!-- 	<welcome-file-list>
+		<welcome-file>/login.do</welcome-file>
+	</welcome-file-list> -->
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

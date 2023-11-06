@@ -105,7 +105,9 @@ td {
 							</c:if></td>
 					</tr>
 				</c:if>
-			</table><input type="hidden" id="orderNoInput" name="orderNo" value="">
+			</table>
+			
+			<input type="hidden" id="orderNoInput" name="orderNo" value="">
 			<input type="hidden" id="progressInput" name="progress" value="">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
@@ -134,5 +136,24 @@ function updateProgress(orderNo) {
 
 </script> -->
 <script type="text/javascript">
+function updateProgress(orderNo) {
+    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
+    var selectedValue = selectElement.value;
+    
+    if (selectElement.disabled) {
+        // 이미 선택되었으므로 아무것도 하지 않음
+        return;
+    }
+
+    selectElement.disabled = true; // 선택 후 비활성화
+    
+    // Hidden input에 데이터 설정
+    document.getElementById("orderNoInput").value = orderNo;
+    document.getElementById("progressInput").value = selectedValue;
+}
+
+function submitForm() {
+    document.forms[0].submit();
+}
 
 </script>
