@@ -17,7 +17,7 @@ public class CompanySearchService {
 			int total = companyDao.getCountByName(conn, searchRequest.getSearchTerm());
 			List<Company> content = companyDao.selectByName(conn, searchRequest.getSearchTerm(), (pageNum - 1) * size,
 					size);
-			return new CompanyPage(total, pageNum, size, content);
+			return new CompanyPage(total, pageNum, content);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to search items by name", e);
 		}
@@ -28,7 +28,7 @@ public class CompanySearchService {
 			int total = companyDao.getCountByClass(conn, searchRequest.getSearchTerm());
 			List<Company> content = companyDao.selectByClass(conn, searchRequest.getSearchTerm(), (pageNum - 1) * size,
 					size);
-			return new CompanyPage(total, pageNum, size, content);
+			return new CompanyPage(total, pageNum, content);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to search items by class", e);
 		}
