@@ -105,8 +105,8 @@ td {
 				</c:if>
 			</table>
 			
-			<input type="hidden" id="orderNoInput" name="orderNo" value="">
-			<input type="hidden" id="progressInput" name="progress" value="">
+			<input type="hidden" id="orderNoInput" name="orderNo">
+			<input type="hidden" id="progressInput" name="progress">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
 				onclick="window.open('orderSearch.do', '発注要請検索', 'width=1200, height=700')" />
@@ -133,7 +133,7 @@ function updateProgress(orderNo) {
     document.getElementById("orderNoInput").value = orderNo;
     document.getElementById("progressInput").value = selectedValue;
     
-    document.forms.submit();
+    document.form.submit();
 }
 </script>
 </html>

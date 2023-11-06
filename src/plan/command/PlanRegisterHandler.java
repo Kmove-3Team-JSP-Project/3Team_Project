@@ -40,8 +40,8 @@ public class PlanRegisterHandler implements CommandHandler {
 		int planNo = regiService.getPlanNo();
         req.setAttribute("planNo", planNo);
         
-        Map<String, Integer> itemDetails = regiService.getStockNamesWithUnitPrice();
-        String stockDetailsJson = getItemDetailsJson(itemDetails);
+        Map<String, Integer> stockDetails = regiService.getStockNamesWithUnitPrice();
+        String stockDetailsJson = getItemDetailsJson(stockDetails);
         req.setAttribute("stockDetailsJson", stockDetailsJson);
         
         List<String> stockNames = regiService.getAllStockNames();

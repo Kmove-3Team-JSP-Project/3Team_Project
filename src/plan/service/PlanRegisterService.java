@@ -101,9 +101,9 @@ public class PlanRegisterService {
         try {
             conn = ConnectionProvider.getConnection();
             conn.setAutoCommit(false);
-            Map<String, Integer> itemDetails = planDao.getStockNamesWithUnitPrice(conn);
+            Map<String, Integer> stockDetails = planDao.getStockNamesWithUnitPrice(conn);
             conn.commit();
-            return itemDetails;
+            return stockDetails;
         } catch (SQLException e) {
             JdbcUtil.rollback(conn);
             throw new RuntimeException(e);

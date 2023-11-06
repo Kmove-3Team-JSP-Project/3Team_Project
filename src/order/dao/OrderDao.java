@@ -98,12 +98,9 @@ public class OrderDao {
 	}
 
 	public int update(Connection conn, int orderNo, String progress) throws SQLException {
-		try (PreparedStatement pstmt = conn
-					.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
+		try (PreparedStatement pstmt = conn.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
 				pstmt.setString(1, progress);
 				pstmt.setInt(2, orderNo);
-				;
-
 				return pstmt.executeUpdate();
 			}
 	

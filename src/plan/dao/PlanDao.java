@@ -30,7 +30,7 @@ public class PlanDao {
 			pstmt.setInt(6, plan.getPrice());
 			pstmt.setString(7, plan.getCompanyName());
 			pstmt.setString(8, plan.getStorageName());
-			pstmt.setTimestamp(9, (Timestamp) plan.getPlanDate());
+			pstmt.setTimestamp(9, new Timestamp(plan.getPlanDate().getTime()));
 			pstmt.setString(10, plan.getEnding());
 
 			int insertedCount = pstmt.executeUpdate(); // executeUpdate : select 이외의 구문 수향, int 반환
@@ -96,10 +96,9 @@ public class PlanDao {
 				rs.getString("storage_name"), rs.getTimestamp("plan_date"), rs.getString("ending"));
 	}
 
-	public int update(Connection conn, int planNo, String progress) throws SQLException {
-		try (PreparedStatement pstmt = conn
-					.prepareStatement("update plan set ending = ?" + " where plan_no = ?")) {
-				pstmt.setString(1, progress);
+	public int update(Connection conn, int planNo, String ending) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("update plan set ending = ?" + " where plan_no = ?")) {
+				pstmt.setString(1, ending);
 				pstmt.setInt(2, planNo);
 			return pstmt.executeUpdate();
 			}
@@ -171,13 +170,13 @@ public class PlanDao {
 		 public Map<String, Integer> getStockNamesWithUnitPrice(Connection conn) throws SQLException {
 		        try (PreparedStatement pstmt = conn.prepareStatement("SELECT stock_name, unit_price FROM stock")) {
 		            try (ResultSet rs = pstmt.executeQuery()) {
-		                Map<String, Integer> itemDetails = new HashMap<>();
+		                Map<String, Integer> stockDetails = new HashMap<>();
 		                while (rs.next()) {
-		                    String itemName = rs.getString("stock_name");
+		                    String stockName = rs.getString("stock_name");
 		                    int unitPrice = rs.getInt("unit_price");
-		           	         itemDetails.put(itemName, unitPrice);
+		                    stockDetails.put(stockName, unitPrice);
 		                }
-		                return itemDetails;
+		                return stockDetails;
 		            }
 		        }
 		    }

@@ -50,9 +50,11 @@ public class OrderListHandler implements CommandHandler {
 	    int orderNo = Integer.parseInt(orderNoVal);
 
 	    // DAO에 업데이트 요청 보내기
-	    boolean updateSuccess = listService.updateOrderProgress(orderNo, progress);
+	    Integer updateSuccess = listService.updateOrderProgress(orderNo, progress);
+	    Integer updateSuccess2 = listService.updateSheetProgress(orderNo, progress);
+	    
 
-	    if (updateSuccess) {
+	    if (updateSuccess>0 && updateSuccess2>0) {
 	        // 업데이트가 성공적으로 처리되었을 때의 처리
 	        return FORM_VIEW; // 성공 화면으로 리다이렉트 또는 포워딩
 	    } else {
