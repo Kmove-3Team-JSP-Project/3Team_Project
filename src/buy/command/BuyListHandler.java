@@ -20,7 +20,7 @@ public class BuyListHandler implements CommandHandler {
 		BuyPage buyPage = BuyService.getBuyPage(pageNo);
 		req.setAttribute("buyPage", buyPage);
 
-		return "/WEB-INF/view/company/BuyListForm.jsp";
+		return "/WEB-INF/view/buy/BuyListForm.jsp";
 	}
 
 }

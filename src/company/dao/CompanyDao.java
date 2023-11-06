@@ -63,7 +63,7 @@ public class CompanyDao {
 	public List<Company> selectByName(Connection conn, String company_name, int startRow, int size)
 			throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
-				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM company WHERE item_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM company WHERE company_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
 			pstmt.setString(1, company_name);
 			pstmt.setInt(2, startRow + size);
 			pstmt.setInt(3, startRow + 1);
@@ -125,7 +125,7 @@ public class CompanyDao {
 
 	public List<Company> selectByClass(Connection conn, String Company_class, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
-				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_class = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM company WHERE company_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
 			pstmt.setString(1, Company_class);
 			pstmt.setInt(2, startRow + size);
 			pstmt.setInt(3, startRow + 1);
