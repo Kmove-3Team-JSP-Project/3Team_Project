@@ -5,6 +5,8 @@
 	id="WebApp_ID" version="4.0">
 	<display-name>TeamProject_03</display-name>
 
+
+
 	<!-- 서블릿 컨텍스트 리스너이므로 등록 -->
 	<listener>
 		<listener-class>jdbc.DBCPInitListener</listener-class>
@@ -54,6 +56,21 @@
 		<servlet-name>ControllerUsingURI</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+
+	<!-- 필터 설정 추가 -->
+	<filter>
+		<filter-name>LoginCheckFilter</filter-name>
+		<filter-class>filter.LoginCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginCheckFilter</filter-name>
+		<url-pattern>/change.do</url-pattern>
+	</filter-mapping>
+
+	<!-- 로그인 페이지 -->
+	<welcome-file-list>
+		<welcome-file>login.do</welcome-file>
+	</welcome-file-list>
 
 
 
