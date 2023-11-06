@@ -11,7 +11,7 @@ import storage.service.StorageRegisterService;
 import storage.service.StorageRequest;
 
 public class StorageRegisterHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/storage/regeisterForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/storage/storageRegisterForm.jsp";
 	private StorageRegisterService storageRegisterService = new StorageRegisterService();
 
 	public String process(HttpServletRequest req, HttpServletResponse resp) {
@@ -35,7 +35,7 @@ public class StorageRegisterHandler implements CommandHandler {
 			// 예외 처리
 			e.printStackTrace();
 		}
-		return "/WEB-INF/view/storage/regeisterForm.jsp";
+		return "/WEB-INF/view/storage/storageRegisterForm.jsp";
 	}
 
 	public String processSubmit(HttpServletRequest req, HttpServletResponse resp) {

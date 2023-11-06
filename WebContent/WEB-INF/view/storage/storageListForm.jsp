@@ -21,7 +21,7 @@
 	<script>
 		function redirectToNewPage() {
 			// 다른 페이지의 URL을 여기에 지정
-			var newPageURL = "storageRegisterForm.jsp";
+			var newPageURL = "storageRegister.do";
 			window.location.href = newPageURL;
 		}
 	</script>
