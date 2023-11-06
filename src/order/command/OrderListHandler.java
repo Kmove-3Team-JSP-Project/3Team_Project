@@ -10,7 +10,7 @@ import order.service.OrderPage;
 public class OrderListHandler implements CommandHandler {
 	
 	private OrderListService listService = new OrderListService();
-	private static final String FORM_VIEW = "/WEB-INF/view/orderListForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/order/orderListForm.jsp";
 	
 
 	@Override
