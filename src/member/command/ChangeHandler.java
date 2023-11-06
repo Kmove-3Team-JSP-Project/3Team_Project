@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import auth.service.User;
-import member.service.ChangePasswordService;
+import member.service.ChangeService;
 import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import mvc.command.CommandHandler;
@@ -15,7 +15,7 @@ import mvc.command.CommandHandler;
 public class ChangeHandler implements CommandHandler {
 
 	private static final String FORM_VIEW = "/WEB-INF/view/member/changeForm.jsp";
-	private ChangePasswordService changePwdSvc = new ChangePasswordService();
+	private ChangeService changeSvc = new ChangeService();
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -48,6 +48,9 @@ public class ChangeHandler implements CommandHandler {
 
 		String curPwd = req.getParameter("curPwd");
 		String newPwd = req.getParameter("newPwd");
+		String newName = req.getParameter("newName");
+		String newMail = req.getParameter("newMail");
+		String newPos = req.getParameter("newPos");
 
 		if (curPwd == null || curPwd.isEmpty()) {
 			errors.put("curPwd", Boolean.TRUE);
@@ -62,8 +65,8 @@ public class ChangeHandler implements CommandHandler {
 		}
 
 		try {
-			changePwdSvc.changePassword(user.getmemberId(), curPwd, newPwd);
-			return "/WEB-INF/view/changePwdSuccess.jsp";
+			changeSvc.changeInfo(user.getmemberId(), curPwd, newName, newPwd, newMail, newPos);
+			return "/WEB-INF/view/changeSuccess.jsp";
 		} catch (InvalidPasswordException e) {
 			// TODO: handle exception
 			// errors에 "badCurPwd" 키 값 추가

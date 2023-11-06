@@ -59,10 +59,12 @@ public class MemberDao {
 	// member.getId()가 같은 레코드의 name, password 필드 값을 변경
 	public void update(Connection conn, Member member) throws SQLException {
 		try (PreparedStatement pstmt = conn
-				.prepareStatement("update member set name = ?, password = ? where memberid = ?")) {
+				.prepareStatement("update member set name = ?, password = ?, mail = ?, position = ? where member_id = ?")) {
 			pstmt.setString(1, member.getName());
 			pstmt.setString(2, member.getPassword());
-			pstmt.setInt(3, member.getMemberId());
+			pstmt.setString(3, member.getMail());
+			pstmt.setString(4, member.getPosition());
+			pstmt.setInt(5, member.getMemberId());
 			pstmt.executeUpdate();
 		}
 	}

@@ -11,17 +11,6 @@
 		<ul class="header-menu">
 			<li><a href="change.do">회원정보 수정</a></li>
 			<li><a href="companyList.do">取引先</a></li>
-<<<<<<< HEAD
-			<li><a href="order.do">発注要請</a></li>
-			<li><a href="plan.do">発注計画</a></li>
-			<li><a href="sheet.do">発注書</a></li>
-			<li><a href="buy.do">購買リスト</a></li>
-			<li><a href="item.do">品目リスト</a></li>
-			<li><a href="stock.do">在庫リスト</a></li>
-			<li><a href="storage.do">倉庫リスト</a></li>
-			<li><a href="boxMove.do">倉庫移動</a></li>
-			<li><a href="recall.do">不良処理サービス</a></li>
-=======
 			<li><a href="orderList.do">発注要請</a></li>
 			<li><a href="planList.do">発注計画</a></li>
 			<li><a href="sheetList.do">発注書</a></li>
@@ -31,9 +20,8 @@
 			<li><a href="storageList.do">倉庫リスト</a></li>
 			<li><a href="boxMoveList.do">倉庫移動</a></li>
 			<li><a href="recallList.do">不良処理サービス</a></li>
->>>>>>> 0ad1d535ed56580fc284b8962cf6c3fde42f4e67
-			<li><a href="#">로그아웃</a></li>
-			<li><a href="#">메인</a></li>
+			<li><a href="logout.do">로그아웃</a></li>
+			<li><a href="/index.jsp">메인</a></li>
 		</ul>
 	</div>
 </body>

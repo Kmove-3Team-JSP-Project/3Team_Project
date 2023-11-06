@@ -104,6 +104,7 @@ body {
 			<div class="input-group">
 				<label for="confirmPassword">パスワード確認</label> <input type="password"
 					id="confirmPassword" name="confirmPassword">
+					<c:if test="${errors.notMatch}">암호와 확인이 일치하지 않습니다.</c:if>
 			</div>
 
 			<div class="input-group">
