@@ -31,7 +31,7 @@ table {
 			<c:choose>
 				<c:when test="${empty itemPage.content}">
 					<tr>
-						<td colspan="4">検索結果がありません。</td>
+						<td colspan="4">品目がありません。</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
