@@ -67,8 +67,9 @@ public class OrderRegisterHandler implements CommandHandler {
 		}
 		
 		int newOrderNo = regiService.register(orderReq);
+		
 		req.setAttribute("newOrderNo", newOrderNo);
-		return "/WEB-INF/view/order/orderListForm.jsp";
+		return "/WEB-INF/view/order/orderRegisterSucess.jsp";
 	}
 
 	public Date transformDate(String d) {

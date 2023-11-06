@@ -21,7 +21,7 @@ public class OrderDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		try { // article 테이블에 데이터 삽입
+		try { 
 			pstmt = conn.prepareStatement("insert into orders values (?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setInt(1, order.getOrderNo());
 			pstmt.setString(2, order.getMemberName());
@@ -31,7 +31,7 @@ public class OrderDao {
 			pstmt.setInt(6, order.getPrice());
 			pstmt.setString(7, order.getCompanyName());
 			pstmt.setString(8, order.getStorageName());
-			pstmt.setTimestamp(9, (Timestamp) order.getOrderDate());
+			pstmt.setTimestamp(9, new Timestamp(order.getOrderDate().getTime()));
 			pstmt.setString(10, order.getProgress());
 
 			int insertedCount = pstmt.executeUpdate(); // executeUpdate : select 이외의 구문 수향, int 반환
