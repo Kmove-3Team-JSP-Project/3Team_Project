@@ -48,7 +48,7 @@ table {
 		</table>
 	</div>
 	<div align='center'>
-		<a href="ItemListForm.jsp">品目リストに戻る</a>
+		<a href="itemList.do">品目リストに戻る</a>
 	</div>
 </body>
 </html>
