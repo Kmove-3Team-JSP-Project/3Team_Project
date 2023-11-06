@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.List"%>
+<%@ page import="company.model.Company"%>
+<%@ page import="company.service.CompanyPage"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,5 +50,23 @@
 			</form>
 		</div>
 	</div>
+	<script>
+		function validateForm() {
+			var searchType = document.getElementById("searchType").value;
+			var searchTerm = document.getElementById("searchTerm").value;
+
+			if (searchType === "選択") {
+				alert("検索条件を選択してください。");
+				return false;
+			}
+
+			if (searchTerm.trim() === "") {
+				alert("検索ワードを入力してください。");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
