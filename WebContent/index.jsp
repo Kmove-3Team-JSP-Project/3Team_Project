@@ -5,11 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>資材管理システム</title>
 </head>
 <body>
 
 <%@ include file="/header.jsp"%>
+
+資材管理システム
 
 <br/>
 </body>
