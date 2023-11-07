@@ -13,9 +13,10 @@ import recall.model.Recall;
 import stock.model.Stock;
 
 public class RecallDao {
+	// 데이터베이스에 Recall 객체를 삽입하는 메서드
 	public void insert(Connection conn, Recall recall) throws SQLException {
 		try (PreparedStatement pstmt = conn
-				.prepareStatement("INSERT INTO recall (Recall_No, MEMBER_NAME, STORAGE_NAME, STOCK_NAME, Unit_Price,"
+				.prepareStatement("INSERT INTO recall (Recall_No, MEMBER_NAME, STORAGE_NAME, STOCK_NAME, Unit_Price, "
 						+ "AMOUNT, PROCESS_DATE, PROCESS) VALUES (?,?,?,?,?,?,?,?)")) {
 			pstmt.setInt(1, recall.getRecall_No());
 			pstmt.setString(2, recall.getMember_Name());
@@ -32,6 +33,7 @@ public class RecallDao {
 		}
 	}
 
+	// 특정 범위 내에서 Recall 레코드를 검색하여 List<Recall>을 반환하는 메서드
 	public List<Recall> select(Connection conn, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM recall ORDER BY stock_name DESC) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
@@ -47,6 +49,7 @@ public class RecallDao {
 		}
 	}
 
+	// ResultSet에서 Recall 객체로 변환하는 메서드
 	private Recall convertRecall(ResultSet rs) throws SQLException {
 		int recall_no = rs.getInt("recall_no");
 		String member_name = rs.getString("member_name");
@@ -59,6 +62,7 @@ public class RecallDao {
 		return new Recall(recall_no, member_name, storage_name, stock_name, unit_price, amount, process_date, process);
 	}
 
+	// 특정 stock_name에 해당하는 Recall 레코드를 검색하여 List<Stock>을 반환하는 메서드
 	public List<Stock> selectByStock(Connection conn, String stock_name, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM stock WHERE stock_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
@@ -75,6 +79,7 @@ public class RecallDao {
 		}
 	}
 
+	// 특정 storage_name에 해당하는 Recall 레코드를 검색하여 List<Stock>을 반환하는 메서드
 	public List<Stock> selectByStorage(Connection conn, String storage_name, int startRow, int size)
 			throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
@@ -92,6 +97,7 @@ public class RecallDao {
 		}
 	}
 
+	// 특정 item_name에 해당하는 Recall 레코드 수를 반환하는 메서드
 	public int getCountByName(Connection conn, String item_name) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_name = ?")) {
 			pstmt.setString(1, item_name);
@@ -104,6 +110,7 @@ public class RecallDao {
 		}
 	}
 
+	// 모든 Stock 레코드 수를 반환하는 메서드
 	public int getCount(Connection conn) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM stock")) {
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -115,6 +122,7 @@ public class RecallDao {
 		}
 	}
 
+	// ResultSet에서 Stock 객체로 변환하는 메서드
 	private Stock convertStock(ResultSet rs) throws SQLException {
 		int stock_cord = rs.getInt("stock_cord");
 		int stock_amount = rs.getInt("amount");
@@ -124,6 +132,7 @@ public class RecallDao {
 		return new Stock(stock_cord, stock_amount, storage_name, stock_name, unit_price);
 	}
 
+	// 특정 stock_name에 해당하는 Recall 레코드 수를 반환하는 메서드
 	public int getCountByStock(Connection conn, String stock_name) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM stock WHERE stock_name = ?")) {
 			pstmt.setString(1, stock_name);
@@ -136,6 +145,7 @@ public class RecallDao {
 		}
 	}
 
+	// 특정 storage_name에 해당하는 Recall 레코드 수를 반환하는 메서드
 	public int getCountByStorage(Connection conn, String storage_name) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM storage WHERE storage_name = ?")) {
 			pstmt.setString(1, storage_name);
@@ -148,8 +158,8 @@ public class RecallDao {
 		}
 	}
 
+	// Date 객체를 Timestamp로 변환하는 메서드
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
 	}
-
 }

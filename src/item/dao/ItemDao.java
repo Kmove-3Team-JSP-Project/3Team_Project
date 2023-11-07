@@ -12,6 +12,8 @@ import item.service.ItemPage;
 import jdbc.JdbcUtil;
 
 public class ItemDao {
+
+	// 데이터베이스에 상품 정보를 삽입하는 메서드
 	public void insert(Connection conn, Item item) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"INSERT INTO item (ITEM_ID, ITEM_NAME, UNIT_PRICE, ITEM_CLASS) VALUES (?, ?, ?, ?)")) {
@@ -26,6 +28,7 @@ public class ItemDao {
 		}
 	}
 
+	// 페이징을 적용하여 상품 목록을 선택하는 메서드
 	public List<Item> select(Connection conn, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item ORDER BY item_name DESC) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
@@ -41,6 +44,7 @@ public class ItemDao {
 		}
 	}
 
+	// 특정 클래스로 상품 목록을 선택하는 메서드
 	public List<Item> selectByClass(Connection conn, String item_class, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_class = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
@@ -57,6 +61,7 @@ public class ItemDao {
 		}
 	}
 
+	// 특정 상품 이름으로 상품 목록을 선택하는 메서드
 	public List<Item> selectByName(Connection conn, String item_name, int startRow, int size) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
 				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM item WHERE item_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
@@ -73,6 +78,7 @@ public class ItemDao {
 		}
 	}
 
+	// 전체 상품 수를 반환하는 메서드
 	public int getCount(Connection conn) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item")) {
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -84,6 +90,7 @@ public class ItemDao {
 		}
 	}
 
+	// ResultSet에서 Item 객체로 변환하는 메서드
 	private Item convertItem(ResultSet rs) throws SQLException {
 		int item_id = rs.getInt("item_id");
 		String item_name = rs.getString("item_name");
@@ -92,6 +99,7 @@ public class ItemDao {
 		return new Item(item_id, item_name, unit_price, item_class);
 	}
 
+	// 특정 상품 이름에 해당하는 상품 수를 반환하는 메서드
 	public int getCountByName(Connection conn, String item_name) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_name = ?")) {
 			pstmt.setString(1, item_name);
@@ -104,6 +112,7 @@ public class ItemDao {
 		}
 	}
 
+	// 특정 상품 클래스에 해당하는 상품 수를 반환하는 메서드
 	public int getCountByClass(Connection conn, String item_class) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_class = ?")) {
 			pstmt.setString(1, item_class);
@@ -115,5 +124,4 @@ public class ItemDao {
 			}
 		}
 	}
-
 }
