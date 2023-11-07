@@ -37,7 +37,7 @@
 			</c:forEach>
 		</table>
 		<div align="center">
-			<form action="BuySearch.do" method="post" target="_blank"
+			<form action="buySearch.do" method="post" target="_blank"
 				onsubmit="return validateForm();">
 				<label for="検索条件">検索条件:</label> <select name="searchType" id="検索条件">
 					<option value="company_name">取引先名</option>
