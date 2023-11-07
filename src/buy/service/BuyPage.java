@@ -1,5 +1,6 @@
 package buy.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import buy.model.Buy;
@@ -10,31 +11,14 @@ public class BuyPage {
 	private int currentPage;
 	private List<Buy> content;
 	private int totalPages;
-	private int startPage;
-	private int endPage;
 
-	public BuyPage(int total, int currentPage, int size, List<Buy> content) {
+	public BuyPage(int total, int currentPage, List<Buy> content) {
 		this.total = total;
 		this.currentPage = currentPage;
+		Collections.sort(content,
+				(buy1, buy2) -> Integer.compare(buy1.getDate_No(), buy2.getDate_No()));
 		this.content = content;
-		if (total == 0) {
-			totalPages = 0;
-			startPage = 0;
-			endPage = 0;
-		} else {
-			totalPages = total / size;
-			if (total % size > 0) {
-				totalPages++;
-			}
-			int modVal = currentPage % 5;
-			startPage = currentPage / 5 * 5 + 1;
-			if (modVal == 0)
-				startPage -= 5;
-
-			endPage = startPage + 4;
-			if (endPage > totalPages)
-				endPage = totalPages;
-		}
+		
 	}
 
 	public int getToal() {
@@ -61,11 +45,5 @@ public class BuyPage {
 		return content;
 	}
 
-	public int getStartPage() {
-		return startPage;
-	}
 
-	public int getEndPage() {
-		return endPage;
-	}
 }

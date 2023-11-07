@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import buy.model.Buy;
+import company.model.Company;
 import jdbc.JdbcUtil;
 
 public class BuyDao {
@@ -61,6 +62,23 @@ public class BuyDao {
 		}
 	}
 
+	public List<Buy> selectByName(Connection conn, String company_name, int startRow, int size)
+			throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM buy WHERE buy_name = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, company_name);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<Buy> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertBuy(rs));
+				}
+				return result;
+			}
+		}
+	}
+
 	private Buy convertBuy(ResultSet rs) throws SQLException {
 		return new Buy(rs.getInt("date_No"), rs.getInt("unit_Price"), rs.getString("company_Name"),
 				rs.getString("item_Name"), rs.getInt("price"), rs.getInt("amount"), rs.getInt("buy_date"),
@@ -83,4 +101,46 @@ public class BuyDao {
 		}
 
 	}
+
+	public int getCountByName(Connection conn, String item_name) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM item WHERE item_name = ?")) {
+			pstmt.setString(1, item_name);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
+	public int getCountByMember(Connection conn, String member_name) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM member WHERE member_name = ?")) {
+			pstmt.setString(1, member_name);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		}
+	}
+
+	public List<Buy> selectByClass(Connection conn, String Company_class, int startRow, int size)
+			throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"SELECT * FROM (SELECT ROWNUM AS rnum, a.* FROM (SELECT * FROM buy WHERE buy_class = ?) a WHERE ROWNUM <= ?) WHERE rnum >= ?")) {
+			pstmt.setString(1, Company_class);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<Buy> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertBuy(rs));
+				}
+				return result;
+			}
+		}
+	}
+
 }

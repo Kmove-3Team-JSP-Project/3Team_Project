@@ -88,10 +88,9 @@ td {
 								<option value="Cancelled">キャンセル</option>
 						</select></td>
 
-
-
 					</tr>
 				</c:forEach>
+				
 				<c:if test="${orderPage.hasOrders()}">
 					<tr>
 						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
@@ -106,8 +105,8 @@ td {
 				</c:if>
 			</table>
 			
-			<input type="hidden" id="orderNoInput" name="orderNo" value="">
-			<input type="hidden" id="progressInput" name="progress" value="">
+			<input type="hidden" id="orderNoInput" name="orderNo">
+			<input type="hidden" id="progressInput" name="progress">
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
 				onclick="window.open('orderSearch.do', '発注要請検索', 'width=1200, height=700')" />
@@ -118,22 +117,6 @@ td {
 	</div>
 
 </body>
-
-</html>
-<!-- <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
-
-    selectElement.disabled = true; // 선택 후 비활성화
-
-
-</script> -->
 <script type="text/javascript">
 function updateProgress(orderNo) {
     var selectElement = document.getElementById(`progressSelect_${orderNo}`);
@@ -149,10 +132,9 @@ function updateProgress(orderNo) {
     // Hidden input에 데이터 설정
     document.getElementById("orderNoInput").value = orderNo;
     document.getElementById("progressInput").value = selectedValue;
+    
+    document.form.submit();
 }
-
-function submitForm() {
-    document.forms[0].submit();
-}
-
 </script>
+</html>
+

@@ -21,7 +21,7 @@ public class StorageListHandler implements CommandHandler {
 		}
 		StoragePage storagePage = storageService.getStoragePage(pageNo);
 		req.setAttribute("storagePage", storagePage);
-		return "/WEB-INF/view/listArticle.jsp";
+		return "/WEB-INF/view/storage/storageListForm.jsp";
 	}
 
 }

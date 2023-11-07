@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jdbc.JdbcUtil;
 import order.model.Order;
@@ -19,7 +21,7 @@ public class OrderDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		try { // article 테이블에 데이터 삽입
+		try { 
 			pstmt = conn.prepareStatement("insert into orders values (?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setInt(1, order.getOrderNo());
 			pstmt.setString(2, order.getMemberName());
@@ -29,7 +31,7 @@ public class OrderDao {
 			pstmt.setInt(6, order.getPrice());
 			pstmt.setString(7, order.getCompanyName());
 			pstmt.setString(8, order.getStorageName());
-			pstmt.setTimestamp(9, (Timestamp) order.getOrderDate());
+			pstmt.setTimestamp(9, new Timestamp(order.getOrderDate().getTime()));
 			pstmt.setString(10, order.getProgress());
 
 			int insertedCount = pstmt.executeUpdate(); // executeUpdate : select 이외의 구문 수향, int 반환
@@ -96,36 +98,12 @@ public class OrderDao {
 	}
 
 	public int update(Connection conn, int orderNo, String progress) throws SQLException {
-		try (PreparedStatement pstmt = conn
-					.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
+		try (PreparedStatement pstmt = conn.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
 				pstmt.setString(1, progress);
 				pstmt.setInt(2, orderNo);
-				int result = pstmt.executeUpdate();
-
-				if (result > 0) {
-					dropTrigger(conn);
-
-				}
-				return result;
+				return pstmt.executeUpdate();
 			}
 	
-	}
-
-	public int updateSheetTrigger(Connection conn) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement(
-				"CREATE OR REPLACE TRIGGER UPDATE_SHEET_PROCESS " + "AFTER UPDATE OF progress ON ORDERS FOR EACH ROW "
-						+ "BEGIN " + "UPDATE SHEET " + "SET process = :NEW.progress " + "WHERE list_no IN ("
-						+ "SELECT list_no FROM sheet WHERE list_no = :NEW.order_no" + "); " + "END;")) {
-
-			return pstmt.executeUpdate();
-		}
-
-	}
-
-	public void dropTrigger(Connection conn) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("DROP TRIGGER UPDATE_SHEET_PROCESS")) {
-			pstmt.executeUpdate();
-		}
 	}
 
 	public int getOrderNo(Connection conn) {
@@ -155,5 +133,55 @@ public class OrderDao {
 
 		return orderNo;
 	}
+	
+	 public List<String> getAllItemNames(Connection conn) throws SQLException {
+	        try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT item_name FROM item")) {
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                List<String> itemNames = new ArrayList<>();
+	                while (rs.next()) {
+	                    itemNames.add(rs.getString("item_name"));
+	                }
+	                return itemNames;
+	            }
+	        }
+	    }
+
+	    public List<String> getCompanyList(Connection conn) throws SQLException {
+	    	 try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Company_name FROM Company")) {
+		            try (ResultSet rs = pstmt.executeQuery()) {
+		                List<String> CompanyNames = new ArrayList<>();
+		                while (rs.next()) {
+		                	CompanyNames.add(rs.getString("Company_name"));
+		                }
+		                return CompanyNames;
+		            }
+		        }
+	    }
+
+		public List<String> getStorageList(Connection conn) throws SQLException {
+			try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
+	            try (ResultSet rs = pstmt.executeQuery()) {
+	                List<String> storageNames = new ArrayList<>();
+	                while (rs.next()) {
+	                	storageNames.add(rs.getString("Storage_name"));
+	                }
+	                return storageNames;
+	            }
+	        }
+	    }
+
+		 public Map<String, Integer> getItemNamesWithUnitPrice(Connection conn) throws SQLException {
+		        try (PreparedStatement pstmt = conn.prepareStatement("SELECT item_name, unit_price FROM item")) {
+		            try (ResultSet rs = pstmt.executeQuery()) {
+		                Map<String, Integer> itemDetails = new HashMap<>();
+		                while (rs.next()) {
+		                    String itemName = rs.getString("item_name");
+		                    int unitPrice = rs.getInt("unit_price");
+		           	         itemDetails.put(itemName, unitPrice);
+		                }
+		                return itemDetails;
+		            }
+		        }
+		    }
 
 }

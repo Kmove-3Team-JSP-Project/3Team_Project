@@ -16,7 +16,7 @@ public class BuyService {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			int total = buyDao.selectCount(conn);
 			List<Buy> content = buyDao.select(conn, (pageNum - 1) * size, size);
-			return new BuyPage(total, pageNum, size, content);
+			return new BuyPage(total, pageNum, content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

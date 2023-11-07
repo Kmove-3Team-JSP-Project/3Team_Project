@@ -16,10 +16,6 @@
 		<div align="center">[検索結果]</div>
 	</h1>
 
-	<h2>
-		<div align="center">[検索語:担当者]</div>
-	</h2>
-
 	<div align="center">
 		<table border="1" width="50%">
 			<tr>
@@ -31,17 +27,20 @@
 				<th>所有倉庫</th>
 			</tr>
 			<c:choose>
-				<c:when test="${empty CompanyPage.content}">
+				<c:when test="${empty companyPage.content}">
 					<tr>
-						<td colspan="4">検索結果がありません。</td>
+						<td colspan="6">検索結果がありません。</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
-					<c:forEach items="${CompanyPage.content}" var="item">
+					<c:forEach items="${companyPage.content}" var="company">
 						<tr>
-							<td>${company.company_Name}</td>
-							<td>${company.company_master}</td>
-
+							<td>${company.company_no}</td>
+							<td>${company.company_name}</td>
+							<td>${company.master}</td>
+							<td>${company.phone}</td>
+							<td>${company.address}</td>
+							<td>${company.myStorage}</td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>
@@ -49,7 +48,7 @@
 		</table>
 	</div>
 	<div align="center">
-		<a href="CompanyListForm.jsp">[取引先に戻る。]</a>
+		<a href="companyList.do">[取引先に戻る。]</a>
 	</div>
 </body>
 </html>

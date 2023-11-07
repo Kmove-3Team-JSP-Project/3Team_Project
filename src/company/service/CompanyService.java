@@ -16,7 +16,7 @@ public class CompanyService {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			int total = companyDao.selectCount(conn);
 			List<Company> content = companyDao.select(conn, (pageNum - 1) * size, size);
-			return new CompanyPage(total, pageNum, size, content);
+			return new CompanyPage(total, pageNum, content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

@@ -21,6 +21,7 @@ public class Storage {
 		this.storageUse = storageUse;
 	}
 
+
 	public int getStorageCode() {
 		return storageCode;
 	}

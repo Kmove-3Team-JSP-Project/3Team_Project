@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>発注要請</title>
+<title>発注計画</title>
 <style>
 h1 {
 	text-align: center;
@@ -105,15 +105,13 @@ td {
 					</tr>
 				</c:if>
 			</table>
-			
-			<input type="hidden" id="orderNoInput" name="orderNo" value="">
-			<input type="hidden" id="progressInput" name="progress" value="">
+
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('orderSearch.do', '発注計画検索', 'width=1200, height=700')" />
+				onclick="window.open('planSearch.do', '発注計画検索', 'width=1200, height=700')" />
 			<input type="button" value="登録"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
-				onclick="window.open('orderRegister.do', '発注計画登録', 'width=700, height=700')" />
+				onclick="window.open('planRegister.do', '発注計画登録', 'width=700, height=700')" />
 		</form>
 	</div>
 
