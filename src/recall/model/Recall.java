@@ -4,33 +4,33 @@ import java.util.Date;
 
 public class Recall {
 
-	private int Recall_No;
+	private Integer Recall_No;
 	private String Member_Name;
 	private String Storage_Name;
 	private String Stock_Name;
-	private int Unit_Price = 0;
+	private int Unit_Price;
 	private int Amount;
 	private Date Process_Date;
 	private String Process;
 
-	public Recall(int recall_no, String member_name, String storage_name, String stock_name, int unit_price, int amount,
-			Date process_date, String process) {
+	public Recall(Integer recall_No, String member_Name, String storage_Name, String stock_Name, int unit_Price,
+			int amount, Date process_Date, String process) {
 		super();
-		Recall_No = recall_no;
-		Member_Name = member_name;
-		Storage_Name = storage_name;
-		Stock_Name = stock_name;
-		Unit_Price = unit_price;
+		Recall_No = recall_No;
+		Member_Name = member_Name;
+		Storage_Name = storage_Name;
+		Stock_Name = stock_Name;
+		Unit_Price = unit_Price;
 		Amount = amount;
-		Process_Date = process_date;
+		Process_Date = process_Date;
 		Process = process;
 	}
 
-	public int getRecall_No() {
+	public Integer getRecall_No() {
 		return Recall_No;
 	}
 
-	public void setRecall_No(int recall_No) {
+	public void setRecall_No(Integer recall_No) {
 		Recall_No = recall_No;
 	}
 
