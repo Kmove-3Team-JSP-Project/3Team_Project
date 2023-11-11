@@ -167,4 +167,15 @@ public class RecallDao {
 		}
 	}
 
+	public List<String> getStorageList(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<String> storageNames = new ArrayList<>();
+				while (rs.next()) {
+					storageNames.add(rs.getString("Storage_name"));
+				}
+				return storageNames;
+			}
+		}
+	}
 }

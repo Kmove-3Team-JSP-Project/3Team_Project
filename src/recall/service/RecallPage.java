@@ -45,7 +45,7 @@ public class RecallPage {
 		return total == 0;
 	}
 
-	public boolean hasdRecall() {
+	public boolean hasRecall() {
 		return total > 0;
 	}
 
