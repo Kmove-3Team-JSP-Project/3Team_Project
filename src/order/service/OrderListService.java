@@ -24,6 +24,27 @@ public class OrderListService {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public OrderPage getOrderCheckPage(int pageNum) {
+		try(Connection conn = ConnectionProvider.getConnection()){
+			int total = orderDao.selectCount(conn);
+			List<Order> content = orderDao.selectProgress(conn, (pageNum-1) * size, size);
+			return new OrderPage(total, pageNum, size, content);		
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public OrderPage getOrderSearchPage(String searchField, String searchText, int pageNum) {
+		try(Connection conn = ConnectionProvider.getConnection()){
+			int total = orderDao.selectCount(conn);
+			List<Order> content = orderDao.getSearch(conn, searchField, searchText, (pageNum-1) * size, size);
+			return new OrderPage(total, pageNum, size, content);		
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 	public Integer updateOrderProgress(int orderNo, String progress) {
 		// TODO Auto-generated method stub

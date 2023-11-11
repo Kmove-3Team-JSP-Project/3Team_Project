@@ -1,78 +1,97 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>検索窓</title>
 <style type="text/css">
+#wrap {
+	min-height: calc(78.5vh - 30px);
+	padding-bottom: 60px;
+	text-align: center;
+}
+
 #my-div {
-	margin-left:10px;
-	margin-top: 5px;
-	height: 30px;
+	margin-top: 50px;
+	height: 50px;
+	text-align: center;
 	line-height: 50px;
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 30px;
 }
 
-#search_T {
+table {
 	margin-top: 10px;
+	table-layout: fixed;
 	margin-left: auto;
 	margin-right: auto;
-	width: 900px;
-	border: solid #444444;
-	font-size: 12px;
-}
-
-#result_T {
-	margin-top: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 900px;
-	heigth: 500px;
+	width: 1100px;
 	border: 1px solid #444444;
 }
 
-#text_td {
-	padding: 1px 5px 1px 5px;
-	style: text-align: center;
-}
-
 td {
+	text-align: center;
 	white-space: nowrap;
 	border: 1px solid #444444;
 }
 </style>
 </head>
 <body>
-	<form method="post" action="orderSearch.do">
-		<div id="my-div">条件入力</div>
-		<input type="button" value="検索" onclick="#" style="margin-botton: 20px; margin-left: 800px;" /> 
-			<input type="button" value="初期化" onclick="#" style="margin-botton: 20px;" />
-		<table id="search_T">
-			<tr>
-				<td id="text_td">要請No</td>
-				<td><input type="text" name="orderNo" size="8"></td>
+	<div id="wrap">
+		<form action="orderSearch.do">
+		<h3 style="text-align: center;"> [発注要請]</h3>
+			<table>
+				<tr>
+					<td>要請No</td>
+					<td>担当者</td>
+					<td>品目名</td>
+					<td>単価</td>
+					<td>数量</td>
+					<td>金額</td>
+					<td>取引先名</td>
+					<td>倉庫名</td>
+					<td>納期日</td>
+					<td>進行状態</td>
+				</tr>
 
-				<td id="text_td">担当者</td>
-				<td><input type="text" name="memberName" size="8"></td>
+				<c:if test="${orderPage.hasNoOrders()}">
+					<tr>
+						<td colspan="10">登録された発注要請が存在しません。</td>
+					</tr>
+				</c:if>
+				<c:forEach var="order" items="${orderPage.content}">
+					<tr>
+						<td>${order.orderNo}</td>
+						<td>${order.memberName}</td>
+						<td>${order.itemName}</td>
+						<td>${order.unitPrice}</td>
+						<td>${order.amount}</td>
+						<td>${order.price}</td>
+						<td>${order.companyName}</td>
+						<td>${order.storageName}</td>
+						<td><fmt:formatDate value="${order.orderDate}"
+								pattern="yyyy-MM-dd" /></td>
+						<td>${order.progress}</td>
+					</tr>
+				</c:forEach>
 
-				<td id="text_td">品目名</td>
-				<td><input type="text" name="itemName" size="8"></td>
-
-
-				<td id="text_td">取引先名</td>
-				<td><input type="text" name="companyName" size="8"></td>
-
-				<td id="text_td">倉庫名</td>
-				<td><input type="text" name="storageName" size="8"></td>
-
-				<td id="text_td">納期日</td>
-				<td><input type="date" name="orderDate" size="8"></td>
-			</tr>
-		</table>
-		<div id="my-div">検索結果</div>
-		<%@ include file="orderSearchResult.jsp" %>
-	</form>
+				<c:if test="${orderPage.hasOrders()}">
+					<tr>
+						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
+								<a href="orderList.do?pageNo=${orderPage.startPage - 5}">[前のページ]</a>
+							</c:if> <c:forEach var="pNo" begin="${orderPage.startPage}"
+								end="${orderPage.endPage}">
+								<a href="orderList.do?pageNo=${pNo}">[${pNo}]</a>
+							</c:forEach> <c:if test="${orderPage.endPage < orderPage.totalPages}">
+								<a href="orderList.do?pageNo=${orderPage.startPage + 5}">[次のページ]</a>
+							</c:if></td>
+					</tr>
+				</c:if>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

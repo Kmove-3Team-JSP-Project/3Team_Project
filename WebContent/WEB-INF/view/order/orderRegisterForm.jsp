@@ -171,7 +171,7 @@ td {
 
 		if (itemName === '' || amount === '' || companyName === ''
 				|| storageName === '' || date === '') {
-			alert('모든 필드를 채워주세요.');
+			alert('すべてのフィールドを埋めてください。');
 			return false;
 		}
 		form.submit();

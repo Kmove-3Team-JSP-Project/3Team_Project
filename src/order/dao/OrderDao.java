@@ -91,6 +91,49 @@ public class OrderDao {
 		}
 	}
 
+
+	public List<Order> selectProgress(Connection conn, int startRow, int size) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try { // 역순으로 정렬한 게시글 번호를 해당하는 레코드들을 읽어온다.
+			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
+					+ "from (select * from ORDERS WHERE PROGRESS = '進行中' order by ORDER_no desc) a " + "where rownum <=?) where rnum >=?");
+			pstmt.setInt(1, startRow + size);
+			pstmt.setInt(2, startRow + 1);
+			rs = pstmt.executeQuery();
+			List<Order> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertOrder(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	public List<Order> getSearch(Connection conn, String searchField, String searchText, int startRow, int size) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try { // 역순으로 정렬한 게시글 번호를 해당하는 레코드들을 읽어온다.
+			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
+					+ "from (select * from ORDERS WHERE ? = ?  order by ORDER_no desc) a " + "where rownum <=?) where rnum >=?");
+			pstmt.setString(1, searchField);
+			pstmt.setString(2, searchText);
+			pstmt.setInt(3, startRow + size);
+			pstmt.setInt(4, startRow + 1);
+			rs = pstmt.executeQuery();
+			List<Order> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertOrder(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
 	private Order convertOrder(ResultSet rs) throws SQLException {
 		return new Order(rs.getInt("order_no"), rs.getString("member_name"), rs.getString("item_name"),
 				rs.getInt("unit_price"), rs.getInt("amount"), rs.getInt("price"), rs.getString("company_name"),

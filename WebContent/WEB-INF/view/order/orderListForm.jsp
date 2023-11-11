@@ -8,10 +8,6 @@
 <meta charset="UTF-8">
 <title>発注要請</title>
 <style>
-h1 {
-	text-align: center;
-}
-
 #wrap {
 	min-height: calc(78.5vh - 30px);
 	padding-bottom: 60px;
@@ -32,8 +28,7 @@ table {
 	table-layout: fixed;
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
-	heigth: 500px;
+	width: 1100px;
 	border: 1px solid #444444;
 }
 
@@ -42,14 +37,19 @@ td {
 	white-space: nowrap;
 	border: 1px solid #444444;
 }
+
 </style>
 </head>
 <%@ include file="/header.jsp"%>
 <body>
 	<div id="wrap">
-		<form action="orderList.do" method="post">
-			
-			<div id="my-div">[発注要請]</div>
+		<form action="orderList.do">
+
+			<h1 style="text-align: center;">
+				[発注要請] <input type="button" value="進行変更"
+					style="font-size: 15px; width: 80px; height: 30px; position: absolute; right: 225px; top: 100px;"
+					onclick="window.open('orderCheck.do', '発注要請検索', 'width=1200, height=700')" />
+			</h1>
 			<table>
 				<tr>
 					<td>要請No</td>
@@ -81,59 +81,62 @@ td {
 						<td>${order.storageName}</td>
 						<td><fmt:formatDate value="${order.orderDate}"
 								pattern="yyyy-MM-dd" /></td>
-						<td><select id="progressSelect_${order.orderNo}"
-							onchange="updateProgress(${order.orderNo})">
-								<option value="InProgress">進行中</option>
-								<option value="Completed">完了</option>
-								<option value="Cancelled">キャンセル</option>
-						</select></td>
-
+						<td>${order.progress}</td>
 					</tr>
 				</c:forEach>
-				
+
 				<c:if test="${orderPage.hasOrders()}">
 					<tr>
 						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
 								<a href="orderList.do?pageNo=${orderPage.startPage - 5}">[前のページ]</a>
 							</c:if> <c:forEach var="pNo" begin="${orderPage.startPage}"
 								end="${orderPage.endPage}">
-								<a href="orderList.do?pageNo=${pNo}">[${pNO}]</a>
+								<a href="orderList.do?pageNo=${pNo}">[${pNo}]</a>
 							</c:forEach> <c:if test="${orderPage.endPage < orderPage.totalPages}">
 								<a href="orderList.do?pageNo=${orderPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>
 			</table>
-			
-			<input type="hidden" id="orderNoInput" name="orderNo">
-			<input type="hidden" id="progressInput" name="progress">
-			<input type="button" value="検索"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('orderSearch.do', '発注要請検索', 'width=1200, height=700')" />
+			<select name="condition" onchange="onChange(this)" style="margin-top: 20px; margin-left: 710px;  font-size: 15px;">
+				<option value="orderNo">要請No</option>
+				<option value="memberName">担当者</option>
+				<option value="itemName">品目名</option>
+				<option value="companyName">取引先名</option>
+				<option value="storageName">倉庫名</option>
+				<option value="orderDate">納期日</option>
+				<option value="progress">進行状態</option>
+			</select>
+			<input type="text" placeholder="検索ワード入力" name="detail" maxlength="50" style="margin-top: 20px; font-size: 15px;">
+			 <input type="button" value="検索"
+				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
+				onclick="Check(this.form);" />
 			<input type="button" value="登録"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
+				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
 				onclick="window.open('orderRegister.do', '発注要請登録', 'width=700, height=700')" />
 		</form>
 	</div>
 
 </body>
 <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
+function Check(form) {
+	var detail = form.detail.value;
+	if (detail === '') {
+		alert('検索ワードを入力してください');
+		return false;
+	}
+	
+	var newWindow = window.open('', '_blank');
+	// 폼 생성
+    var form = document.getElementById('myForm').cloneNode(true);
+    // 새 창에 폼 추가
+    newWindow.document.body.appendChild(form);
 
-    selectElement.disabled = true; // 선택 후 비활성화
+    // 폼 서브밋
+    form.submit();
     
-    // Hidden input에 데이터 설정
-    document.getElementById("orderNoInput").value = orderNo;
-    document.getElementById("progressInput").value = selectedValue;
-    
-    document.form.submit();
+	 searchWin = window.open('orderSearch.do', '発注要請検索', 'width=1400, height=700');
+	searchWin.document.getElementBy
 }
 </script>
 </html>

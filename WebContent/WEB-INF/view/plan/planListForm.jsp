@@ -49,7 +49,7 @@ td {
 	<div id="wrap">
 		<form action="planList.do" method="post">
 			
-			<div id="my-div">[発注計画]</div>
+			<h1>[発注計画]</h1>
 			<table>
 				<tr>
 					<td>計画No</td>
