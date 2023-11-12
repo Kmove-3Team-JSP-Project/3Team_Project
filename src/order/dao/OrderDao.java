@@ -184,7 +184,6 @@ public class OrderDao {
 	            pstmt.setString(1, searchText);
 	        } else if (field.equals("order_date")) {
 	            Date date = transformDate(searchText);
-	            System.out.println(date);
 	            pstmt.setTimestamp(1, new Timestamp(date.getTime()));
 	        }
 
@@ -222,11 +221,9 @@ public class OrderDao {
 	}
 
 	public Date transformDate(String d) {
-		SimpleDateFormat dateFormatFirst = new SimpleDateFormat("yyyyMMdd");
-		String afterDate = dateFormatFirst.format(d);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		try {
-			Date orderDate =  dateFormat.parse(afterDate);
+			Date orderDate =  dateFormat.parse(d);
 			return orderDate;
 		} catch (ParseException e) {
 			e.printStackTrace();
