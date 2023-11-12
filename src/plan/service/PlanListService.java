@@ -22,5 +22,24 @@ public class PlanListService {
 		}
 	}
 	
+	public PlanPage getPlanCheckPage(int pageNum) {
+		try(Connection conn = ConnectionProvider.getConnection()){
+			int total = planDao.selectCountEnding(conn);
+			List<Plan> content = planDao.selectEnding(conn, (pageNum-1) * size, size);
+			return new PlanPage(total, pageNum, size, content);		
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public PlanPage getPlanSearchPage(String searchField, String searchText, int pageNum) {
+		try(Connection conn = ConnectionProvider.getConnection()){
+			int total = planDao.selectCountSearch(conn, searchField, searchText);
+			List<Plan> content = planDao.getSearch(conn, searchField, searchText, (pageNum-1) * size, size);
+			return new PlanPage(total, pageNum, size, content);
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

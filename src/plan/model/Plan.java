@@ -13,7 +13,7 @@ public class Plan {
 	private String companyName;
 	private String storageName;
 	private Date planDate;
-	private String Ending;
+	private String ending;
 	
 	public Plan(Integer planNo, String memberName, String stockName, int unitPrice, int amount, int price,
 			String companyName, String storageName, Date planDate, String ending) {
@@ -26,7 +26,7 @@ public class Plan {
 		this.companyName = companyName;
 		this.storageName = storageName;
 		this.planDate = planDate;
-		Ending = ending;
+		this.ending = ending;
 	}
 
 	public Integer getPlanNo() {
@@ -66,7 +66,7 @@ public class Plan {
 	}
 
 	public String getEnding() {
-		return Ending;
+		return ending;
 	}
 	
 	

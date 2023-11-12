@@ -80,8 +80,8 @@ public class PlanRegisterHandler implements CommandHandler {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			Date orderDate = (Date)dateFormat.parse(d);
-			return orderDate;
+			Date planDate = (Date)dateFormat.parse(d);
+			return planDate;
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;

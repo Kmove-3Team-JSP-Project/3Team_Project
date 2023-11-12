@@ -133,72 +133,71 @@ public class OrderDao {
 
 	public List<Order> getSearch(Connection conn, String searchField, String searchText, int startRow, int size)
 			throws SQLException {
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String sql = "SELECT * FROM (SELECT ROWNUM AS rnum, a.* "
-            + "FROM (SELECT * FROM ORDERS WHERE %s = ? ORDER BY ORDER_NO DESC) a "
-            + "WHERE ROWNUM <= ?) WHERE rnum >= ?";
-    String field = changeField(searchField);
-    sql = String.format(sql, field);
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM (SELECT ROWNUM AS rnum, a.* "
+				+ "FROM (SELECT * FROM ORDERS WHERE %s = ? ORDER BY ORDER_NO DESC) a "
+				+ "WHERE ROWNUM <= ?) WHERE rnum >= ?";
+		String field = changeField(searchField);
+		sql = String.format(sql, field);
 
-    try {
-        pstmt = conn.prepareStatement(sql);
+		try {
+			pstmt = conn.prepareStatement(sql);
 
-        if (field.equals("order_no")) {
-            pstmt.setInt(1, Integer.parseInt(searchText));
-        } else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name") || field.equals("storage_name") || field.equals("progress")) {
-            pstmt.setString(1, searchText);
-        } else if (field.equals("order_date")) {
-            pstmt.setTimestamp(1, new Timestamp(transformDate(searchText).getTime()));
-        }
+			if (field.equals("order_no")) {
+				pstmt.setInt(1, Integer.parseInt(searchText));
+			} else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name")
+					|| field.equals("storage_name") || field.equals("progress")) {
+				pstmt.setString(1, searchText);
+			} else if (field.equals("order_date")) {
+				pstmt.setTimestamp(1, new Timestamp(transformDate(searchText).getTime()));
+			}
 
-        pstmt.setInt(2, startRow + size);
-        pstmt.setInt(3, startRow + 1);
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
 
-        rs = pstmt.executeQuery();
-        List<Order> result = new ArrayList<>();
-        while (rs.next()) {
-            result.add(convertOrder(rs));
-        }
-        return result;
-    } finally {
-        JdbcUtil.close(rs);
-        JdbcUtil.close(pstmt);
-    }
-}
-
-
-	public int selectCountSearch(Connection conn, String searchField, String searchText) throws SQLException {
-	    PreparedStatement pstmt = null;
-	    ResultSet rs = null;
-	    String sql = "SELECT COUNT(*) FROM orders WHERE %s=?";
-	    String field = changeField(searchField);
-	    sql = String.format(sql, field);
-	    System.out.println(searchText);
-	    try {
-	        pstmt = conn.prepareStatement(sql);
-
-	        if (field.equals("order_no")) {
-	            pstmt.setInt(1, Integer.parseInt(searchText));
-	        } else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name") || field.equals("storage_name") || field.equals("progress")) {
-	            pstmt.setString(1, searchText);
-	        } else if (field.equals("order_date")) {
-	            Date date = transformDate(searchText);
-	            pstmt.setTimestamp(1, new Timestamp(date.getTime()));
-	        }
-
-	        rs = pstmt.executeQuery();
-	        if (rs.next()) {
-	            return rs.getInt(1);
-	        }
-	        return 0;
-	    } finally {
-	        JdbcUtil.close(rs);
-	        JdbcUtil.close(pstmt);
-	    }
+			rs = pstmt.executeQuery();
+			List<Order> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertOrder(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 
+	public int selectCountSearch(Connection conn, String searchField, String searchText) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT COUNT(*) FROM orders WHERE %s=?";
+		String field = changeField(searchField);
+		sql = String.format(sql, field);
+		System.out.println(searchText);
+		try {
+			pstmt = conn.prepareStatement(sql);
 
+			if (field.equals("order_no")) {
+				pstmt.setInt(1, Integer.parseInt(searchText));
+			} else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name")
+					|| field.equals("storage_name") || field.equals("progress")) {
+				pstmt.setString(1, searchText);
+			} else if (field.equals("order_date")) {
+				Date date = transformDate(searchText);
+				pstmt.setTimestamp(1, new Timestamp(date.getTime()));
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			return 0;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
 
 	private String changeField(String searchField) {
 		String field = "";
@@ -223,7 +222,7 @@ public class OrderDao {
 	public Date transformDate(String d) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		try {
-			Date orderDate =  dateFormat.parse(d);
+			Date orderDate = dateFormat.parse(d);
 			return orderDate;
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -293,7 +292,7 @@ public class OrderDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<String> CompanyNames = new ArrayList<>();
 				while (rs.next()) {
-					CompanyNames.add(rs.getString("Company_name"));
+					CompanyNames.add(rs.getString("company_name"));
 				}
 				return CompanyNames;
 			}

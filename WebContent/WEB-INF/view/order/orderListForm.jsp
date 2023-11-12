@@ -99,7 +99,7 @@ td {
 			</table>
 		</form>
 
-		<form name="Date">
+		<form name="Data">
 			<select name="condition"
 				style="margin-top: 20px; margin-left: 710px; font-size: 15px;">
 				<option value="orderNo">要請No</option>

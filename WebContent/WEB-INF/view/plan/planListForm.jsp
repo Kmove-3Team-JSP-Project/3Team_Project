@@ -8,10 +8,6 @@
 <meta charset="UTF-8">
 <title>発注計画</title>
 <style>
-h1 {
-	text-align: center;
-}
-
 #wrap {
 	min-height: calc(78.5vh - 30px);
 	padding-bottom: 60px;
@@ -32,8 +28,7 @@ table {
 	table-layout: fixed;
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
-	heigth: 500px;
+	width: 1100px;
 	border: 1px solid #444444;
 }
 
@@ -47,9 +42,12 @@ td {
 <%@ include file="/header.jsp"%>
 <body>
 	<div id="wrap">
-		<form action="planList.do" method="post">
-			
-			<h1>[発注計画]</h1>
+		<form action="planList.do">
+
+			<h1 style="text-align: center;">[発注計画]<input type="button" value="終結可否変更"
+					style="font-size: 15px; width: 105px; height: 30px; position: absolute; right: 225px; top: 100px;"
+					onclick="window.open('planCheck.do', '発注計画検索', 'width=1200, height=700')" />
+			</h1>
 			<table>
 				<tr>
 					<td>計画No</td>
@@ -66,7 +64,7 @@ td {
 
 				<c:if test="${planPage.hasNoPlans()}">
 					<tr>
-						<td colspan="10">登録された発注要請が存在しません。</td>
+						<td colspan="10">登録された発注計画が存在しません。</td>
 					</tr>
 				</c:if>
 				<c:forEach var="plan" items="${planPage.content}">
@@ -81,15 +79,7 @@ td {
 						<td>${plan.storageName}</td>
 						<td><fmt:formatDate value="${plan.planDate}"
 								pattern="yyyy-MM-dd" /></td>
-						<td><select id="progressSelect_${plan.planNo}"
-							onchange="updateProgress(${plan.planNo})">
-								<option value="InProgress">進行中</option>
-								<option value="Completed">完了</option>
-								<option value="Cancelled">キャンセル</option>
-						</select></td>
-
-
-
+						<td>${plan.ending}</td>
 					</tr>
 				</c:forEach>
 				<c:if test="${planPage.hasPlans()}">
@@ -98,59 +88,57 @@ td {
 								<a href="planList.do?pageNo=${planPage.startPage - 5}">[前のページ]</a>
 							</c:if> <c:forEach var="pNo" begin="${planPage.startPage}"
 								end="${planPage.endPage}">
-								<a href="planList.do?pageNo=${pNo}">[${pNO}]</a>
+								<a href="planList.do?pageNo=${pNo}">[${pNo}]</a>
 							</c:forEach> <c:if test="${planPage.endPage < planPage.totalPages}">
 								<a href="planList.do?pageNo=${planPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>
 			</table>
+		</form>
 
-			<input type="button" value="検索"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('planSearch.do', '発注計画検索', 'width=1200, height=700')" />
-			<input type="button" value="登録"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px;"
+		<form name="Data">
+			<select name="condition"
+				style="margin-top: 20px; margin-left: 710px; font-size: 15px;">
+				<option value="planNo">計画No</option>
+				<option value="memberName">担当者</option>
+				<option value="stockName">在庫名</option>
+				<option value="companyName">取引先名</option>
+				<option value="storageName">倉庫名</option>
+				<option value="planDate">発注出庫日付</option>
+				<option value="ending">終結可否</option>
+			</select> <input type="text" placeholder="検索ワード入力" name="detail"
+				maxlength="50" style="margin-top: 20px; font-size: 15px;"> <input
+				type="button" value="検索"
+				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
+				onclick="Check(this.form);" /> <input type="button" value="登録"
+				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
 				onclick="window.open('planRegister.do', '発注計画登録', 'width=700, height=700')" />
 		</form>
 	</div>
 
 </body>
 
-</html>
-<!-- <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
-
-    selectElement.disabled = true; // 선택 후 비활성화
-
-
-</script> -->
 <script type="text/javascript">
-function updateProgress(orderNo) {
-    var selectElement = document.getElementById(`progressSelect_${orderNo}`);
-    var selectedValue = selectElement.value;
-    
-    if (selectElement.disabled) {
-        // 이미 선택되었으므로 아무것도 하지 않음
-        return;
-    }
+	function Check(form) {
+		var condition = form.condition.value;
+		var detail = form.detail.value;
+		if (detail === '') {
+			alert('検索ワードを入力してください');
+			return false;
+		}
+		if ((condition === 'planNo' || condition === 'planDate') && isNaN(detail)){
+			alert('分かち書きなしで数字だけで入力してください');
+			return false;			
+		}
 
-    selectElement.disabled = true; // 선택 후 비활성화
-    
-    // Hidden input에 데이터 설정
-    document.getElementById("orderNoInput").value = orderNo;
-    document.getElementById("progressInput").value = selectedValue;
-}
+		// 폼 데이터를 가져와 URL에 추가
+		var url = "planSearch.do?condition=" + condition + "&detail="
+				+ encodeURIComponent(detail);
+		var title = '発注計画検索';
 
-function submitForm() {
-    document.forms[0].submit();
-}
-
+		// 새 창 열기
+		window.open(url, title, 'width=1400, height=700');
+	}
 </script>
+</html>
