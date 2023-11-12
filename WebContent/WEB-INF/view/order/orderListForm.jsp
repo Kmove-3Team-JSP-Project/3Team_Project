@@ -37,7 +37,6 @@ td {
 	white-space: nowrap;
 	border: 1px solid #444444;
 }
-
 </style>
 </head>
 <%@ include file="/header.jsp"%>
@@ -98,7 +97,11 @@ td {
 					</tr>
 				</c:if>
 			</table>
-			<select name="condition" onchange="onChange(this)" style="margin-top: 20px; margin-left: 710px;  font-size: 15px;">
+		</form>
+
+		<form name="Date">
+			<select name="condition"
+				style="margin-top: 20px; margin-left: 710px; font-size: 15px;">
 				<option value="orderNo">要請No</option>
 				<option value="memberName">担当者</option>
 				<option value="itemName">品目名</option>
@@ -106,12 +109,11 @@ td {
 				<option value="storageName">倉庫名</option>
 				<option value="orderDate">納期日</option>
 				<option value="progress">進行状態</option>
-			</select>
-			<input type="text" placeholder="検索ワード入力" name="detail" maxlength="50" style="margin-top: 20px; font-size: 15px;">
-			 <input type="button" value="検索"
+			</select> <input type="text" placeholder="検索ワード入力" name="detail"
+				maxlength="50" style="margin-top: 20px; font-size: 15px;"> <input
+				type="button" value="検索"
 				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
-				onclick="Check(this.form);" />
-			<input type="button" value="登録"
+				onclick="Check(this.form);" /> <input type="button" value="登録"
 				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
 				onclick="window.open('orderRegister.do', '発注要請登録', 'width=700, height=700')" />
 		</form>
@@ -119,25 +121,26 @@ td {
 
 </body>
 <script type="text/javascript">
-function Check(form) {
-	var detail = form.detail.value;
-	if (detail === '') {
-		alert('検索ワードを入力してください');
-		return false;
-	}
-	
-	var newWindow = window.open('', '_blank');
-	// 폼 생성
-    var form = document.getElementById('myForm').cloneNode(true);
-    // 새 창에 폼 추가
-    newWindow.document.body.appendChild(form);
+	function Check(form) {
+		var condition = form.condition.value;
+		var detail = form.detail.value;
+		if (detail === '') {
+			alert('検索ワードを入力してください');
+			return false;
+		}
+		if ((condition === 'orderNo' || condition === 'orderDate') && isNaN(detail)){
+			alert('分かち書きなしで数字だけで入力してください');
+			return false;			
+		}
 
-    // 폼 서브밋
-    form.submit();
-    
-	 searchWin = window.open('orderSearch.do', '発注要請検索', 'width=1400, height=700');
-	searchWin.document.getElementBy
-}
+		// 폼 데이터를 가져와 URL에 추가
+		var url = "orderSearch.do?condition=" + condition + "&detail="
+				+ encodeURIComponent(detail);
+		var title = '発注要請検索';
+
+		// 새 창 열기
+		window.open(url, title, 'width=1400, height=700');
+	}
 </script>
 </html>
 

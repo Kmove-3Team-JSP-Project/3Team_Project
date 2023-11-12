@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class OrderDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		try { 
+		try {
 			pstmt = conn.prepareStatement("insert into orders values (?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setInt(1, order.getOrderNo());
 			pstmt.setString(2, order.getMemberName());
@@ -60,7 +63,23 @@ public class OrderDao {
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select count(*) from orderS");
+			rs = stmt.executeQuery("select count(*) from orders");
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			return 0;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
+		}
+	}
+
+	public int selectCountProgress(Connection conn) throws SQLException {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select count(*) from orders WHERE PROGRESS = '進行中'");
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
@@ -91,13 +110,13 @@ public class OrderDao {
 		}
 	}
 
-
 	public List<Order> selectProgress(Connection conn, int startRow, int size) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try { // 역순으로 정렬한 게시글 번호를 해당하는 레코드들을 읽어온다.
 			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
-					+ "from (select * from ORDERS WHERE PROGRESS = '進行中' order by ORDER_no desc) a " + "where rownum <=?) where rnum >=?");
+					+ "from (select * from ORDERS WHERE PROGRESS = '進行中' order by ORDER_no desc) a "
+					+ "where rownum <=?) where rnum >=?");
 			pstmt.setInt(1, startRow + size);
 			pstmt.setInt(2, startRow + 1);
 			rs = pstmt.executeQuery();
@@ -111,29 +130,111 @@ public class OrderDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
-	
-	public List<Order> getSearch(Connection conn, String searchField, String searchText, int startRow, int size) throws SQLException {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try { // 역순으로 정렬한 게시글 번호를 해당하는 레코드들을 읽어온다.
-			pstmt = conn.prepareStatement("select * from (select rownum as rnum, a.* "
-					+ "from (select * from ORDERS WHERE ? = ?  order by ORDER_no desc) a " + "where rownum <=?) where rnum >=?");
-			pstmt.setString(1, searchField);
-			pstmt.setString(2, searchText);
-			pstmt.setInt(3, startRow + size);
-			pstmt.setInt(4, startRow + 1);
-			rs = pstmt.executeQuery();
-			List<Order> result = new ArrayList<>();
-			while (rs.next()) {
-				result.add(convertOrder(rs));
-			}
-			return result;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-		}
+
+	public List<Order> getSearch(Connection conn, String searchField, String searchText, int startRow, int size)
+			throws SQLException {
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    String sql = "SELECT * FROM (SELECT ROWNUM AS rnum, a.* "
+            + "FROM (SELECT * FROM ORDERS WHERE %s = ? ORDER BY ORDER_NO DESC) a "
+            + "WHERE ROWNUM <= ?) WHERE rnum >= ?";
+    String field = changeField(searchField);
+    sql = String.format(sql, field);
+
+    try {
+        pstmt = conn.prepareStatement(sql);
+
+        if (field.equals("order_no")) {
+            pstmt.setInt(1, Integer.parseInt(searchText));
+        } else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name") || field.equals("storage_name") || field.equals("progress")) {
+            pstmt.setString(1, searchText);
+        } else if (field.equals("order_date")) {
+            pstmt.setTimestamp(1, new Timestamp(transformDate(searchText).getTime()));
+        }
+
+        pstmt.setInt(2, startRow + size);
+        pstmt.setInt(3, startRow + 1);
+
+        rs = pstmt.executeQuery();
+        List<Order> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(convertOrder(rs));
+        }
+        return result;
+    } finally {
+        JdbcUtil.close(rs);
+        JdbcUtil.close(pstmt);
+    }
+}
+
+
+	public int selectCountSearch(Connection conn, String searchField, String searchText) throws SQLException {
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = "SELECT COUNT(*) FROM orders WHERE %s=?";
+	    String field = changeField(searchField);
+	    sql = String.format(sql, field);
+	    System.out.println(searchText);
+	    try {
+	        pstmt = conn.prepareStatement(sql);
+
+	        if (field.equals("order_no")) {
+	            pstmt.setInt(1, Integer.parseInt(searchText));
+	        } else if (field.equals("member_name") || field.equals("item_name") || field.equals("company_name") || field.equals("storage_name") || field.equals("progress")) {
+	            pstmt.setString(1, searchText);
+	        } else if (field.equals("order_date")) {
+	            Date date = transformDate(searchText);
+	            System.out.println(date);
+	            pstmt.setTimestamp(1, new Timestamp(date.getTime()));
+	        }
+
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1);
+	        }
+	        return 0;
+	    } finally {
+	        JdbcUtil.close(rs);
+	        JdbcUtil.close(pstmt);
+	    }
 	}
-	
+
+
+
+	private String changeField(String searchField) {
+		String field = "";
+		if (searchField.equals("orderNo")) {
+			field = "order_no";
+		} else if (searchField.equals("memberName")) {
+			field = "member_name";
+		} else if (searchField.equals("itemName")) {
+			field = "item_name";
+		} else if (searchField.equals("companyName")) {
+			field = "company_name";
+		} else if (searchField.equals("storageName")) {
+			field = "storage_name";
+		} else if (searchField.equals("orderDate")) {
+			field = "order_date";
+		} else if (searchField.equals("progress")) {
+			field = "progress";
+		}
+		return field;
+	}
+
+	public Date transformDate(String d) {
+		SimpleDateFormat dateFormatFirst = new SimpleDateFormat("yyyyMMdd");
+		String afterDate = dateFormatFirst.format(d);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date orderDate =  dateFormat.parse(afterDate);
+			return orderDate;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 	private Order convertOrder(ResultSet rs) throws SQLException {
 		return new Order(rs.getInt("order_no"), rs.getString("member_name"), rs.getString("item_name"),
 				rs.getInt("unit_price"), rs.getInt("amount"), rs.getInt("price"), rs.getString("company_name"),
@@ -141,12 +242,13 @@ public class OrderDao {
 	}
 
 	public int update(Connection conn, int orderNo, String progress) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
-				pstmt.setString(1, progress);
-				pstmt.setInt(2, orderNo);
-				return pstmt.executeUpdate();
-			}
-	
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("update Orders set progress = ?" + " where order_no = ?")) {
+			pstmt.setString(1, progress);
+			pstmt.setInt(2, orderNo);
+			return pstmt.executeUpdate();
+		}
+
 	}
 
 	public int getOrderNo(Connection conn) {
@@ -159,13 +261,13 @@ public class OrderDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-	            orderNo = rs.getInt(1);
-	            if (rs.wasNull()) { // 만약 최대값이 NULL이면 기본값으로 3000001 사용
-	                orderNo = 3000001;
-	            } else {
-	                orderNo += 1; // 다음 주문번호 생성
-	            }
-	        }
+				orderNo = rs.getInt(1);
+				if (rs.wasNull()) { // 만약 최대값이 NULL이면 기본값으로 3000001 사용
+					orderNo = 3000001;
+				} else {
+					orderNo += 1; // 다음 주문번호 생성
+				}
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -176,55 +278,55 @@ public class OrderDao {
 
 		return orderNo;
 	}
-	
-	 public List<String> getAllItemNames(Connection conn) throws SQLException {
-	        try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT item_name FROM item")) {
-	            try (ResultSet rs = pstmt.executeQuery()) {
-	                List<String> itemNames = new ArrayList<>();
-	                while (rs.next()) {
-	                    itemNames.add(rs.getString("item_name"));
-	                }
-	                return itemNames;
-	            }
-	        }
-	    }
 
-	    public List<String> getCompanyList(Connection conn) throws SQLException {
-	    	 try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Company_name FROM Company")) {
-		            try (ResultSet rs = pstmt.executeQuery()) {
-		                List<String> CompanyNames = new ArrayList<>();
-		                while (rs.next()) {
-		                	CompanyNames.add(rs.getString("Company_name"));
-		                }
-		                return CompanyNames;
-		            }
-		        }
-	    }
+	public List<String> getAllItemNames(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT item_name FROM item")) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<String> itemNames = new ArrayList<>();
+				while (rs.next()) {
+					itemNames.add(rs.getString("item_name"));
+				}
+				return itemNames;
+			}
+		}
+	}
 
-		public List<String> getStorageList(Connection conn) throws SQLException {
-			try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
-	            try (ResultSet rs = pstmt.executeQuery()) {
-	                List<String> storageNames = new ArrayList<>();
-	                while (rs.next()) {
-	                	storageNames.add(rs.getString("Storage_name"));
-	                }
-	                return storageNames;
-	            }
-	        }
-	    }
+	public List<String> getCompanyList(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Company_name FROM Company")) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<String> CompanyNames = new ArrayList<>();
+				while (rs.next()) {
+					CompanyNames.add(rs.getString("Company_name"));
+				}
+				return CompanyNames;
+			}
+		}
+	}
 
-		 public Map<String, Integer> getItemNamesWithUnitPrice(Connection conn) throws SQLException {
-		        try (PreparedStatement pstmt = conn.prepareStatement("SELECT item_name, unit_price FROM item")) {
-		            try (ResultSet rs = pstmt.executeQuery()) {
-		                Map<String, Integer> itemDetails = new HashMap<>();
-		                while (rs.next()) {
-		                    String itemName = rs.getString("item_name");
-		                    int unitPrice = rs.getInt("unit_price");
-		           	         itemDetails.put(itemName, unitPrice);
-		                }
-		                return itemDetails;
-		            }
-		        }
-		    }
+	public List<String> getStorageList(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				List<String> storageNames = new ArrayList<>();
+				while (rs.next()) {
+					storageNames.add(rs.getString("Storage_name"));
+				}
+				return storageNames;
+			}
+		}
+	}
+
+	public Map<String, Integer> getItemNamesWithUnitPrice(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT item_name, unit_price FROM item")) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				Map<String, Integer> itemDetails = new HashMap<>();
+				while (rs.next()) {
+					String itemName = rs.getString("item_name");
+					int unitPrice = rs.getInt("unit_price");
+					itemDetails.put(itemName, unitPrice);
+				}
+				return itemDetails;
+			}
+		}
+	}
 
 }

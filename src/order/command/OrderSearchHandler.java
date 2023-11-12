@@ -15,43 +15,17 @@ public class OrderSearchHandler implements CommandHandler {
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 	
 		String condition =	req.getParameter("condition");
-		String detail = req.getParameter("detail");
-		
+		String detail = req.getParameter("detail").trim();
 		String pageNoVal = req.getParameter("pageNo"); 
 		int pageNo = 1;
 		if(pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal); 
 		}
-		OrderPage orderPage = listService.getOrderSearchPage(condition, detail, pageNo); // 게시글 데이터 저장
 		
+		OrderPage orderPage = listService.getOrderSearchPage(condition, detail, pageNo); // 게시글 데이터 저장	
 		req.setAttribute("orderPage", orderPage);
-		
-		return "WEB-INF/view/order/orderSearchForm.jsp";
+		req.setAttribute("condition", condition);
+		req.setAttribute("detail", detail);
+		return "/WEB-INF/view/order/orderSearchForm.jsp";
 	}
-
-
-
-	
-		/*
-		 * Map<String, Boolean> errors = new HashMap<>(); req.setAttribute("errors",
-		 * errors);
-		 * 
-		 * User user = (User) req.getSession(false).getAttribute("authUser");
-		 * OrderRequest orderReq = createOrderRequest(user, req);
-		 * orderReq.validate(errors);
-		 * 
-		 * if (!errors.isEmpty()) { return FORM_VIEW; }
-		 */
-
-
-
-	/*
-	 * public Date transformDate(String d) { SimpleDateFormat dateFormat = new
-	 * SimpleDateFormat("yyyy-MM-dd");
-	 * 
-	 * try { Date orderDate = (Date) dateFormat.parse(d); return orderDate; } catch
-	 * (ParseException e) { e.printStackTrace(); return null; }
-	 * 
-	 * }
-	 */
 }

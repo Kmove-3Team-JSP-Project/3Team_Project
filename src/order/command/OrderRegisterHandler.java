@@ -74,7 +74,7 @@ public class OrderRegisterHandler implements CommandHandler {
 		
 		req.setAttribute("newOrderNo", newOrderNo);
 		req.setAttribute("newSheetNo", newSheetNo);
-		return "/WEB-INF/view/order/orderRegisterSucess.jsp";
+		return "/WEB-INF/view/order/orderRegisterSuccess.jsp";
 	}
 
 	public Date transformDate(String d) {

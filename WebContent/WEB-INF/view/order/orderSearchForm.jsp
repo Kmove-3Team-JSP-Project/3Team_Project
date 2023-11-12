@@ -81,12 +81,12 @@ td {
 				<c:if test="${orderPage.hasOrders()}">
 					<tr>
 						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
-								<a href="orderList.do?pageNo=${orderPage.startPage - 5}">[前のページ]</a>
+								<a href="orderSearch.do?condition=${condition}&detail=${detail}&pageNo=${orderPage.startPage - 5}">[前のページ]</a>
 							</c:if> <c:forEach var="pNo" begin="${orderPage.startPage}"
 								end="${orderPage.endPage}">
-								<a href="orderList.do?pageNo=${pNo}">[${pNo}]</a>
+								<a href="orderSearch.do?condition=${condition}&detail=${detail}&pageNo=${pNo}">[${pNo}]</a>
 							</c:forEach> <c:if test="${orderPage.endPage < orderPage.totalPages}">
-								<a href="orderList.do?pageNo=${orderPage.startPage + 5}">[次のページ]</a>
+								<a href="orderSearch.do?condition=${condition}&detail=${detail}&pageNo=${orderPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>
