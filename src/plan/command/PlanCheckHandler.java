@@ -43,7 +43,7 @@ public class PlanCheckHandler implements CommandHandler {
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		String jsonData = req.getParameter("planNoArray");
-		
+
 		if (jsonData == null || jsonData.isEmpty()) {
 			// 유효하지 않은 데이터
 			return FORM_VIEW;
@@ -61,8 +61,10 @@ public class PlanCheckHandler implements CommandHandler {
 
 			// 시트 상태 업데이트
 			int sheetUpdateResult = UpdateService.updateSheetEnding(planNo, ending);
-	
-
+			if (ending.equals("完了")) {
+				UpdateService.stockCompleted(planNo);
+			}
+			
 			// 주문 상태 업데이트
 			int planUpdateResult = UpdateService.updatePlanEnding(planNo, ending);
 
@@ -97,15 +99,15 @@ public class PlanCheckHandler implements CommandHandler {
 	}
 
 	private static String extractValueString(String entry, String key) {
-	    int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
-	    int endIndex = entry.indexOf(",", keyIndex);
-	    if (endIndex == -1) {
-	        endIndex = entry.indexOf("}", keyIndex);
-	        if (endIndex == -1) {
-	            endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
-	        }
-	    }
-	    String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
-	    return value;
+		int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
+		int endIndex = entry.indexOf(",", keyIndex);
+		if (endIndex == -1) {
+			endIndex = entry.indexOf("}", keyIndex);
+			if (endIndex == -1) {
+				endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
+			}
+		}
+		String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
+		return value;
 	}
 }
