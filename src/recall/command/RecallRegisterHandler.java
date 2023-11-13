@@ -17,7 +17,7 @@ import recall.service.RecallRegisterService;
 import recall.service.RecallRequest;
 
 public class RecallRegisterHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/recall/RecallRegisterForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/recall1/RecallRegisterForm.jsp";
 
 	private RecallRegisterService registerService = new RecallRegisterService();
 
@@ -71,7 +71,7 @@ public class RecallRegisterHandler implements CommandHandler {
 		int newRecallNo = registerService.register(recallRequest);
 
 		req.setAttribute("newRecallNo", newRecallNo);
-		return "/WEB-INF/view/recall/recallRegisterSuccess.jsp";
+		return "/WEB-INF/view/recall1/recallRegisterSuccess.jsp";
 	}
 
 	public Date transformDate(String d) {

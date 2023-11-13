@@ -11,7 +11,7 @@ import recall.service.RecallPage;
 
 public class RecallListHandler implements CommandHandler {
 	private RecallListService listService = new RecallListService();
-	private static final String FORM_VIEW = "/WEB-INF/view/recall/RecallListForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/recall1/RecallListForm.jsp";
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
