@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jdbc.JdbcUtil;
@@ -87,9 +90,108 @@ public class SheetDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	public List<Sheet> getSearch(Connection conn, String searchField, String searchText, int startRow, int size)
+			throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM (SELECT ROWNUM AS rnum, a.* "
+				+ "FROM (SELECT * FROM Sheet WHERE %s = ? ORDER BY list_NO DESC) a "
+				+ "WHERE ROWNUM <= ?) WHERE rnum >= ?";
+		String field = changeField(searchField);
+		sql = String.format(sql, field);
 
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			if (field.equals("list_no")) {
+				pstmt.setInt(1, Integer.parseInt(searchText));
+			} else if (field.equals("member_name") || field.equals("product_name") || field.equals("company_name")
+					|| field.equals("storage_name") || field.equals("process")) {
+				pstmt.setString(1, searchText);
+			} else if (field.equals("list_date")) {
+				pstmt.setTimestamp(1, new Timestamp(transformDate(searchText).getTime()));
+			}
+
+			pstmt.setInt(2, startRow + size);
+			pstmt.setInt(3, startRow + 1);
+
+			rs = pstmt.executeQuery();
+			List<Sheet> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertSheet(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	public int selectCountSearch(Connection conn, String searchField, String searchText) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT COUNT(*) FROM sheet WHERE %s=?";
+		String field = changeField(searchField);
+		sql = String.format(sql, field);
+		System.out.println(searchText);
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			if (field.equals("list_no")) {
+				pstmt.setInt(1, Integer.parseInt(searchText));
+			} else if (field.equals("member_name") || field.equals("product_name") || field.equals("company_name")
+					|| field.equals("storage_name") || field.equals("process")) {
+				pstmt.setString(1, searchText);
+			} else if (field.equals("list_date")) {
+				Date date = transformDate(searchText);
+				pstmt.setTimestamp(1, new Timestamp(date.getTime()));
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			return 0;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+
+	private String changeField(String searchField) {
+		String field = "";
+		if (searchField.equals("listNo")) {
+			field = "list_no";
+		} else if (searchField.equals("memberName")) {
+			field = "member_name";
+		} else if (searchField.equals("productName")) {
+			field = "product_name";
+		} else if (searchField.equals("companyName")) {
+			field = "company_name";
+		} else if (searchField.equals("storageName")) {
+			field = "storage_name";
+		} else if (searchField.equals("listDate")) {
+			field = "list_date";
+		} else if (searchField.equals("process")) {
+			field = "process";
+		}
+		return field;
+	}
+
+	public Date transformDate(String d) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		try {
+			Date listDate = dateFormat.parse(d);
+			return listDate;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
 	private Sheet convertSheet(ResultSet rs) throws SQLException {
-		return new Sheet(rs.getInt("list_no"), rs.getString("member_name"), rs.getString("Product_name"),
+		return new Sheet(rs.getInt("list_no"), rs.getString("member_name"), rs.getString("product_name"),
 				rs.getInt("unit_price"), rs.getInt("amount"), rs.getInt("price"), rs.getString("company_name"),
 				rs.getString("storage_name"), rs.getTimestamp("list_date"), rs.getString("process"));
 	}

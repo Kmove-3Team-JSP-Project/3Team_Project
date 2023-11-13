@@ -21,4 +21,15 @@ public class SheetListService {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public SheetPage getSheetSearchPage(String searchField, String searchText, int pageNum) {
+		try(Connection conn = ConnectionProvider.getConnection()){
+			int total = sheetDao.selectCountSearch(conn, searchField, searchText);
+			List<Sheet> content = sheetDao.getSearch(conn, searchField, searchText, (pageNum-1) * size, size);
+			return new SheetPage(total, pageNum, size, content);
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }

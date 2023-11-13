@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>発注要請</title>
+<title>発注書</title>
 <style>
 #wrap {
 	min-height: calc(78.5vh - 30px);
@@ -44,7 +44,7 @@ td {
 	<div id="wrap">
 		<form action="sheetList.do" method="post">
 
-			<div id="my-div">[発注書]</div>
+			<h1 style="text-align: center;">[発注書]</h1>
 			<table>
 				<tr>
 					<td>発注書No</td>
@@ -61,7 +61,7 @@ td {
 
 				<c:if test="${sheetPage.hasNoSheets()}">
 					<tr>
-						<td colspan="10">登録された発注要請が存在しません。</td>
+						<td colspan="10">登録された発注書が存在しません。</td>
 					</tr>
 				</c:if>
 				<c:forEach var="sheet" items="${sheetPage.content}">
@@ -94,17 +94,22 @@ td {
 			</table>
 		</form>
 		<form name="Data">
-
-
-
-
-			<input type="button" value="検索"
-				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
-				onclick="window.open('orderSearch.do', '発注書検索', 'width=1200, height=700')" />
-
+			<select name="condition"
+				style="margin-top: 20px; margin-left: 770px; font-size: 15px;">
+				<option value="listNo">発注書No</option>
+				<option value="memberName">担当者</option>
+				<option value="productName">物品名</option>
+				<option value="companyName">取引先名</option>
+				<option value="storageName">倉庫名</option>
+				<option value="listDate">日付</option>
+				<option value="process">状態</option>
+			</select> <input type="text" placeholder="検索ワード入力" name="detail"
+				maxlength="50" style="margin-top: 20px; font-size: 15px;"> <input
+				type="button" value="検索"
+				style="font-size: 15px; width: 50px; height: 30px; margin-top: 20px;"
+				onclick="Check(this.form);" />
 		</form>
 	</div>
-
 </body>
 <script type="text/javascript">
 	function Check(form) {
@@ -114,16 +119,16 @@ td {
 			alert('検索ワードを入力してください');
 			return false;
 		}
-		if ((condition === 'planNo' || condition === 'planDate')
+		if ((condition === 'listNo' || condition === 'listDate')
 				&& isNaN(detail)) {
 			alert('分かち書きなしで数字だけで入力してください');
 			return false;
 		}
 
 		// 폼 데이터를 가져와 URL에 추가
-		var url = "planSearch.do?condition=" + condition + "&detail="
+		var url = "sheetSearch.do?condition=" + condition + "&detail="
 				+ encodeURIComponent(detail);
-		var title = '発注計画検索';
+		var title = '発注書検索';
 
 		// 새 창 열기
 		window.open(url, title, 'width=1400, height=700');

@@ -99,7 +99,7 @@ td {
 
 		<form name="Data">
 			<select name="condition"
-				style="margin-top: 20px; margin-left: 710px; font-size: 15px;">
+				style="margin-top: 20px; margin-left: 680px; font-size: 15px;">
 				<option value="planNo">計画No</option>
 				<option value="memberName">担当者</option>
 				<option value="stockName">在庫名</option>
