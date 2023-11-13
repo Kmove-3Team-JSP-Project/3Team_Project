@@ -64,7 +64,7 @@ td {
 			</tr>
 			<tr>
 				<td style="text-align: center;">数量</td>
-				<td><input type="text" name="amount" id="amountInput" size="13"></td>
+				<td><input type="text" name="amount" id="amountInput" size="13"><input type="text" name="amount" id="amountInput" size="13"></td>
 			</tr>
 			<tr>
 				<td style="text-align: center;">倉庫名</td>
@@ -86,7 +86,7 @@ td {
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-      	var storageInput = document.getElementById("storageInput");
+    	var storageInput = document.getElementById("storageInput");
       	var amountInput = document.getElementsByName("amount")[0];
       	var unit_PriceInput = document.getElementsByName("unit_PriceInput");
       	
@@ -128,22 +128,29 @@ td {
         }
     });
     
+    
     var itemList = JSON.parse('${stockDetails1Json}'); // itemListJson을 JavaScript 객체로 파싱 StockNamesWithStockAmount
     var itemList2 = JSON.parse('${stockDetails2Json}'); // StockNamesWithStorageNames
-    var itemNameInput = document.getElementById("itemNameInput");
-	var unitPriceInput = document.getElementById("unitPriceInput");
+    var itemList3 = JSON.parse('${itemDetailsJson}'); // unitPrice
+    
+    var unitPriceInput = document.getElementById("unitPriceInput");
 	var stock_NameInput = document.getElementById("stock_NameInput");
+	var storageInput = document.getElementById("storageInput");
 	
-	itemNameInput.addEventListener("change", function() {
-		var selectedValue = itemNameInput.value;
-		var keys = Object.keys(itemList);   
-		for (var i = 0; i < keys.length; i++) {
+	//StockNamesWithStockAmount // StockNamesWithStorageNames // unitPrice
+	stock_NameInput.addEventListener("change", function() {
+		var selectedValue = stock_NameInput.value;
+		var keys1 = Object.keys(itemList);
+		var keys2 = Object.keys(itemList2);
+		var keys3 = Object.keys(itemList3);
+		
+		for (var i = 0; i < keys1.length; i++) {
 			var key = keys[i];
 			if (key === selectedValue) {
 				unitPriceInput.value = itemList[key];
-				
 				break;
 			}
+			
 		}
 	});
 

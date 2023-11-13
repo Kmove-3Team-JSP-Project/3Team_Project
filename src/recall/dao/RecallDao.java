@@ -167,15 +167,18 @@ public class RecallDao {
 		}
 	}
 
-	public List<String> getStorageList(Connection conn) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT Storage_name FROM Storage")) {
+	public Map<String, Integer> getStockNamesWithUnitPrice(Connection conn) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("SELECT stock_name, unit_price FROM stock")) {
 			try (ResultSet rs = pstmt.executeQuery()) {
-				List<String> storageNames = new ArrayList<>();
+				Map<String, Integer> itemDetails = new HashMap<>();
 				while (rs.next()) {
-					storageNames.add(rs.getString("Storage_name"));
+					String itemName = rs.getString("stock_name");
+					int unitPrice = rs.getInt("unit_price");
+					itemDetails.put(itemName, unitPrice);
 				}
-				return storageNames;
+				return itemDetails;
 			}
 		}
 	}
+
 }
