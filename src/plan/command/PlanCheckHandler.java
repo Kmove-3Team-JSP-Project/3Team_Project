@@ -1,8 +1,5 @@
 package plan.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,33 +53,25 @@ public class PlanCheckHandler implements CommandHandler {
 		// 대괄호를 제거하고 각 항목으로 분할
 		String[] entries = jsonData.substring(1, jsonData.length() - 1).split("\\},");
 
-		// 주문 번호 리스트
-		List<Integer> planNosToUpdate = new ArrayList<>();
 		int updateSuccess = 0;
 
-		// 각 항목 처리
 		for (String entry : entries) {
 			// orderNo 및 progress 추출
 			int planNo = extractValue(entry, "planNo");
 			String ending = extractValueString(entry, "ending");
 
-			// 주문 번호 리스트에 추가
-			planNosToUpdate.add(planNo);
+			// 시트 상태 업데이트
+			int sheetUpdateResult = UpdateService.updateSheetEnding(planNo, ending);
+			System.out.println(ending);
 
 			// 주문 상태 업데이트
-			for (int planNoToUpdate : planNosToUpdate) {
-				// 시트 상태 업데이트
-				int sheetUpdateResult = UpdateService.updateSheetEnding(planNoToUpdate, ending);
+			int planUpdateResult = UpdateService.updatePlanEnding(planNo, ending);
 
-				// 주문 상태 업데이트
-				int planUpdateResult = UpdateService.updatePlanEnding(planNoToUpdate, ending);
+			// 각 주문 번호에 대한 결과를 개별적으로 저장
+			req.setAttribute("planUpdateResult_" + planNo, planUpdateResult);
+			req.setAttribute("sheetUpdateResult_" + planNo, sheetUpdateResult);
 
-				// 각 주문 번호에 대한 결과를 개별적으로 저장
-				req.setAttribute("planUpdateResult_" + planNoToUpdate, planUpdateResult);
-				req.setAttribute("sheetUpdateResult_" + planNoToUpdate, sheetUpdateResult);
-
-				updateSuccess++; // 업데이트 성공 횟수 증가
-			}
+			updateSuccess++; // 업데이트 성공 횟수 증가
 		}
 
 		if (updateSuccess > 0) {
@@ -96,16 +85,16 @@ public class PlanCheckHandler implements CommandHandler {
 	}
 
 	private static int extractValue(String entry, String key) {
-	    int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
-	    int endIndex = entry.indexOf(",", keyIndex);
-	    if (endIndex == -1) {
-	        endIndex = entry.indexOf("}", keyIndex);
-	        if (endIndex == -1) {
-	            endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
-	        }
-	    }
-	    String value = entry.substring(keyIndex, endIndex);
-	    return Integer.parseInt(value);
+		int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
+		int endIndex = entry.indexOf(",", keyIndex);
+		if (endIndex == -1) {
+			endIndex = entry.indexOf("}", keyIndex);
+			if (endIndex == -1) {
+				endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
+			}
+		}
+		String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
+		return Integer.parseInt(value);
 	}
 
 	private static String extractValueString(String entry, String key) {
@@ -117,7 +106,7 @@ public class PlanCheckHandler implements CommandHandler {
 	            endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
 	        }
 	    }
-	    String value = entry.substring(keyIndex, endIndex);
-	    return value.replaceAll("\"", ""); // 따옴표 제거
+	    String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
+	    return value;
 	}
 }

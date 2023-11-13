@@ -46,8 +46,6 @@ public class OrderCheckHandler implements CommandHandler {
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		String jsonData = req.getParameter("orderNoArray");
-		System.out.println(jsonData);
-
 		if (jsonData == null || jsonData.isEmpty()) {
 			// 유효하지 않은 데이터
 			return FORM_VIEW;
