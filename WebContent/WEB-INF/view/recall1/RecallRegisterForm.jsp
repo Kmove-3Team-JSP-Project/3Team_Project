@@ -64,7 +64,8 @@ td {
 			</tr>
 			<tr>
 				<td style="text-align: center;">数量</td>
-				<td><input type="text" name="amount" id="amountInput" size="13"><input type="text" name="amount" id="amountInput" size="13"></td>
+				<td><input type="text" name="amount" id="amountInput" size="13">
+				<input type="text" name="stock_Amount" id="stock_Amount" size="3" readonly></td>
 			</tr>
 			<tr>
 				<td style="text-align: center;">倉庫名</td>
@@ -136,6 +137,7 @@ td {
     var unitPriceInput = document.getElementById("unitPriceInput");
 	var stock_NameInput = document.getElementById("stock_NameInput");
 	var storageInput = document.getElementById("storageInput");
+	var stock_Amount = document.getElementById("stock_Amount");
 	
 	//StockNamesWithStockAmount // StockNamesWithStorageNames // unitPrice
 	stock_NameInput.addEventListener("change", function() {
@@ -145,9 +147,11 @@ td {
 		var keys3 = Object.keys(itemList3);
 		
 		for (var i = 0; i < keys1.length; i++) {
-			var key = keys[i];
+			var key = keys1[i];
 			if (key === selectedValue) {
-				unitPriceInput.value = itemList[key];
+				stock_Amount.value = itemList[key];
+				storageInput.value = itemList2[key];
+				unitPriceInput.value = itemList3[key];
 				break;
 			}
 			
