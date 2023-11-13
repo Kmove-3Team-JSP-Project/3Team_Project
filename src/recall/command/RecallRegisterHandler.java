@@ -1,6 +1,5 @@
 package recall.command;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +33,7 @@ public class RecallRegisterHandler implements CommandHandler {
 		}
 	}
 
-	private String processForm(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+	private String processForm(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		User user = (User) req.getSession().getAttribute("authUser");
 		req.setAttribute("authUser", user);
 		int recallNo = registerService.getRecallNo();
@@ -47,18 +46,20 @@ public class RecallRegisterHandler implements CommandHandler {
 		Map<String, String> stockDetails2 = registerService.getStockNamesWithStorageNames();
 		String stockDetails2Json = getStockDetails2Json(stockDetails2);
 		req.setAttribute("stockDetails2Json", stockDetails2Json);
+	
+		
+		Map<String, Integer> itemDetails = registerService.getItemNamesWithUnitPrice();
+		String itemDetailsJson = getItemDetailsJson(itemDetails);
+		req.setAttribute("itemDetailsJson", itemDetailsJson);
 
 		List<String> stockNames = registerService.getStockName();
 		req.setAttribute("stock_Name", stockNames);
-
-		List<String> storageLists = registerService.getStorageList();
-		req.setAttribute("storageLists", storageLists);
 
 		return FORM_VIEW;
 
 	}
 
-	private String processSubmit(HttpServletRequest req, HttpServletResponse resq) throws SQLException {
+	private String processSubmit(HttpServletRequest req, HttpServletResponse resq) throws Exception {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
@@ -94,31 +95,52 @@ public class RecallRegisterHandler implements CommandHandler {
 	}
 
 	public String getStockDetails1Json(Map<String, Integer> stockDetails1) {
-		StringBuilder jsonBuilder = new StringBuilder("{");
+	    StringBuilder jsonBuilder = new StringBuilder("{");
 
-		for (Map.Entry<String, Integer> entry : stockDetails1.entrySet()) {
-			jsonBuilder.append("\"").append(entry.getKey()).append("\":").append(entry.getValue()).append(",");
-		}
+	    for (Map.Entry<String, Integer> entry : stockDetails1.entrySet()) {
+	        jsonBuilder.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\",");
+	    }
 
-		if (!stockDetails1.isEmpty()) {
-			jsonBuilder.deleteCharAt(jsonBuilder.length() - 1);
-		}
-		jsonBuilder.append("}");
-		return jsonBuilder.toString();
+	    if (!stockDetails1.isEmpty()) {
+	        jsonBuilder.deleteCharAt(jsonBuilder.length() - 1);
+	    }
+
+	    jsonBuilder.append("}");
+
+	    return jsonBuilder.toString();
 	}
 
 	public String getStockDetails2Json(Map<String, String> stockDetails2) {
-		StringBuilder jsonBuilder = new StringBuilder("{");
-		for (Map.Entry<String, String> entry : stockDetails2.entrySet()) {
-			jsonBuilder.append("\"").append(entry.getKey()).append("\":").append(entry.getValue()).append(",");
-		}
+	    StringBuilder jsonBuilder = new StringBuilder("{");
 
-		if (!stockDetails2.isEmpty()) {
-			jsonBuilder.deleteCharAt(jsonBuilder.length() - 1);
-		}
+	    for (Map.Entry<String, String> entry : stockDetails2.entrySet()) {
+	        jsonBuilder.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\",");
+	    }
 
-		jsonBuilder.append("}");
+	    if (!stockDetails2.isEmpty()) {
+	        jsonBuilder.deleteCharAt(jsonBuilder.length() - 1);
+	    }
 
-		return jsonBuilder.toString();
+	    jsonBuilder.append("}");
+
+	    return jsonBuilder.toString();
 	}
+
+	public String getItemDetailsJson(Map<String, Integer> itemDetails) {
+	    StringBuilder jsonBuilder = new StringBuilder("{");
+
+	    for (Map.Entry<String, Integer> entry : itemDetails.entrySet()) {
+	        jsonBuilder.append("\"").append(entry.getKey()).append("\":").append(entry.getValue()).append(",");
+	    }
+
+	    if (!itemDetails.isEmpty()) {
+	        jsonBuilder.deleteCharAt(jsonBuilder.length() - 1);
+	    }
+
+	    jsonBuilder.append("}");
+
+	    return jsonBuilder.toString();
+	}
+
+
 }

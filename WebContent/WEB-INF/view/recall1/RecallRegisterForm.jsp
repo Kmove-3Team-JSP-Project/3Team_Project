@@ -10,7 +10,6 @@ RecallRegisterService registerService = new RecallRegisterService();
 <%
 List<String> stock_Name = registerService.getStockName();
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +40,7 @@ td {
 </head>
 <body>
 	<form action="recallRegister.do" method="post">
+		<input type="hidden" name="unit_Price" value="${param.unit_price}" value="">
 		<input type="hidden" name="progress" value="進行中">
 		<div id="my-div">登録窓</div>
 		<table>
@@ -63,22 +63,14 @@ td {
 				</select></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;">単価</td>
-				<td><input type="text" name="unit_Price"
-					value="${param.unit_price }" value="" size="13" readonly></td>
-
-			</tr>
-			<tr>
 				<td style="text-align: center;">数量</td>
 				<td><input type="text" name="amount" id="amountInput" size="13"></td>
 			</tr>
 			<tr>
 				<td style="text-align: center;">倉庫名</td>
-				<td><select name="storageName">
-						<c:forEach var="storageName" items="${storageLists}">
-							<option value="${storage_Name}">${storage_Name}</option>
-						</c:forEach>
-				</select></td>
+				<td><input type="text" name="storage_Name" id="storageInput"
+					value="" size="13" readonly></td>
+				
 			</tr>
 			<tr>
 				<td style="text-align: center;">処理日</td>
@@ -94,12 +86,15 @@ td {
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var amountInput = document.getElementsByName("amount")[0];
-        amountInput.addEventListener("input", updateAmount);
-
+      	var storageInput = document.getElementById("storageInput");
+      	var amountInput = document.getElementsByName("amount")[0];
+      	var unit_PriceInput = document.getElementsByName("unit_PriceInput");
+      	
+      	amountInput.addEventListener("input", updateAmount);
+      	
         function updateAmount() {
             var amount = parseInt(amountInput.value);
-            var originalAmount = parseInt("${param.unit_price}");
+            var originalAmount = parseInt(amountInput.value, 10);
 
             if (!isNaN(originalAmount)) {
                 if (amount < originalAmount) {
@@ -133,6 +128,24 @@ td {
         }
     });
     
+    var itemList = JSON.parse('${stockDetails1Json}'); // itemListJson을 JavaScript 객체로 파싱 StockNamesWithStockAmount
+    var itemList2 = JSON.parse('${stockDetails2Json}'); // StockNamesWithStorageNames
+    var itemNameInput = document.getElementById("itemNameInput");
+	var unitPriceInput = document.getElementById("unitPriceInput");
+	var stock_NameInput = document.getElementById("stock_NameInput");
+	
+	itemNameInput.addEventListener("change", function() {
+		var selectedValue = itemNameInput.value;
+		var keys = Object.keys(itemList);   
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			if (key === selectedValue) {
+				unitPriceInput.value = itemList[key];
+				
+				break;
+			}
+		}
+	});
 
 function Check(form) { var stock_Name = form.stock_Name.value; var
 amount = form.amount.value; var storageName = form.storageName.value;

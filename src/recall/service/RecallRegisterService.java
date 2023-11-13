@@ -109,19 +109,20 @@ public class RecallRegisterService {
 		}
 	}
 
-	public List<String> getStorageList() {
-		Connection conn = null;
-		try {
-			conn = ConnectionProvider.getConnection();
-			conn.setAutoCommit(false);
-			List<String> storageList = recallDao.getStorageList(conn);
-			conn.commit();
-			return storageList;
-		} catch (SQLException e) {
-			JdbcUtil.rollback(conn);
-			throw new RuntimeException(e);
-		} finally {
-			JdbcUtil.close(conn);
-		}
-	}
+	public Map<String, Integer> getItemNamesWithUnitPrice() {
+        Connection conn = null;
+        try {
+            conn = ConnectionProvider.getConnection();
+            conn.setAutoCommit(false);
+            Map<String, Integer> itemDetails = recallDao.getStockNamesWithUnitPrice(conn);
+            conn.commit();
+            return itemDetails;
+        } catch (SQLException e) {
+            JdbcUtil.rollback(conn);
+            throw new RuntimeException(e);
+        } finally {
+            JdbcUtil.close(conn);
+        }
+    }
+	
 }
