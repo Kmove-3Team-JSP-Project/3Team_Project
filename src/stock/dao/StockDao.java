@@ -14,7 +14,7 @@ public class StockDao {
 	// 주어진 Connection을 사용하여 Stock 객체를 데이터베이스에 삽입합니다.
 	public void insert(Connection conn, Stock stock) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement(
-				"INSERT INTO stock (STOCK_CORD, AMOUNT, STORAGE_NAME, STOCK_NAME, UNIT_PRICE) VALUES (?,?, ?, ?, ?)")) {
+				"INSERT INTO stock (STOCK_CORD, AMOUNT, STORAGE_NAME, STOCK_NAME, UNIT_PRICE) VALUES (stock_seq.NEXTVAL,?, ?, ?, ?)")) {
 			pstmt.setInt(1, stock.getStock_Cord());
 			pstmt.setInt(2, stock.getAmount());
 			pstmt.setString(3, stock.getStorage_Name());

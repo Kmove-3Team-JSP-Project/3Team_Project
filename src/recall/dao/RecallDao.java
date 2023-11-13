@@ -21,7 +21,7 @@ public class RecallDao {
 		ResultSet rs = null;
 
 		try {
-			pstmt = conn.prepareStatement("insert into recall values (?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into recall values (recall_seq.NEXTVAL,?,?,?,?,?,?,?)");
 			pstmt.setInt(1, recall.getRecall_No());
 			pstmt.setString(2, recall.getMember_Name());
 			pstmt.setString(3, recall.getStorage_Name());
