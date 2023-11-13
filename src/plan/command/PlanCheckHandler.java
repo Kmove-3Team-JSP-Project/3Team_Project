@@ -43,8 +43,7 @@ public class PlanCheckHandler implements CommandHandler {
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		String jsonData = req.getParameter("planNoArray");
-		System.out.println(jsonData);
-
+		
 		if (jsonData == null || jsonData.isEmpty()) {
 			// 유효하지 않은 데이터
 			return FORM_VIEW;
@@ -62,7 +61,7 @@ public class PlanCheckHandler implements CommandHandler {
 
 			// 시트 상태 업데이트
 			int sheetUpdateResult = UpdateService.updateSheetEnding(planNo, ending);
-			System.out.println(ending);
+	
 
 			// 주문 상태 업데이트
 			int planUpdateResult = UpdateService.updatePlanEnding(planNo, ending);

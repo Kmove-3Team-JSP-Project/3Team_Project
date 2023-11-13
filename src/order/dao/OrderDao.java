@@ -174,7 +174,6 @@ public class OrderDao {
 		String sql = "SELECT COUNT(*) FROM orders WHERE %s=?";
 		String field = changeField(searchField);
 		sql = String.format(sql, field);
-		System.out.println(searchText);
 		try {
 			pstmt = conn.prepareStatement(sql);
 

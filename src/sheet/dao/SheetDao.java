@@ -133,7 +133,6 @@ public class SheetDao {
 		String sql = "SELECT COUNT(*) FROM sheet WHERE %s=?";
 		String field = changeField(searchField);
 		sql = String.format(sql, field);
-		System.out.println(searchText);
 		try {
 			pstmt = conn.prepareStatement(sql);
 
