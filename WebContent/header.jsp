@@ -40,10 +40,9 @@
 			<li><a href="itemList.do">品目リスト</a></li>
 			<li><a href="stockList.do">在庫リスト</a></li>
 			<li><a href="storageList.do">倉庫リスト</a></li>
-			<li><a href="boxMoveList.do">倉庫移動</a></li>
 			<li><a href="recallList.do">不良処理サービス</a></li>
 			<li><a href="login.do">ログイン</a></li>
-			<li><a href="./index.jsp">メーン</a></li>
+			<li><a href="./index.jsp">メイン</a></li>
 		</ul>
 	</div>
 </u:notLogin>
