@@ -324,4 +324,20 @@ public class OrderDao {
 		}
 	}
 
+	public int updateStockFromCompletedOrders(Connection conn, int orderNo) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("MERGE INTO STOCK st " + "USING ( " + "    SELECT "
+				+ "        o.ORDER_NO, " + "        o.MEMBER_NAME, " + "        o.ITEM_NAME, "
+				+ "        o.UNIT_PRICE, " + "        o.AMOUNT, " + "        o.PRICE, " + "        o.COMPANY_NAME, "
+				+ "        o.STORAGE_NAME, " + "        o.ORDER_DATE, " + "        o.PROGRESS " + "    FROM ORDERS o "
+				+ "    WHERE o.ORDER_NO = ? " + "      AND o.PROGRESS = '完了' " + ") o "
+				+ "ON (st.STORAGE_NAME = o.STORAGE_NAME AND st.STOCK_NAME = o.ITEM_NAME) " + "WHEN MATCHED THEN "
+				+ "    UPDATE SET " + "        st.AMOUNT = st.AMOUNT + o.AMOUNT " + "WHEN NOT MATCHED THEN "
+				+ "    INSERT (STOCK_CORD, AMOUNT, STORAGE_NAME, STOCK_NAME, UNIT_PRICE) "
+				+ "    VALUES (stock_seq.NEXTVAL, o.AMOUNT, o.STORAGE_NAME, o.ITEM_NAME, o.UNIT_PRICE)")) {
+
+			pstmt.setInt(1, orderNo);
+			return pstmt.executeUpdate();
+		}
+	}
+
 }

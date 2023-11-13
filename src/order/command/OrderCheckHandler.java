@@ -1,8 +1,5 @@
 package order.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,12 +47,10 @@ public class OrderCheckHandler implements CommandHandler {
 			// 유효하지 않은 데이터
 			return FORM_VIEW;
 		}
-
 		// 대괄호를 제거하고 각 항목으로 분할
 		String[] entries = jsonData.substring(1, jsonData.length() - 1).split("\\},");
 
 		// 주문 번호 리스트
-		List<Integer> orderNosToUpdate = new ArrayList<>();
 		int updateSuccess = 0;
 
 		// 각 항목 처리
@@ -64,23 +59,22 @@ public class OrderCheckHandler implements CommandHandler {
 			int orderNo = extractValue(entry, "orderNo");
 			String progress = extractValueString(entry, "progress");
 
-			// 주문 번호 리스트에 추가
-			orderNosToUpdate.add(orderNo);
+			int sheetUpdateResult = UpdateService.updateSheetProgress(orderNo, progress);
 
 			// 주문 상태 업데이트
-			for (int orderNoToUpdate : orderNosToUpdate) {
-				// 시트 상태 업데이트
-				int sheetUpdateResult = UpdateService.updateSheetProgress(orderNoToUpdate, progress);
+			int orderUpdateResult = UpdateService.updateOrderProgress(orderNo, progress);
+			System.out.println(orderNo + progress);
 
-				// 주문 상태 업데이트
-				int orderUpdateResult = UpdateService.updateOrderProgress(orderNoToUpdate, progress);
-
-				// 각 주문 번호에 대한 결과를 개별적으로 저장
-				req.setAttribute("orderUpdateResult_" + orderNoToUpdate, orderUpdateResult);
-				req.setAttribute("sheetUpdateResult_" + orderNoToUpdate, sheetUpdateResult);
-
-				updateSuccess++; // 업데이트 성공 횟수 증가
+			if (progress.equals("完了")) {
+				UpdateService.stockCompleted(orderNo);
 			}
+
+			// 각 주문 번호에 대한 결과를 개별적으로 저장
+			req.setAttribute("orderUpdateResult_" + orderNo, orderUpdateResult);
+			req.setAttribute("sheetUpdateResult_" + orderNo, sheetUpdateResult);
+
+			updateSuccess++; // 업데이트 성공 횟수 증가
+
 		}
 
 		if (updateSuccess > 0) {
@@ -94,28 +88,28 @@ public class OrderCheckHandler implements CommandHandler {
 	}
 
 	private static int extractValue(String entry, String key) {
-	    int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
-	    int endIndex = entry.indexOf(",", keyIndex);
-	    if (endIndex == -1) {
-	        endIndex = entry.indexOf("}", keyIndex);
-	        if (endIndex == -1) {
-	            endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
-	        }
-	    }
-	    String value = entry.substring(keyIndex, endIndex);
-	    return Integer.parseInt(value);
+		int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
+		int endIndex = entry.indexOf(",", keyIndex);
+		if (endIndex == -1) {
+			endIndex = entry.indexOf("}", keyIndex);
+			if (endIndex == -1) {
+				endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
+			}
+		}
+		String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
+		return Integer.parseInt(value);
 	}
 
 	private static String extractValueString(String entry, String key) {
-	    int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
-	    int endIndex = entry.indexOf(",", keyIndex);
-	    if (endIndex == -1) {
-	        endIndex = entry.indexOf("}", keyIndex);
-	        if (endIndex == -1) {
-	            endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
-	        }
-	    }
-	    String value = entry.substring(keyIndex, endIndex);
-	    return value.replaceAll("\"", ""); // 따옴표 제거
+		int keyIndex = entry.indexOf("\"" + key + "\":") + key.length() + 3;
+		int endIndex = entry.indexOf(",", keyIndex);
+		if (endIndex == -1) {
+			endIndex = entry.indexOf("}", keyIndex);
+			if (endIndex == -1) {
+				endIndex = entry.length(); // , 또는 }가 없을 경우 문자열의 끝까지 사용
+			}
+		}
+		String value = entry.substring(keyIndex, endIndex).replaceAll("\"", "").trim(); // 따옴표 제거
+		return value;
 	}
 }

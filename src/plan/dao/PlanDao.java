@@ -321,4 +321,18 @@ public class PlanDao {
 			}
 		}
 	}
+
+	public int updateStockFromCompletedOrders(Connection conn, int planNo) throws SQLException {
+		try (PreparedStatement pstmt = conn.prepareStatement("MERGE INTO STOCK st " + "USING ( " + "    SELECT "
+				+ "        p.PLAN_NO, " + "        p.MEMBER_NAME, " + "        p.STOCK_NAME, "
+				+ "        p.UNIT_PRICE, " + "        p.AMOUNT, " + "        p.PRICE, " + "        p.COMPANY_NAME, "
+				+ "        p.STORAGE_NAME, " + "        p.PLAN_DATE, " + "        p.ENDING " + "    FROM PLAN p "
+				+ "    WHERE p.PLAN_NO = ? " + "      AND p.ENDING = '完了' " + ") p "
+				+ "ON (st.STORAGE_NAME = p.STORAGE_NAME AND st.STOCK_NAME = p.STOCK_NAME) " + "WHEN MATCHED THEN "
+				+ "    UPDATE SET " + "        st.AMOUNT = st.AMOUNT - p.AMOUNT " + "WHEN NOT MATCHED THEN END;")) {
+
+			pstmt.setInt(1, planNo);
+			return pstmt.executeUpdate();
+		}
+	}
 }
