@@ -8,10 +8,6 @@
 <meta charset="UTF-8">
 <title>発注要請</title>
 <style>
-h1 {
-	text-align: center;
-}
-
 #wrap {
 	min-height: calc(78.5vh - 30px);
 	padding-bottom: 60px;
@@ -32,8 +28,7 @@ table {
 	table-layout: fixed;
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
-	heigth: 500px;
+	width: 1100px;
 	border: 1px solid #444444;
 }
 
@@ -48,7 +43,7 @@ td {
 <body>
 	<div id="wrap">
 		<form action="sheetList.do" method="post">
-			
+
 			<div id="my-div">[発注書]</div>
 			<table>
 				<tr>
@@ -82,31 +77,56 @@ td {
 						<td><fmt:formatDate value="${sheet.listDate}"
 								pattern="yyyy-MM-dd" /></td>
 						<td>${sheet.process}</td>
-			</tr>
+					</tr>
 				</c:forEach>
 				<c:if test="${sheetPage.hasSheets()}">
 					<tr>
-						<td colspan="10"><c:if test="${orderPage.startPage > 5}">
+						<td colspan="10"><c:if test="${sheetPage.startPage > 5}">
 								<a href="sheetList.do?pageNo=${sheetPage.startPage - 5}">[前のページ]</a>
 							</c:if> <c:forEach var="pNo" begin="${sheetPage.startPage}"
 								end="${sheetPage.endPage}">
-								<a href="sheetList.do?pageNo=${pNo}">[${pNO}]</a>
+								<a href="sheetList.do?pageNo=${pNo}">[${pNo}]</a>
 							</c:forEach> <c:if test="${sheetPage.endPage < sheetPage.totalPages}">
 								<a href="sheetList.do?pageNo=${sheetPage.startPage + 5}">[次のページ]</a>
 							</c:if></td>
 					</tr>
 				</c:if>
 			</table>
-			
+		</form>
+		<form name="Data">
+
+
+
+
 			<input type="button" value="検索"
 				style="font-size: 20px; width: 70px; height: 40px; margin-top: 30px; margin-left: 850px;"
 				onclick="window.open('orderSearch.do', '発注書検索', 'width=1200, height=700')" />
-			
+
 		</form>
 	</div>
 
 </body>
+<script type="text/javascript">
+	function Check(form) {
+		var condition = form.condition.value;
+		var detail = form.detail.value;
+		if (detail === '') {
+			alert('検索ワードを入力してください');
+			return false;
+		}
+		if ((condition === 'planNo' || condition === 'planDate')
+				&& isNaN(detail)) {
+			alert('分かち書きなしで数字だけで入力してください');
+			return false;
+		}
 
-</html>
+		// 폼 데이터를 가져와 URL에 추가
+		var url = "planSearch.do?condition=" + condition + "&detail="
+				+ encodeURIComponent(detail);
+		var title = '発注計画検索';
 
+		// 새 창 열기
+		window.open(url, title, 'width=1400, height=700');
+	}
 </script>
+</html>
