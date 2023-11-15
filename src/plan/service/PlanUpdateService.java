@@ -62,27 +62,16 @@ public class PlanUpdateService {
 		}
 	}
 
-	public boolean stockCompleted(int planNo) {
-		Connection conn = null;
-		try {
-			conn = ConnectionProvider.getConnection();
-			conn.setAutoCommit(false);
-
-			int savedOrder = planDao.updateStockFromCompletedOrders(conn, planNo);
-			if (savedOrder < 0) {
-				return false;
-			}
-			conn.commit();
-			return true;
-		} catch (SQLException e) {
-			JdbcUtil.rollback(conn);
-			throw new RuntimeException(e);
-		} catch (RuntimeException e) {
-			JdbcUtil.rollback(conn);
-			throw e;
-		} finally {
-			JdbcUtil.close(conn);
-		}
-		
-	}
+	/*
+	 * public boolean stockCompleted(int planNo) { Connection conn = null; try {
+	 * conn = ConnectionProvider.getConnection(); conn.setAutoCommit(false);
+	 * 
+	 * int savedOrder = planDao.updateStockFromCompletedOrders(conn, planNo); if
+	 * (savedOrder < 0) { return false; } conn.commit(); return true; } catch
+	 * (SQLException e) { JdbcUtil.rollback(conn); throw new RuntimeException(e); }
+	 * catch (RuntimeException e) { JdbcUtil.rollback(conn); throw e; } finally {
+	 * JdbcUtil.close(conn); }
+	 * 
+	 * }
+	 */
 }
