@@ -322,7 +322,7 @@ public class PlanDao {
 		}
 	}
 
-	public int updateStockFromCompletedOrders(Connection conn, int planNo) throws SQLException {
+	/*public int updateStockFromCompletedOrders(Connection conn, int planNo) throws SQLException {
 		try (PreparedStatement pstmt = conn.prepareStatement("MERGE INTO STOCK st " + "USING ( " + "    SELECT "
 				+ "        p.PLAN_NO, " + "        p.MEMBER_NAME, " + "        p.STOCK_NAME, "
 				+ "        p.UNIT_PRICE, " + "        p.AMOUNT, " + "        p.PRICE, " + "        p.COMPANY_NAME, "
@@ -334,5 +334,5 @@ public class PlanDao {
 			pstmt.setInt(1, planNo);
 			return pstmt.executeUpdate();
 		}
-	}
+	}*/
 }

@@ -61,10 +61,9 @@ public class PlanCheckHandler implements CommandHandler {
 
 			// 시트 상태 업데이트
 			int sheetUpdateResult = UpdateService.updateSheetEnding(planNo, ending);
-			if (ending.equals("完了")) {
-				UpdateService.stockCompleted(planNo);
-			}
-			
+			/*
+			 * if (ending.equals("完了")) { UpdateService.stockCompleted(planNo); }
+			 */
 			// 주문 상태 업데이트
 			int planUpdateResult = UpdateService.updatePlanEnding(planNo, ending);
 
