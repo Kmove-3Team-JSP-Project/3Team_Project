@@ -35,8 +35,8 @@
 				<c:otherwise>
 					<c:forEach items="${companyPage.content}" var="company">
 						<tr>
-							<td>${company.company_no}</td>
-							<td>${company.company_name}</td>
+							<td>${company.company_No}</td>
+							<td>${company.company_Name}</td>
 							<td>${company.master}</td>
 							<td>${company.phone}</td>
 							<td>${company.address}</td>

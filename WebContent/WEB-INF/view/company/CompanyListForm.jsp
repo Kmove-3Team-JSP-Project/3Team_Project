@@ -26,12 +26,12 @@
 			</tr>
 			<c:forEach var="company" items="${companyPage.content}">
 				<tr>
-					<td>${company.company_no}</td>
-					<td>${company.company_name}</td>
+					<td>${company.company_No}</td>
+					<td>${company.company_Name}</td>
 					<td>${company.master}</td>
 					<td>${company.phone}</td>
 					<td>${company.address}</td>
-					<td>${company.myStroage}</td>
+					<td>${company.myStorage}</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -39,15 +39,14 @@
 		<div align="center">
 			<form action="companySearch.do" method="post" target="_blank"
 				onsubmit="return vaildateForm();">
-				<label for="検索条件">検索条件:</label> <select name="検索条件" id="検索条件">
-					<option value="company_no">取引先コード</option>
-					<option value="company_name">取引先名</option>
+				<label for="searchType">検索条件:</label> <select name="searchType" id="searchType">
+					<option value="選択">選択</option>
+					<option value="company_Name">取引先名</option>
 					<option value="master">担当者</option>
-					<option value="phone">電話番号</option>
-					<option value="myStroage">所有倉庫</option>
-				</select> <input type="text" name="keyword" placeholder="入力"> <input
-					type="submit" value="検索"> <input type="button" value="登録"
-					onclick="window.location.href='CompanyRegisterForm.jsp'" />
+				</select> <input type="text"
+				name="searchTerm" id="searchTerm" placeholder="入力" required> <input
+					type="submit" value="検索"> 
+					<input type="button" value="登録" onclick="window.location.href='companyRegister.do'" />
 			</form>
 		</div>
 	</div>

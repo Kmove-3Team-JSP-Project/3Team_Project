@@ -4,7 +4,7 @@ public class CompanyRequest {
 
 	private int company_No;
 	private String company_Name;
-	private String name;
+	private String master;
 	private String phone;
 	private String address;
 	private String myStorage;
@@ -14,12 +14,12 @@ public class CompanyRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CompanyRequest(int company_No, String company_Name, String name, String phone, String address,
+	public CompanyRequest(int company_No, String company_Name, String master, String phone, String address,
 			String myStorage) {
 		super();
 		this.company_No = company_No;
 		this.company_Name = company_Name;
-		this.name = name;
+		this.master = master;
 		this.phone = phone;
 		this.address = address;
 		this.myStorage = myStorage;
@@ -41,12 +41,12 @@ public class CompanyRequest {
 		this.company_Name = company_Name;
 	}
 
-	public String getName() {
-		return name;
+	public String getMaster() {
+		return master;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMaster(String master) {
+		this.master = master;
 	}
 
 	public String getPhone() {
