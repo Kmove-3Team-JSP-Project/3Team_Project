@@ -40,14 +40,14 @@ public class StorageRegisterService {
 	}
 
 	public int getAutonum() {
-		try (Connection conn = ConnectionProvider.getConnection()) {
-			int storageCode = storageDao.autoCode(conn);
-			storageCode = storageCode + 1;
-			return storageCode;
-		} catch (SQLException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e);
-		}
+	    try (Connection conn = ConnectionProvider.getConnection()) {
+	        int lastStorageCode = storageDao.autoCode(conn);
+	        // 중복을 방지하기 위해 이미 존재하는 마지막 storageCode를 가져와서 1을 더해 사용
+	        int newStorageCode = lastStorageCode + 1;
+	        return newStorageCode;
+	    } catch (SQLException e) {
+	        // 예외 처리
+	        throw new RuntimeException(e);
+	    }
 	}
-
 }

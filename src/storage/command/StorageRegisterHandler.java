@@ -69,7 +69,7 @@ public class StorageRegisterHandler implements CommandHandler {
 		// 비어 있지 않으면 가입성공페이지로 반환.
 		try {
 			storageRegisterService.storageRegister(storageReq);
-			return "/WEB-INF/view/storage/storageListForm.jsp";
+			return "/storageList.do";
 		} catch (Exception e) { // 사용자 아이디가 같으면 예외발생..
 			return FORM_VIEW; // 가입페이지로 반환.
 		}
